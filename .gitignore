@@ -32,3 +32,10 @@ Thumbs.db
 # Internal docs
 CLAUDE.md
 PAKISTAN_LAWSITE_COMPLETE_DOCUMENTATION.md
+
+test*
+verify*
+*.md
+*.sh
+
+.env

@@ -1,0 +1,24 @@
+[Unit]
+Description=Pakistan Law Scraper Dashboard
+After=network.target network-online.target
+Wants=network-online.target
+Documentation=https://github.com/yourrepo/pakistan-law-scraper
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/opt/pakistan_law_scraper
+Environment="PATH=/opt/pakistan_law_scraper/venv/bin"
+ExecStart=/opt/pakistan_law_scraper/venv/bin/python dashboard_prod.py
+Restart=always
+RestartSec=5
+StandardOutput=append:/var/log/pakistan-dashboard.log
+StandardError=append:/var/log/pakistan-dashboard.log
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
