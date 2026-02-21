@@ -202,6 +202,55 @@ def run_custom_scrape():
     print(f"📁 Saved to: {output_file}")
 
 
+def run_index_scrape():
+    """Run citation index scrape for 100% coverage"""
+    print("\n" + "="*60)
+    print("CITATION INDEX SCRAPE (100% Coverage)")
+    print("="*60)
+
+    scraper = setup_scraper()
+    if not scraper:
+        return
+
+    progress_file = 'index_progress.json'
+    output_file = 'all_cases_index.csv'
+
+    # Check for existing progress
+    if os.path.exists(progress_file):
+        print(f"\nExisting progress file found: {progress_file}")
+        resume = input("Resume previous scrape? (y/n) [y]: ").strip().lower()
+        if resume == 'n':
+            os.remove(progress_file)
+            print("Progress reset.")
+
+    out = input(f"\nOutput file [{output_file}]: ").strip()
+    if out:
+        output_file = out
+
+    det = input("Fetch full details (head notes + description)? (y/n) [y]: ").strip().lower()
+    get_details = det != 'n'
+
+    print(f"\nThis will iterate 16 journals x 80 years = 1,280 combinations.")
+    print("Progress is saved continuously - you can stop and resume anytime.")
+
+    def on_progress(progress_data):
+        completed = progress_data.get('completed_count', 0)
+        total = progress_data.get('total_combinations', 0)
+        cases = progress_data.get('total_cases_found', 0)
+        print(f"  [{completed}/{total}] Total cases found: {cases}", end='\r')
+
+    total = scraper.scrape_all_index(
+        output_file=output_file,
+        progress_file=progress_file,
+        get_details=get_details,
+        on_progress=on_progress
+    )
+
+    print(f"\n\nIndex scrape complete!")
+    print(f"Total new cases scraped: {total}")
+    print(f"Saved to: {output_file}")
+
+
 if __name__ == "__main__":
     print("\n" + "="*60)
     print("PAKISTAN LAW SITE SCRAPER")
@@ -210,8 +259,9 @@ if __name__ == "__main__":
     print("1. Test scrape (50 cases)")
     print("2. Full database scrape (all journals, all years)")
     print("3. Custom scrape")
+    print("4. Citation Index Scrape (100% coverage)")
 
-    choice = input("\nEnter choice (1/2/3): ").strip()
+    choice = input("\nEnter choice (1/2/3/4): ").strip()
 
     if choice == "1":
         run_test()
@@ -223,6 +273,8 @@ if __name__ == "__main__":
             print("Cancelled.")
     elif choice == "3":
         run_custom_scrape()
+    elif choice == "4":
+        run_index_scrape()
     else:
         print("Invalid choice. Running test by default...")
         run_test()

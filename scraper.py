@@ -23,6 +23,8 @@ import os
 from datetime import datetime
 from urllib.parse import urljoin
 import logging
+import threading
+from queue import Queue, Empty
 
 # Configure logging
 logging.basicConfig(
@@ -36,6 +38,11 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+class SessionExpiredError(Exception):
+    """Raised when the session has expired and re-authentication is needed"""
+    pass
+
+
 class PakistanLawScraper:
     """Scraper for Pakistan Law Site"""
     
@@ -44,7 +51,32 @@ class PakistanLawScraper:
     SEARCH_URL = f"{BASE_URL}/Login/SearchCaseLaw"
     LOAD_MORE_URL = f"{BASE_URL}/Login/LoadMoreCaseLaw"  # Pagination endpoint
     CASE_FILE_URL = f"{BASE_URL}/Login/GetCaseFile"
-    
+    INDEX_SEARCH_URL = f"{BASE_URL}/Login/IndexSearch"
+
+    # Journal name -> POST value mapping for IndexSearch
+    # Note: PLCN has a space in its POST value ("PLC N")
+    JOURNAL_POST_VALUES = {
+        'PLD': 'PLD',
+        'SCMR': 'SCMR',
+        'CLC': 'CLC',
+        'CLD': 'CLD',
+        'YLR': 'YLR',
+        'PCrLJ': 'PCrLJ',
+        'PLC': 'PLC',
+        'PLC(CS)': 'PLC(CS)',
+        'PTD': 'PTD',
+        'MLD': 'MLD',
+        'GBLR': 'GBLR',
+        'CLCN': 'CLCN',
+        'YLRN': 'YLRN',
+        'PCRLJN': 'PCRLJN',
+        'PLCN': 'PLC N',
+        'PLC(CS)N': 'PLC(CS)N',
+    }
+    INDEX_JOURNALS = list(JOURNAL_POST_VALUES.keys())
+    YEAR_RANGE_START = 1947
+    YEAR_RANGE_END = 2026
+
     # Year options from the website dropdown
     YEAR_OPTIONS = {
         'last_5': '5',
@@ -77,6 +109,8 @@ class PakistanLawScraper:
         self.session = requests.Session()
         self.is_logged_in = False
         self.processed_case_ids = set()
+        self._backoff_until = 0
+        self._backoff_extra = 0
 
         # Set up session headers
         self.session.headers.update({
@@ -87,9 +121,20 @@ class PakistanLawScraper:
         })
     
     def _delay(self):
-        """Add random delay between requests to be polite"""
+        """Add random delay between requests with adaptive backoff"""
         delay = random.uniform(*self.delay_range)
+        if time.time() < self._backoff_until:
+            delay += self._backoff_extra
         time.sleep(delay)
+
+    def _check_rate_limit(self, response):
+        """Adjust backoff if server returns 429/503"""
+        if response.status_code in (429, 503):
+            self._backoff_extra = min(self._backoff_extra + 5, 30)
+            self._backoff_until = time.time() + 60
+            logger.warning(f"Rate limited ({response.status_code}), backoff +{self._backoff_extra}s for 60s")
+        elif time.time() >= self._backoff_until and self._backoff_extra > 0:
+            self._backoff_extra = 0
     
     def login(self) -> bool:
         """
@@ -457,6 +502,128 @@ class PakistanLawScraper:
         
         return result
     
+    def _parse_index_results(self, html: str) -> list:
+        """
+        Parse index search results HTML (archivedpatientGrid table format)
+
+        Args:
+            html: Raw HTML response from IndexSearch
+
+        Returns:
+            List of case dicts
+
+        Raises:
+            SessionExpiredError: If the response indicates session expiry
+        """
+        # Detect session expiry: full HTML page without expected table
+        if '<html' in html.lower() and 'archivedpatientGrid' not in html:
+            raise SessionExpiredError("Session expired - received login page instead of results")
+
+        soup = BeautifulSoup(html, 'html.parser')
+        cases = []
+
+        rows = soup.find_all('tr', class_='caseType')
+
+        for row in rows:
+            try:
+                cells = row.find_all('td')
+                if len(cells) < 5:
+                    continue
+
+                case = {}
+
+                # Cell 1: citation text
+                citation_text = cells[1].get_text(strip=True)
+                case['citation'] = citation_text
+
+                # Parse citation into components
+                parsed = self._parse_citation(citation_text)
+                case.update(parsed)
+
+                # Cell 2: parties (split on VS, ignore <br> and <span>)
+                parties_text = cells[2].get_text(separator=' ', strip=True)
+                # Clean up extra whitespace
+                parties_text = re.sub(r'\s+', ' ', parties_text).strip()
+                case['parties_full'] = parties_text
+
+                if ' VS ' in parties_text.upper():
+                    parts = re.split(r'\s+VS\s+', parties_text, flags=re.IGNORECASE)
+                    case['petitioner'] = parts[0].strip() if len(parts) > 0 else ''
+                    case['respondent'] = parts[1].strip() if len(parts) > 1 else ''
+                else:
+                    case['petitioner'] = parties_text
+                    case['respondent'] = ''
+
+                # Cell 3: court
+                case['court'] = cells[3].get_text(strip=True)
+
+                # Cell 4: case_id from input button's casetypeid attribute
+                button = cells[4].find('input', attrs={'casetypeid': True})
+                if button:
+                    case['case_id'] = button.get('casetypeid', '')
+                else:
+                    # Skip rows without a case_id
+                    continue
+
+                cases.append(case)
+
+            except Exception as e:
+                logger.warning(f"Failed to parse index row: {e}")
+                continue
+
+        logger.info(f"Parsed {len(cases)} cases from index results")
+        return cases
+
+    def index_search(self, year: int, book: str, court: str = "") -> list:
+        """
+        Search the citation index for a specific journal + year combination
+
+        Args:
+            year: The year to search (e.g., 2024)
+            book: Journal name (e.g., 'PLD', 'PLCN')
+            court: Optional court filter
+
+        Returns:
+            List of case dicts
+        """
+        self._delay()
+
+        # Map journal name to POST value
+        post_book = self.JOURNAL_POST_VALUES.get(book, book)
+
+        data = {
+            'year': str(year),
+            'book': post_book,
+            'court': court,
+        }
+
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Origin': self.BASE_URL,
+            'Referer': self.LOGIN_URL,
+        }
+
+        try:
+            response = self.session.post(
+                self.INDEX_SEARCH_URL,
+                data=data,
+                headers=headers,
+                timeout=self.timeout
+            )
+            self._check_rate_limit(response)
+            response.raise_for_status()
+            return self._parse_index_results(response.text)
+
+        except SessionExpiredError:
+            raise  # Let caller handle re-auth
+        except requests.exceptions.Timeout:
+            logger.error(f"Index search timed out for {book} {year}")
+            return []
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Index search failed for {book} {year}: {e}")
+            return []
+
     def _clean_html_content(self, html: str) -> str:
         """
         Clean HTML content from Microsoft Word format to readable plain text
@@ -570,6 +737,7 @@ class PakistanLawScraper:
                     headers=headers,
                     timeout=self.timeout
                 )
+                self._check_rate_limit(response)
                 if response.ok:
                     details['head_notes'] = self._clean_html_content(response.text)
                 else:
@@ -587,6 +755,7 @@ class PakistanLawScraper:
                     headers=headers,
                     timeout=self.timeout
                 )
+                self._check_rate_limit(response)
                 if response.ok:
                     details['full_description'] = self._clean_html_content(response.text)
                 else:
@@ -715,6 +884,483 @@ class PakistanLawScraper:
             logger.info(f"Loaded {len(self.processed_case_ids)} processed cases from checkpoint")
             return self.processed_case_ids
         return set()
+
+    # ===== Citation Index Scrape Methods =====
+
+    def _load_progress(self, progress_file: str) -> dict:
+        """Load or create index scrape progress file"""
+        if os.path.exists(progress_file):
+            try:
+                with open(progress_file, 'r') as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, IOError) as e:
+                logger.warning(f"Failed to load progress file, creating new: {e}")
+
+        return {
+            'version': 1,
+            'started_at': datetime.now().isoformat(),
+            'last_updated': datetime.now().isoformat(),
+            'output_file': '',
+            'total_combinations': len(self.INDEX_JOURNALS) * (self.YEAR_RANGE_END - self.YEAR_RANGE_START + 1),
+            'completed_count': 0,
+            'total_cases_found': 0,
+            'journals': {}
+        }
+
+    def _save_progress(self, progress_file: str, data: dict):
+        """Atomically save progress file (write to .tmp then rename)"""
+        data['last_updated'] = datetime.now().isoformat()
+        tmp_file = progress_file + '.tmp'
+        try:
+            with open(tmp_file, 'w') as f:
+                json.dump(data, f, indent=2)
+            os.replace(tmp_file, progress_file)
+        except Exception as e:
+            logger.error(f"Failed to save progress: {e}")
+
+    def _append_cases_to_csv(self, cases: list, output_file: str):
+        """Append cases to CSV file (creates with header if new)"""
+        if not cases:
+            return
+
+        df = pd.DataFrame(cases)
+        write_header = not os.path.exists(output_file) or os.path.getsize(output_file) == 0
+        df.to_csv(output_file, mode='a', header=write_header, index=False, encoding='utf-8-sig')
+
+    def _reload_processed_ids(self, output_file: str) -> set:
+        """Load case_id column from existing CSV for deduplication"""
+        if os.path.exists(output_file) and os.path.getsize(output_file) > 0:
+            try:
+                df = pd.read_csv(output_file, usecols=['case_id'])
+                ids = set(df['case_id'].dropna().astype(str).tolist())
+                logger.info(f"Loaded {len(ids)} existing case IDs from {output_file}")
+                return ids
+            except Exception as e:
+                logger.warning(f"Failed to load existing case IDs: {e}")
+        return set()
+
+    def _try_reauth(self) -> bool:
+        """Attempt to re-authenticate using stored credentials"""
+        logger.info("Attempting re-authentication...")
+        try:
+            if self.login():
+                logger.info("Re-authentication successful")
+                return True
+        except Exception as e:
+            logger.error(f"Re-authentication failed: {e}")
+        return False
+
+    def scrape_all_index(self, output_file: str = 'all_cases_index.csv',
+                         progress_file: str = 'index_progress.json',
+                         get_details: bool = True,
+                         journals: list = None, year_start: int = None,
+                         year_end: int = None,
+                         on_progress=None, should_stop=None,
+                         on_case_scraped=None,
+                         db=None, num_workers=1) -> int:
+        """
+        Scrape all cases using citation index search for 100% coverage
+
+        Args:
+            output_file: CSV file to append results to (ignored when db is set)
+            progress_file: JSON file tracking completion state (ignored when db is set)
+            get_details: Whether to fetch head_notes and full_description
+            journals: List of journal names (None = all 16)
+            year_start: First year to scrape (None = YEAR_RANGE_START)
+            year_end: Last year to scrape (None = YEAR_RANGE_END)
+            on_progress: Callback(progress_data) called after each combo
+            should_stop: Callback() returning True to stop early
+            on_case_scraped: Callback(count) called after each case
+            db: Database module (db.py). When set, uses DB instead of CSV/JSON.
+            num_workers: Number of concurrent scraper threads (>1 requires db)
+
+        Returns:
+            Total number of new cases scraped
+        """
+        if not self.is_logged_in:
+            logger.error("Not logged in. Call login() first.")
+            return 0
+
+        journals = journals or self.INDEX_JOURNALS
+        year_start = year_start or self.YEAR_RANGE_START
+        year_end = year_end or self.YEAR_RANGE_END
+
+        # Concurrent mode: multiple workers with DB
+        if num_workers > 1 and db:
+            return self._scrape_index_concurrent(
+                journals=journals, year_start=year_start, year_end=year_end,
+                get_details=get_details, db=db, on_progress=on_progress,
+                should_stop=should_stop, on_case_scraped=on_case_scraped,
+                num_workers=num_workers
+            )
+
+        # Load progress — DB or JSON file
+        if db:
+            db.reset_in_progress()
+            progress = db.get_progress()
+            processed_ids = db.get_processed_ids()
+        else:
+            progress = self._load_progress(progress_file)
+            progress['output_file'] = output_file
+            processed_ids = self._reload_processed_ids(output_file)
+            # Reset any in_progress -> pending (crash recovery)
+            for journal_key in progress.get('journals', {}):
+                for year_key in progress['journals'][journal_key]:
+                    if progress['journals'][journal_key][year_key].get('status') == 'in_progress':
+                        progress['journals'][journal_key][year_key]['status'] = 'pending'
+
+        total_new_cases = 0
+
+        # Recalculate total_combinations based on actual scope
+        progress['total_combinations'] = len(journals) * (year_end - year_start + 1)
+
+        # Recount completed
+        completed_count = 0
+        for journal_key in progress.get('journals', {}):
+            for year_key in progress['journals'].get(journal_key, {}):
+                if progress['journals'][journal_key][year_key].get('status') == 'completed':
+                    completed_count += 1
+        progress['completed_count'] = completed_count
+
+        if not db:
+            self._save_progress(progress_file, progress)
+
+        last_request_time = time.time()
+
+        for journal in journals:
+            if should_stop and should_stop():
+                logger.info("Stop requested, halting index scrape")
+                break
+
+            if journal not in progress['journals']:
+                progress['journals'][journal] = {}
+
+            for year in range(year_start, year_end + 1):
+                if should_stop and should_stop():
+                    break
+
+                year_str = str(year)
+
+                # Skip completed combos
+                combo_status = progress['journals'].get(journal, {}).get(year_str, {})
+                if combo_status.get('status') == 'completed':
+                    continue
+
+                # Mark in_progress
+                progress['journals'][journal][year_str] = {
+                    'status': 'in_progress',
+                    'cases_found': 0
+                }
+                if db:
+                    db.update_progress(journal, year_str, 'in_progress')
+                else:
+                    self._save_progress(progress_file, progress)
+
+                # Check if we need to re-verify login (>15min since last request)
+                if time.time() - last_request_time > 900:
+                    logger.info("Checking session validity (>15min idle)...")
+                    if not self._verify_login():
+                        if not self._try_reauth():
+                            progress['journals'][journal][year_str] = {
+                                'status': 'error',
+                                'error_message': 'Session expired, re-auth failed'
+                            }
+                            if db:
+                                db.update_progress(journal, year_str, 'error', error_message='Session expired, re-auth failed')
+                            else:
+                                self._save_progress(progress_file, progress)
+                            continue
+
+                # Retry logic
+                cases = None
+                last_error = None
+                for attempt in range(3):
+                    try:
+                        cases = self.index_search(year, journal)
+                        last_request_time = time.time()
+                        break
+                    except SessionExpiredError:
+                        logger.warning(f"Session expired during {journal} {year}, re-authenticating...")
+                        if self._try_reauth():
+                            continue
+                        else:
+                            last_error = 'Session expired, re-auth failed'
+                            break
+                    except Exception as e:
+                        last_error = str(e)
+                        backoff = 10 * (attempt + 1)
+                        logger.warning(f"Attempt {attempt+1}/3 failed for {journal} {year}: {e}, retrying in {backoff}s")
+                        time.sleep(backoff)
+
+                if cases is None:
+                    progress['journals'][journal][year_str] = {
+                        'status': 'error',
+                        'error_message': last_error or 'Unknown error'
+                    }
+                    if db:
+                        db.update_progress(journal, year_str, 'error', error_message=last_error or 'Unknown error')
+                    else:
+                        self._save_progress(progress_file, progress)
+                    if on_progress:
+                        on_progress(progress)
+                    continue
+
+                # Process cases
+                new_cases = []
+                stopped_mid_combo = False
+                for case in cases:
+                    # Check stop before expensive detail fetch
+                    if should_stop and should_stop():
+                        stopped_mid_combo = True
+                        break
+
+                    case_id = case.get('case_id', '')
+                    if not case_id or case_id in processed_ids:
+                        continue
+
+                    processed_ids.add(case_id)
+
+                    # Fetch details if requested
+                    if get_details:
+                        try:
+                            details = self.get_case_details(case_id)
+                            case.update(details)
+                            last_request_time = time.time()
+                        except Exception as e:
+                            logger.warning(f"Failed to get details for {case_id}: {e}")
+
+                    case['scraped_at'] = datetime.now().isoformat()
+                    case['source'] = 'index_search'
+                    case['search_journal'] = journal
+                    case['search_year'] = year
+
+                    # Save immediately to DB (zero data loss on crash)
+                    if db:
+                        db.insert_case(case)
+
+                    new_cases.append(case)
+                    total_new_cases += 1
+
+                    if on_case_scraped:
+                        on_case_scraped(total_new_cases)
+
+                # Save cases to CSV (DB cases already saved per-case above)
+                if not db:
+                    self._append_cases_to_csv(new_cases, output_file)
+
+                if stopped_mid_combo:
+                    # Mark as pending so it resumes correctly next time
+                    progress['journals'][journal][year_str] = {
+                        'status': 'pending',
+                        'cases_found': 0
+                    }
+                    if db:
+                        db.update_progress(journal, year_str, 'pending')
+                    else:
+                        self._save_progress(progress_file, progress)
+                    logger.info(f"Stop requested mid-combo {journal} {year}, wrote {len(new_cases)} partial cases")
+                    break
+
+                # Mark completed
+                progress['journals'][journal][year_str] = {
+                    'status': 'completed',
+                    'cases_found': len(cases)
+                }
+                progress['completed_count'] = completed_count + 1
+                completed_count += 1
+                progress['total_cases_found'] = progress.get('total_cases_found', 0) + len(cases)
+                if db:
+                    db.update_progress(journal, year_str, 'completed', cases_found=len(cases))
+                else:
+                    self._save_progress(progress_file, progress)
+
+                logger.info(f"[{completed_count}/{progress['total_combinations']}] {journal} {year}: {len(cases)} found, {len(new_cases)} new")
+
+                if on_progress:
+                    on_progress(progress)
+
+        logger.info(f"Index scrape complete: {total_new_cases} new cases scraped")
+        return total_new_cases
+
+    def _scrape_index_concurrent(self, journals, year_start, year_end, get_details,
+                                  db, on_progress, should_stop, on_case_scraped,
+                                  num_workers):
+        """Run index scrape with multiple concurrent workers (requires DB)"""
+        from concurrent.futures import ThreadPoolExecutor
+
+        # Reset in_progress from any previous crash
+        db.reset_in_progress()
+
+        # Load existing progress and build combo queue
+        progress = db.get_progress()
+        combo_queue = Queue()
+        completed_count = 0
+        total_combos = len(journals) * (year_end - year_start + 1)
+
+        for journal in journals:
+            for year in range(year_start, year_end + 1):
+                year_str = str(year)
+                combo_status = progress['journals'].get(journal, {}).get(year_str, {})
+                if combo_status.get('status') == 'completed':
+                    completed_count += 1
+                else:
+                    combo_queue.put((journal, year_str))
+
+        pending = combo_queue.qsize()
+        logger.info(f"Concurrent scrape: {pending} combos pending, {completed_count} already completed")
+
+        if pending == 0:
+            logger.info("All combos already completed")
+            return 0
+
+        # Load processed IDs (thread-safe with lock)
+        processed_ids = db.get_processed_ids()
+        ids_lock = threading.Lock()
+
+        # Shared counters
+        counters_lock = threading.Lock()
+        counters = {'total_new': 0, 'completed': completed_count}
+
+        # Create worker scrapers — reuse self as worker 0
+        workers = [self]
+        for i in range(1, num_workers):
+            w = PakistanLawScraper(
+                username=self.username,
+                password=self.password,
+                delay_range=self.delay_range,
+                timeout=self.timeout
+            )
+            if w.login():
+                workers.append(w)
+                logger.info(f"Worker {i+1}/{num_workers} logged in")
+            else:
+                logger.error(f"Worker {i+1}/{num_workers} failed to login, skipping")
+
+        logger.info(f"Running with {len(workers)} concurrent workers")
+
+        def worker_fn(scraper, worker_id):
+            last_request_time = time.time()
+
+            while True:
+                if should_stop and should_stop():
+                    break
+
+                try:
+                    journal, year_str = combo_queue.get_nowait()
+                except Empty:
+                    break
+
+                year = int(year_str)
+
+                # Mark in_progress
+                db.update_progress(journal, year_str, 'in_progress')
+
+                # Check session validity (>15min idle)
+                if time.time() - last_request_time > 900:
+                    logger.info(f"W{worker_id}: Checking session validity...")
+                    if not scraper._verify_login():
+                        if not scraper._try_reauth():
+                            db.update_progress(journal, year_str, 'error',
+                                             error_message='Session expired, re-auth failed')
+                            continue
+
+                # Retry index_search
+                cases = None
+                last_error = None
+                for attempt in range(3):
+                    try:
+                        cases = scraper.index_search(year, journal)
+                        last_request_time = time.time()
+                        break
+                    except SessionExpiredError:
+                        logger.warning(f"W{worker_id}: Session expired on {journal} {year_str}, re-auth...")
+                        if scraper._try_reauth():
+                            continue
+                        else:
+                            last_error = 'Session expired, re-auth failed'
+                            break
+                    except Exception as e:
+                        last_error = str(e)
+                        backoff = 10 * (attempt + 1)
+                        logger.warning(f"W{worker_id}: Attempt {attempt+1}/3 for {journal} {year_str}: {e}, retry in {backoff}s")
+                        time.sleep(backoff)
+
+                if cases is None:
+                    db.update_progress(journal, year_str, 'error',
+                                     error_message=last_error or 'Unknown error')
+                    continue
+
+                # Process cases
+                new_count = 0
+                stopped = False
+
+                for case in cases:
+                    if should_stop and should_stop():
+                        stopped = True
+                        break
+
+                    case_id = case.get('case_id', '')
+                    if not case_id:
+                        continue
+
+                    with ids_lock:
+                        if case_id in processed_ids:
+                            continue
+                        processed_ids.add(case_id)
+
+                    if get_details:
+                        try:
+                            details = scraper.get_case_details(case_id)
+                            case.update(details)
+                            last_request_time = time.time()
+                        except Exception as e:
+                            logger.warning(f"W{worker_id}: Details failed for {case_id}: {e}")
+
+                    case['scraped_at'] = datetime.now().isoformat()
+                    case['source'] = 'index_search'
+                    case['search_journal'] = journal
+                    case['search_year'] = year
+
+                    # Save immediately to DB
+                    db.insert_case(case)
+                    new_count += 1
+
+                    with counters_lock:
+                        counters['total_new'] += 1
+                        current_total = counters['total_new']
+
+                    if on_case_scraped:
+                        on_case_scraped(current_total)
+
+                if stopped:
+                    db.update_progress(journal, year_str, 'pending')
+                    logger.info(f"W{worker_id}: Stopped mid-combo {journal} {year_str}, saved {new_count} cases")
+                    break
+
+                # Mark completed
+                db.update_progress(journal, year_str, 'completed', cases_found=len(cases))
+
+                with counters_lock:
+                    counters['completed'] += 1
+                    comp = counters['completed']
+
+                logger.info(f"W{worker_id}: [{comp}/{total_combos}] {journal} {year_str}: {len(cases)} found, {new_count} new")
+
+                if on_progress:
+                    on_progress({
+                        'completed_count': comp,
+                        'total_combinations': total_combos,
+                        'journals': {journal: {year_str: {'status': 'in_progress'}}}
+                    })
+
+        # Launch workers
+        with ThreadPoolExecutor(max_workers=len(workers)) as executor:
+            futures = [executor.submit(worker_fn, w, i) for i, w in enumerate(workers)]
+            for f in futures:
+                f.result()
+
+        logger.info(f"Concurrent scrape complete: {counters['total_new']} new cases")
+        return counters['total_new']
 
 
 def main():

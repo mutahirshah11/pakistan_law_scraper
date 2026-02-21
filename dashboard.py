@@ -14,9 +14,19 @@ import threading
 import time
 from datetime import datetime
 from flask import Flask, render_template_string, jsonify, request, send_file
-from scraper import PakistanLawScraper
+from scraper import PakistanLawScraper, SessionExpiredError
 
 app = Flask(__name__)
+
+# Database layer — only active when DATABASE_URL is set
+_db = None
+try:
+    import db as database
+    if os.environ.get("DATABASE_URL"):
+        database.init_tables()
+        _db = database
+except ImportError:
+    pass
 
 # Config file for persistent storage
 CONFIG_FILE = os.path.join(os.path.dirname(__file__), 'scraper_config.json')
@@ -34,6 +44,15 @@ class ScraperState:
     errors = []
     start_time = None
     last_case_id = ""
+
+    # Index mode state
+    mode = 'keyword'  # 'keyword' or 'index'
+    current_journal = ""
+    current_year = ""
+    combos_completed = 0
+    combos_total = 0
+    progress_file = 'index_progress.json'
+    num_workers = 3
 
     # Settings
     keywords = ['contract']
@@ -70,7 +89,7 @@ def setup_scraper():
     state.scraper = PakistanLawScraper(
         username=config.get('username', os.environ.get('PLS_USERNAME', '')),
         password=config.get('password', os.environ.get('PLS_PASSWORD', '')),
-        delay_range=(1.5, 3.0)
+        delay_range=(0.2, 0.5)
     )
 
     # Try saved cookies
@@ -152,6 +171,42 @@ def scrape_worker():
             import pandas as pd
             df = pd.DataFrame(all_cases)
             df.to_csv(state.output_file, index=False, encoding='utf-8-sig')
+
+    except Exception as e:
+        state.errors.append(f"Fatal: {str(e)}")
+    finally:
+        state.is_running = False
+
+
+def index_scrape_worker():
+    """Background worker for index-based scraping"""
+    try:
+        def on_progress(progress_data):
+            state.combos_completed = progress_data.get('completed_count', 0)
+            state.combos_total = progress_data.get('total_combinations', 0)
+            # Extract current journal/year from in_progress entries
+            for journal in progress_data.get('journals', {}):
+                for year_str, info in progress_data['journals'][journal].items():
+                    if info.get('status') == 'in_progress':
+                        state.current_journal = journal
+                        state.current_year = year_str
+
+        def on_case_scraped(count):
+            state.cases_scraped = count
+
+        def should_stop():
+            return state.should_stop
+
+        state.scraper.scrape_all_index(
+            output_file=state.output_file,
+            progress_file=state.progress_file,
+            get_details=state.get_details,
+            on_progress=on_progress,
+            should_stop=should_stop,
+            on_case_scraped=on_case_scraped,
+            db=_db,
+            num_workers=state.num_workers
+        )
 
     except Exception as e:
         state.errors.append(f"Fatal: {str(e)}")
@@ -432,6 +487,115 @@ DASHBOARD_HTML = '''
             font-size: 14px;
             margin-top: 8px;
         }
+
+        /* Mode toggle */
+        .mode-toggle {
+            display: flex;
+            gap: 0;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 0;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #1e293b;
+            color: #94a3b8;
+            transition: all 0.2s;
+        }
+
+        .mode-btn.active {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .mode-btn:hover:not(.active) {
+            background: #334155;
+        }
+
+        /* Progress matrix */
+        .matrix-container {
+            overflow-x: auto;
+            margin-top: 12px;
+        }
+
+        .matrix-table {
+            border-collapse: collapse;
+            font-size: 10px;
+            width: 100%;
+        }
+
+        .matrix-table th {
+            padding: 3px 2px;
+            color: #94a3b8;
+            font-weight: normal;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            background: #1e293b;
+        }
+
+        .matrix-table td {
+            padding: 0;
+            text-align: center;
+        }
+
+        .matrix-table .journal-label {
+            text-align: right;
+            padding-right: 6px;
+            color: #94a3b8;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .matrix-cell {
+            width: 10px;
+            height: 10px;
+            margin: 1px auto;
+            border-radius: 2px;
+        }
+
+        .matrix-cell.pending { background: #334155; }
+        .matrix-cell.in_progress { background: #eab308; box-shadow: 0 0 4px #eab308; }
+        .matrix-cell.completed { background: #22c55e; }
+        .matrix-cell.error { background: #ef4444; }
+
+        .matrix-legend {
+            display: flex;
+            gap: 16px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .matrix-legend span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .combo-counter {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f8fafc;
+            margin-bottom: 8px;
+        }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -440,6 +604,12 @@ DASHBOARD_HTML = '''
             <h1>Pakistan Law Scraper</h1>
             <p class="subtitle">Web Dashboard</p>
         </header>
+
+        <!-- Mode Toggle -->
+        <div class="mode-toggle">
+            <button class="mode-btn active" id="modeKeyword" onclick="setMode('keyword')">Keyword Search</button>
+            <button class="mode-btn" id="modeIndex" onclick="setMode('index')">Citation Index (100% Coverage)</button>
+        </div>
 
         <div class="grid">
             <!-- Status Card -->
@@ -456,15 +626,18 @@ DASHBOARD_HTML = '''
             <div class="card">
                 <h2>Progress</h2>
                 <div class="stat-value" id="casesCount">0</div>
-                <div class="stat-label">cases scraped</div>
+                <div class="stat-label" id="casesLabel">cases scraped</div>
+                <div id="comboProgress" class="hidden">
+                    <div class="combo-counter" id="comboCounter">0 / 0 combinations</div>
+                </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressBar" style="width: 0%"></div>
                 </div>
             </div>
 
-            <!-- Settings Card -->
-            <div class="card">
-                <h2>Settings</h2>
+            <!-- Keyword Settings Card -->
+            <div class="card" id="keywordSettings">
+                <h2>Keyword Settings</h2>
                 <div class="form-group">
                     <label>Keywords (comma-separated)</label>
                     <input type="text" id="keywords" value="contract" placeholder="contract, civil, criminal">
@@ -488,6 +661,48 @@ DASHBOARD_HTML = '''
                 <div class="form-group">
                     <label>Output File</label>
                     <input type="text" id="outputFile" value="scraped_cases.csv">
+                </div>
+            </div>
+
+            <!-- Index Settings Card -->
+            <div class="card hidden" id="indexSettings">
+                <h2>Index Settings</h2>
+                <div class="form-group">
+                    <label>Output File</label>
+                    <input type="text" id="indexOutputFile" value="all_cases_index.csv">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="indexGetDetails" checked style="width: auto; margin-right: 8px;">
+                        Fetch full details (head notes + description) - slower but complete
+                    </label>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Concurrent Workers</label>
+                        <input type="number" id="indexWorkers" value="3" min="1" max="10">
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: end;">
+                        <p style="font-size: 12px; color: #64748b;">3 workers = ~2-3 days for 350K cases. More workers = faster but higher ban risk.</p>
+                    </div>
+                </div>
+                <p style="font-size: 12px; color: #64748b; margin-top: 8px;">
+                    Iterates all 16 journals x 80 years (1947-2026) = 1,280 combinations.
+                    Progress is saved continuously - stop and resume anytime.
+                </p>
+            </div>
+
+            <!-- Progress Matrix (Index mode only) -->
+            <div class="card card-full hidden" id="matrixCard">
+                <h2>Coverage Matrix</h2>
+                <div class="matrix-container" id="matrixContainer">
+                    <p style="color: #64748b;">Start an index scrape to see the coverage matrix.</p>
+                </div>
+                <div class="matrix-legend">
+                    <span><span class="legend-dot" style="background:#334155;"></span> Pending</span>
+                    <span><span class="legend-dot" style="background:#eab308;"></span> In Progress</span>
+                    <span><span class="legend-dot" style="background:#22c55e;"></span> Completed</span>
+                    <span><span class="legend-dot" style="background:#ef4444;"></span> Error</span>
                 </div>
             </div>
 
@@ -530,11 +745,36 @@ DASHBOARD_HTML = '''
     <div class="toast" id="toast"></div>
 
     <script>
+        let currentMode = 'keyword';
+        let matrixInterval = null;
+
         function showToast(message, isError = false) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.className = 'toast show' + (isError ? ' error' : '');
             setTimeout(() => toast.className = 'toast', 3000);
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.getElementById('modeKeyword').className = 'mode-btn' + (mode === 'keyword' ? ' active' : '');
+            document.getElementById('modeIndex').className = 'mode-btn' + (mode === 'index' ? ' active' : '');
+            document.getElementById('keywordSettings').className = mode === 'keyword' ? 'card' : 'card hidden';
+            document.getElementById('indexSettings').className = mode === 'index' ? 'card' : 'card hidden';
+            document.getElementById('matrixCard').className = mode === 'index' ? 'card card-full' : 'card card-full hidden';
+            document.getElementById('comboProgress').className = mode === 'index' ? '' : 'hidden';
+
+            if (mode === 'index') {
+                fetchMatrix();
+                if (!matrixInterval) {
+                    matrixInterval = setInterval(fetchMatrix, 5000);
+                }
+            } else {
+                if (matrixInterval) {
+                    clearInterval(matrixInterval);
+                    matrixInterval = null;
+                }
+            }
         }
 
         function updateUI(data) {
@@ -546,7 +786,11 @@ DASHBOARD_HTML = '''
             if (data.running) {
                 statusDot.className = 'status-dot running';
                 statusText.textContent = 'Running';
-                currentTask.textContent = 'Scraping: ' + data.keyword + ' | Last: ' + data.last_case;
+                if (data.mode === 'index') {
+                    currentTask.textContent = 'Index: ' + data.current_journal + ' ' + data.current_year;
+                } else {
+                    currentTask.textContent = 'Scraping: ' + data.keyword + ' | Last: ' + data.last_case;
+                }
             } else {
                 statusDot.className = 'status-dot stopped';
                 statusText.textContent = 'Stopped';
@@ -556,9 +800,17 @@ DASHBOARD_HTML = '''
             // Cases count
             document.getElementById('casesCount').textContent = data.cases;
 
-            // Progress bar
-            const progress = data.total > 0 ? Math.min((data.cases / data.total) * 100, 100) : 0;
-            document.getElementById('progressBar').style.width = progress + '%';
+            // Index combo progress
+            if (data.mode === 'index') {
+                document.getElementById('comboCounter').textContent =
+                    data.combos_completed + ' / ' + data.combos_total + ' combinations';
+                const progress = data.combos_total > 0 ?
+                    Math.min((data.combos_completed / data.combos_total) * 100, 100) : 0;
+                document.getElementById('progressBar').style.width = progress + '%';
+            } else {
+                const progress = data.total > 0 ? Math.min((data.cases / data.total) * 100, 100) : 0;
+                document.getElementById('progressBar').style.width = progress + '%';
+            }
 
             // Buttons
             document.getElementById('btnStart').disabled = data.running;
@@ -590,6 +842,11 @@ DASHBOARD_HTML = '''
             } else {
                 errorLog.innerHTML = '<div class="no-errors">No errors</div>';
             }
+
+            // Auto-detect mode from running state
+            if (data.running && data.mode === 'index' && currentMode !== 'index') {
+                setMode('index');
+            }
         }
 
         async function fetchStatus() {
@@ -602,13 +859,77 @@ DASHBOARD_HTML = '''
             }
         }
 
+        async function fetchMatrix() {
+            try {
+                const response = await fetch('/api/index-progress');
+                const data = await response.json();
+                renderMatrix(data);
+            } catch (e) {
+                console.error('Matrix fetch failed:', e);
+            }
+        }
+
+        function renderMatrix(progress) {
+            const container = document.getElementById('matrixContainer');
+            const journals = ['PLD','SCMR','CLC','CLD','YLR','PCrLJ','PLC','PLC(CS)','PTD','MLD','GBLR','CLCN','YLRN','PCRLJN','PLCN','PLC(CS)N'];
+            const startYear = 1947;
+            const endYear = 2026;
+
+            if (!progress.journals || Object.keys(progress.journals).length === 0) {
+                container.innerHTML = '<p style="color: #64748b;">No progress data yet. Start an index scrape to see coverage.</p>';
+                return;
+            }
+
+            // Build decade headers
+            let decades = [];
+            for (let y = startYear; y <= endYear; y += 10) {
+                decades.push(y);
+            }
+
+            let html = '<table class="matrix-table"><thead><tr><th></th>';
+            for (let d of decades) {
+                let span = Math.min(10, endYear - d + 1);
+                html += '<th colspan="' + span + '">' + d + 's</th>';
+            }
+            html += '</tr></thead><tbody>';
+
+            for (let journal of journals) {
+                html += '<tr><td class="journal-label">' + journal + '</td>';
+                for (let y = startYear; y <= endYear; y++) {
+                    let status = 'pending';
+                    if (progress.journals[journal] && progress.journals[journal][y]) {
+                        status = progress.journals[journal][y].status || 'pending';
+                    }
+                    let title = journal + ' ' + y + ': ' + status;
+                    if (progress.journals[journal] && progress.journals[journal][y] && progress.journals[journal][y].cases_found !== undefined) {
+                        title += ' (' + progress.journals[journal][y].cases_found + ' cases)';
+                    }
+                    html += '<td title="' + title + '"><div class="matrix-cell ' + status + '"></div></td>';
+                }
+                html += '</tr>';
+            }
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
         async function startScraper() {
-            const settings = {
-                keywords: document.getElementById('keywords').value,
-                year: document.getElementById('year').value,
-                max_cases: parseInt(document.getElementById('maxCases').value),
-                output_file: document.getElementById('outputFile').value
-            };
+            let settings;
+            if (currentMode === 'index') {
+                settings = {
+                    mode: 'index',
+                    output_file: document.getElementById('indexOutputFile').value,
+                    get_details: document.getElementById('indexGetDetails').checked,
+                    num_workers: parseInt(document.getElementById('indexWorkers').value) || 3
+                };
+            } else {
+                settings = {
+                    mode: 'keyword',
+                    keywords: document.getElementById('keywords').value,
+                    year: document.getElementById('year').value,
+                    max_cases: parseInt(document.getElementById('maxCases').value),
+                    output_file: document.getElementById('outputFile').value
+                };
+            }
 
             try {
                 const response = await fetch('/api/start', {
@@ -715,19 +1036,26 @@ def get_status():
     file_exists = os.path.exists(state.output_file)
     file_size = get_file_size(state.output_file) if file_exists else ""
 
-    return jsonify({
+    result = {
         'running': state.is_running,
         'cases': state.cases_scraped,
         'total': state.total_cases,
         'keyword': state.current_keyword,
         'last_case': state.last_case_id,
-        'errors': state.errors[-10:],  # Last 10 errors
+        'errors': state.errors[-10:],
         'authenticated': authenticated,
         'auth_status': auth_status,
         'file_exists': file_exists,
         'file_name': state.output_file,
-        'file_size': file_size
-    })
+        'file_size': file_size,
+        'mode': state.mode,
+        'current_journal': state.current_journal,
+        'current_year': state.current_year,
+        'combos_completed': state.combos_completed,
+        'combos_total': state.combos_total,
+        'num_workers': state.num_workers,
+    }
+    return jsonify(result)
 
 
 @app.route('/api/start', methods=['POST'])
@@ -747,10 +1075,9 @@ def start_scraper():
 
     # Get settings from request
     data = request.json or {}
-    state.keywords = [k.strip() for k in data.get('keywords', 'contract').split(',')]
-    state.year = data.get('year', '5')
-    state.max_cases = data.get('max_cases', 50)
+    state.mode = data.get('mode', 'keyword')
     state.output_file = data.get('output_file', 'scraped_cases.csv')
+    state.get_details = data.get('get_details', True)
 
     # Reset state
     state.should_stop = False
@@ -758,13 +1085,28 @@ def start_scraper():
     state.errors = []
     state.start_time = datetime.now()
     state.is_running = True
-    state.scraper.processed_case_ids.clear()
 
-    # Start worker thread
-    state.thread = threading.Thread(target=scrape_worker, daemon=True)
-    state.thread.start()
-
-    return jsonify({'success': True, 'message': 'Scraper started'})
+    if state.mode == 'index':
+        # Index mode
+        state.combos_completed = 0
+        state.combos_total = len(state.scraper.INDEX_JOURNALS) * (state.scraper.YEAR_RANGE_END - state.scraper.YEAR_RANGE_START + 1)
+        state.current_journal = ""
+        state.current_year = ""
+        state.output_file = data.get('output_file', 'all_cases_index.csv')
+        state.progress_file = 'index_progress.json'
+        state.num_workers = data.get('num_workers', 3)
+        state.thread = threading.Thread(target=index_scrape_worker, daemon=True)
+        state.thread.start()
+        return jsonify({'success': True, 'message': f'Index scraper started with {state.num_workers} workers'})
+    else:
+        # Keyword mode
+        state.keywords = [k.strip() for k in data.get('keywords', 'contract').split(',')]
+        state.year = data.get('year', '5')
+        state.max_cases = data.get('max_cases', 50)
+        state.scraper.processed_case_ids.clear()
+        state.thread = threading.Thread(target=scrape_worker, daemon=True)
+        state.thread.start()
+        return jsonify({'success': True, 'message': 'Scraper started'})
 
 
 @app.route('/api/stop', methods=['POST'])
@@ -774,6 +1116,26 @@ def stop_scraper():
 
     state.should_stop = True
     return jsonify({'success': True, 'message': 'Stopping...'})
+
+
+@app.route('/api/index-progress')
+def get_index_progress():
+    """Return full index progress JSON for matrix UI"""
+    # Prefer DB when available
+    if _db:
+        try:
+            return jsonify(_db.get_progress())
+        except Exception:
+            pass
+
+    progress_file = state.progress_file
+    if os.path.exists(progress_file):
+        try:
+            with open(progress_file, 'r') as f:
+                return jsonify(json.load(f))
+        except Exception:
+            pass
+    return jsonify({'journals': {}, 'completed_count': 0, 'total_combinations': 0})
 
 
 @app.route('/api/download')
@@ -837,4 +1199,4 @@ if __name__ == '__main__':
     # Initialize scraper on startup
     setup_scraper()
 
-    app.run(host='0.0.0.0', port=5001, debug=False)
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5001)), debug=False)

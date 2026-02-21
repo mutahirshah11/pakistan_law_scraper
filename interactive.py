@@ -17,6 +17,16 @@ from datetime import datetime
 from scraper import PakistanLawScraper
 import logging
 
+# Database layer — only active when DATABASE_URL is set
+_db = None
+try:
+    import db as database
+    if os.environ.get("DATABASE_URL"):
+        database.init_tables()
+        _db = database
+except ImportError:
+    pass
+
 # Colors for terminal
 class Colors:
     HEADER = '\033[95m'
@@ -67,12 +77,20 @@ class ScraperController:
         self.output_file = 'scraped_cases.csv'
         self.get_details = True
 
+        # Index mode state
+        self.index_mode = False
+        self.current_journal = ""
+        self.current_year = ""
+        self.combos_completed = 0
+        self.combos_total = 0
+        self.num_workers = 3
+
     def setup_scraper(self) -> bool:
         """Initialize and authenticate the scraper"""
         self.scraper = PakistanLawScraper(
             username=self.username,
             password=self.password,
-            delay_range=(1.5, 3.0)
+            delay_range=(0.2, 0.5)
         )
 
         # Try cookies first
@@ -182,6 +200,39 @@ class ScraperController:
         finally:
             self.is_running = False
 
+    def _index_scrape_worker(self):
+        """Worker thread for index-based scraping"""
+        try:
+            def on_progress(progress_data):
+                self.combos_completed = progress_data.get('completed_count', 0)
+                self.combos_total = progress_data.get('total_combinations', 0)
+                for journal in progress_data.get('journals', {}):
+                    for year_str, info in progress_data['journals'][journal].items():
+                        if info.get('status') == 'in_progress':
+                            self.current_journal = journal
+                            self.current_year = year_str
+
+            def on_case_scraped(count):
+                self.cases_scraped = count
+
+            def should_stop():
+                return self.should_stop
+
+            self.scraper.scrape_all_index(
+                output_file=self.output_file,
+                progress_file='index_progress.json',
+                get_details=self.get_details,
+                on_progress=on_progress,
+                should_stop=should_stop,
+                on_case_scraped=on_case_scraped,
+                db=_db,
+                num_workers=self.num_workers
+            )
+        except Exception as e:
+            self.errors.append(f"Index scrape error: {str(e)}")
+        finally:
+            self.is_running = False
+
     def start(self):
         """Start scraping in background thread"""
         if self.is_running:
@@ -194,9 +245,17 @@ class ScraperController:
         self.start_time = datetime.now()
         self.is_running = True
 
-        self.thread = threading.Thread(target=self._scrape_worker, daemon=True)
+        if self.index_mode:
+            self.combos_completed = 0
+            self.combos_total = 0
+            self.current_journal = ""
+            self.current_year = ""
+            self.thread = threading.Thread(target=self._index_scrape_worker, daemon=True)
+        else:
+            self.thread = threading.Thread(target=self._scrape_worker, daemon=True)
         self.thread.start()
-        print(f"{Colors.GREEN}✓ Scraper started{Colors.END}")
+        mode_label = "Index scraper" if self.index_mode else "Scraper"
+        print(f"{Colors.GREEN}✓ {mode_label} started{Colors.END}")
 
     def stop(self):
         """Stop the scraper"""
@@ -220,13 +279,19 @@ class ScraperController:
             delta = datetime.now() - self.start_time
             elapsed = str(delta).split('.')[0]
 
-        return {
+        result = {
             'running': self.is_running,
             'cases': self.cases_scraped,
             'keyword': self.current_keyword,
             'elapsed': elapsed,
-            'errors': len(self.errors)
+            'errors': len(self.errors),
+            'index_mode': self.index_mode,
+            'current_journal': self.current_journal,
+            'current_year': self.current_year,
+            'combos_completed': self.combos_completed,
+            'combos_total': self.combos_total,
         }
+        return result
 
 
 def show_menu(controller: ScraperController):
@@ -235,12 +300,18 @@ def show_menu(controller: ScraperController):
 
     status_text = f"{Colors.GREEN}RUNNING{Colors.END}" if status['running'] else f"{Colors.YELLOW}STOPPED{Colors.END}"
 
+    mode_text = f"{Colors.CYAN}INDEX MODE{Colors.END}" if status.get('index_mode') else "KEYWORD MODE"
+
     print(f"""
-{Colors.BOLD}STATUS:{Colors.END} {status_text}
+{Colors.BOLD}STATUS:{Colors.END} {status_text}  |  {mode_text}
 {Colors.BOLD}Cases scraped:{Colors.END} {status['cases']}""")
 
     if status['running']:
-        print(f"{Colors.BOLD}Current keyword:{Colors.END} {status['keyword']}")
+        if status.get('index_mode'):
+            print(f"{Colors.BOLD}Current:{Colors.END} {status['current_journal']} {status['current_year']}")
+            print(f"{Colors.BOLD}Combos:{Colors.END} {status['combos_completed']} / {status['combos_total']}")
+        else:
+            print(f"{Colors.BOLD}Current keyword:{Colors.END} {status['keyword']}")
         print(f"{Colors.BOLD}Elapsed:{Colors.END} {status['elapsed']}")
 
     if status['errors']:
@@ -254,6 +325,7 @@ def show_menu(controller: ScraperController):
   {Colors.BOLD}4{Colors.END}. Configure settings
   {Colors.BOLD}5{Colors.END}. Set cookies
   {Colors.BOLD}6{Colors.END}. Refresh status
+  {Colors.BOLD}7{Colors.END}. Citation Index Scrape (100% coverage)
   {Colors.BOLD}q{Colors.END}. Quit
 {Colors.CYAN}─────────────────────────────────────{Colors.END}
 """)
@@ -369,6 +441,39 @@ def main():
 
         elif choice == '6':
             continue  # Just refresh
+
+        elif choice == '7':
+            # Configure and start index scrape
+            print(f"\n{Colors.CYAN}═══ CITATION INDEX SCRAPE ═══{Colors.END}")
+            print("This mode iterates 16 journals x 80 years = 1,280 combinations")
+            print("for 100% coverage. Progress is saved - stop and resume anytime.\n")
+
+            out = input(f"Output file [{controller.output_file}]: ").strip()
+            if out:
+                controller.output_file = out
+            else:
+                controller.output_file = 'all_cases_index.csv'
+
+            det = input("Fetch full details? (y/n) [y]: ").strip().lower()
+            controller.get_details = det != 'n'
+
+            workers_input = input(f"Concurrent workers (1-10) [3]: ").strip()
+            if workers_input:
+                try:
+                    controller.num_workers = max(1, min(10, int(workers_input)))
+                except ValueError:
+                    controller.num_workers = 3
+
+            controller.index_mode = True
+
+            confirm = input(f"\n{Colors.YELLOW}Start index scrape with {controller.num_workers} workers? (y/n): {Colors.END}").strip().lower()
+            if confirm == 'y':
+                controller.start()
+            else:
+                controller.index_mode = False
+                print("Cancelled.")
+
+            input(f"\n{Colors.CYAN}Press Enter to continue...{Colors.END}")
 
         elif choice == 'q':
             if controller.is_running:
