@@ -473,6 +473,23 @@ DASHBOARD_HTML = '''
             background: #9333ea;
         }
 
+        .btn-reset {
+            background: #991b1b;
+            color: #fca5a5;
+            border: 1px solid #dc2626;
+        }
+
+        .btn-reset:hover {
+            background: #b91c1c;
+        }
+
+        .btn-reset.btn-disabled {
+            background: #334155;
+            color: #64748b;
+            border-color: #334155;
+            cursor: not-allowed;
+        }
+
         .toast {
             position: fixed;
             bottom: 20px;
@@ -750,6 +767,7 @@ DASHBOARD_HTML = '''
                     <button class="btn-start" id="btnStart" onclick="startScraper()">Start Scraper</button>
                     <button class="btn-stop btn-disabled" id="btnStop" onclick="stopScraper()" disabled>Stop Scraper</button>
                     <button class="btn-download btn-disabled" id="btnDownload" onclick="downloadCSV()" disabled>Download CSV</button>
+                    <button class="btn-reset" id="btnReset" onclick="resetProgress()">Reset All Progress</button>
                 </div>
                 <div id="fileInfo" style="margin-top: 12px; font-size: 13px; color: #64748b;"></div>
             </div>
@@ -839,6 +857,8 @@ DASHBOARD_HTML = '''
             document.getElementById('btnStart').className = data.running ? 'btn-start btn-disabled' : 'btn-start';
             document.getElementById('btnStop').disabled = !data.running;
             document.getElementById('btnStop').className = data.running ? 'btn-stop' : 'btn-stop btn-disabled';
+            document.getElementById('btnReset').disabled = data.running;
+            document.getElementById('btnReset').className = data.running ? 'btn-reset btn-disabled' : 'btn-reset';
 
             // Auth status
             document.getElementById('authStatus').textContent = data.auth_status;
@@ -1021,6 +1041,23 @@ DASHBOARD_HTML = '''
             window.location.href = '/api/download';
         }
 
+        async function resetProgress() {
+            if (!confirm('This will delete ALL scraped data and progress. Are you sure?')) {
+                return;
+            }
+            try {
+                const response = await fetch('/api/reset', {method: 'POST'});
+                const data = await response.json();
+                showToast(data.message, !data.success);
+                if (data.success) {
+                    fetchStatus();
+                    fetchMatrix();
+                }
+            } catch (e) {
+                showToast('Failed to reset progress', true);
+            }
+        }
+
         async function loadSavedCookies() {
             try {
                 const response = await fetch('/api/cookies');
@@ -1175,6 +1212,51 @@ def stop_scraper():
 
     state.should_stop = True
     return jsonify({'success': True, 'message': 'Stopping...'})
+
+
+@app.route('/api/reset', methods=['POST'])
+def reset_progress():
+    """Full reset: delete all progress, cases, and start fresh."""
+    if state.is_running:
+        return jsonify({'success': False, 'message': 'Cannot reset while scraper is running. Stop it first.'})
+
+    errors = []
+
+    # 1. Reset database tables
+    if _db:
+        try:
+            _db.reset_all()
+        except Exception as e:
+            errors.append(f"DB reset failed: {e}")
+
+    # 2. Delete index_progress.json
+    progress_file = getattr(state, 'progress_file', 'index_progress.json')
+    if os.path.exists(progress_file):
+        try:
+            os.remove(progress_file)
+        except Exception as e:
+            errors.append(f"Failed to delete {progress_file}: {e}")
+
+    # 3. Reset in-memory ScraperState
+    state.cases_scraped = 0
+    state.total_cases = 0
+    state.combos_completed = 0
+    state.combos_total = 0
+    state.current_journal = ""
+    state.current_year = ""
+    state.current_keyword = ""
+    state.last_case_id = ""
+    state.errors = []
+    state.start_time = None
+
+    # 4. Clear scraper's processed_case_ids
+    if state.scraper and hasattr(state.scraper, 'processed_case_ids'):
+        state.scraper.processed_case_ids.clear()
+
+    if errors:
+        return jsonify({'success': False, 'message': 'Partial reset. Errors: ' + '; '.join(errors)})
+
+    return jsonify({'success': True, 'message': 'All progress reset. Ready for a fresh scrape.'})
 
 
 @app.route('/api/index-progress')

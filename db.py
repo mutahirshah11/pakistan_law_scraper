@@ -240,6 +240,19 @@ def get_case_count():
         conn.close()
 
 
+def reset_all():
+    """Full reset: delete all rows from scrape_progress and cases tables."""
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("DELETE FROM scrape_progress")
+            cur.execute("DELETE FROM cases")
+        conn.commit()
+        logger.info("Full reset: deleted all rows from scrape_progress and cases")
+    finally:
+        conn.close()
+
+
 def reset_in_progress():
     """Crash recovery: set all in_progress rows back to pending."""
     conn = get_connection()
