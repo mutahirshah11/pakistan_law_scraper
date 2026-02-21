@@ -16,6 +16,12 @@ from datetime import datetime
 from flask import Flask, render_template_string, jsonify, request, send_file
 from scraper import PakistanLawScraper, SessionExpiredError
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 app = Flask(__name__)
 
 # Database layer — only active when DATABASE_URL is set
@@ -53,6 +59,11 @@ class ScraperState:
     combos_total = 0
     progress_file = 'index_progress.json'
     num_workers = 3
+
+    # Index scope (None = all)
+    index_journals = None   # None = all journals
+    index_year_start = None # None = 1947
+    index_year_end = None   # None = 2026
 
     # Settings
     keywords = ['contract']
@@ -201,6 +212,9 @@ def index_scrape_worker():
             output_file=state.output_file,
             progress_file=state.progress_file,
             get_details=state.get_details,
+            journals=state.index_journals,
+            year_start=state.index_year_start,
+            year_end=state.index_year_end,
             on_progress=on_progress,
             should_stop=should_stop,
             on_case_scraped=on_case_scraped,
@@ -690,6 +704,14 @@ DASHBOARD_HTML = '''
                     Iterates all 16 journals x 80 years (1947-2026) = 1,280 combinations.
                     Progress is saved continuously - stop and resume anytime.
                 </p>
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #334155;">
+                    <button class="btn-start" onclick="startTestRun()" style="background: #eab308; color: #0f172a; flex: none; width: 100%;">
+                        Quick Test (PLD 2024-2025, 1 worker)
+                    </button>
+                    <p style="font-size: 11px; color: #64748b; margin-top: 6px;">
+                        Scrapes ~10-30 cases in under a minute. Verifies login, DB inserts, progress tracking, and resume.
+                    </p>
+                </div>
             </div>
 
             <!-- Progress Matrix (Index mode only) -->
@@ -944,6 +966,27 @@ DASHBOARD_HTML = '''
             }
         }
 
+        async function startTestRun() {
+            const settings = {
+                mode: 'index',
+                output_file: document.getElementById('indexOutputFile').value,
+                get_details: document.getElementById('indexGetDetails').checked,
+                num_workers: 1,
+                test_mode: true
+            };
+            try {
+                const response = await fetch('/api/start', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(settings)
+                });
+                const data = await response.json();
+                showToast(data.message, !data.success);
+            } catch (e) {
+                showToast('Failed to start test run', true);
+            }
+        }
+
         async function stopScraper() {
             try {
                 const response = await fetch('/api/stop', {method: 'POST'});
@@ -1088,16 +1131,32 @@ def start_scraper():
 
     if state.mode == 'index':
         # Index mode
+        test_mode = data.get('test_mode', False)
+        if test_mode:
+            state.index_journals = ['PLD']
+            state.index_year_start = 2024
+            state.index_year_end = 2025
+            state.num_workers = 1
+        else:
+            state.index_journals = None
+            state.index_year_start = None
+            state.index_year_end = None
+            state.num_workers = data.get('num_workers', 3)
+
+        # Calculate combos for progress display
+        journals_list = state.index_journals or state.scraper.INDEX_JOURNALS
+        yr_start = state.index_year_start or state.scraper.YEAR_RANGE_START
+        yr_end = state.index_year_end or state.scraper.YEAR_RANGE_END
         state.combos_completed = 0
-        state.combos_total = len(state.scraper.INDEX_JOURNALS) * (state.scraper.YEAR_RANGE_END - state.scraper.YEAR_RANGE_START + 1)
+        state.combos_total = len(journals_list) * (yr_end - yr_start + 1)
         state.current_journal = ""
         state.current_year = ""
         state.output_file = data.get('output_file', 'all_cases_index.csv')
         state.progress_file = 'index_progress.json'
-        state.num_workers = data.get('num_workers', 3)
         state.thread = threading.Thread(target=index_scrape_worker, daemon=True)
         state.thread.start()
-        return jsonify({'success': True, 'message': f'Index scraper started with {state.num_workers} workers'})
+        label = 'Test mode (PLD 2024-2025)' if test_mode else f'{state.num_workers} workers'
+        return jsonify({'success': True, 'message': f'Index scraper started: {label}'})
     else:
         # Keyword mode
         state.keywords = [k.strip() for k in data.get('keywords', 'contract').split(',')]
