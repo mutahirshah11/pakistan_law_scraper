@@ -98,8 +98,8 @@ def setup_scraper():
     config = load_config()
 
     state.scraper = PakistanLawScraper(
-        username=config.get('username', os.environ.get('PLS_USERNAME', '')),
-        password=config.get('password', os.environ.get('PLS_PASSWORD', '')),
+        username=config.get('username', os.environ.get('PLS_USERNAME', 'LHCBAR8')),
+        password=config.get('password', os.environ.get('PLS_PASSWORD', 'pakbar8')),
         delay_range=(0.2, 0.5)
     )
 
@@ -157,11 +157,19 @@ def scrape_worker():
                     state.last_case_id = case_id
 
                     if state.get_details and case_id:
-                        try:
-                            details = state.scraper.get_case_details(case_id)
-                            case.update(details)
-                        except Exception as e:
-                            state.errors.append(f"{case_id}: {str(e)[:50]}")
+                        for _attempt in range(2):
+                            try:
+                                details = state.scraper.get_case_details(case_id)
+                                case.update(details)
+                                break
+                            except SessionExpiredError:
+                                state.errors.append(f"{case_id}: Session expired, re-authenticating...")
+                                if not state.scraper._try_reauth():
+                                    state.errors.append(f"{case_id}: Re-auth failed")
+                                    break
+                            except Exception as e:
+                                state.errors.append(f"{case_id}: {str(e)[:50]}")
+                                break
 
                     case['scraped_at'] = datetime.now().isoformat()
                     case['search_keyword'] = keyword

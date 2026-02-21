@@ -14,7 +14,7 @@ import signal
 import threading
 import time
 from datetime import datetime
-from scraper import PakistanLawScraper
+from scraper import PakistanLawScraper, SessionExpiredError
 import logging
 
 # Database layer — only active when DATABASE_URL is set
@@ -65,8 +65,8 @@ class ScraperController:
         self.start_time = None
 
         # Credentials (set via environment variables)
-        self.username = os.environ.get("PLS_USERNAME", "")
-        self.password = os.environ.get("PLS_PASSWORD", "")
+        self.username = os.environ.get("PLS_USERNAME", "LHCBAR8")
+        self.password = os.environ.get("PLS_PASSWORD", "pakbar8")
         self.session_id = os.environ.get("PLS_SESSION_ID", "")
         self.verification_token = os.environ.get("PLS_VERIFICATION_TOKEN", "")
 
@@ -166,13 +166,21 @@ class ScraperController:
 
                         self.scraper.processed_case_ids.add(case_id)
 
-                        # Get details if requested
+                        # Get details if requested (with session-expiry retry)
                         if self.get_details and case_id:
-                            try:
-                                details = self.scraper.get_case_details(case_id)
-                                case.update(details)
-                            except Exception as e:
-                                self.errors.append(f"Details error for {case_id}: {str(e)}")
+                            for _attempt in range(2):
+                                try:
+                                    details = self.scraper.get_case_details(case_id)
+                                    case.update(details)
+                                    break
+                                except SessionExpiredError:
+                                    self.errors.append(f"Session expired for {case_id}, re-authenticating...")
+                                    if not self.scraper._try_reauth():
+                                        self.errors.append(f"Re-auth failed for {case_id}")
+                                        break
+                                except Exception as e:
+                                    self.errors.append(f"Details error for {case_id}: {str(e)}")
+                                    break
 
                         case['scraped_at'] = datetime.now().isoformat()
                         case['search_keyword'] = keyword

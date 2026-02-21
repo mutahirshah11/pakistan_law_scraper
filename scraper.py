@@ -706,6 +706,17 @@ class PakistanLawScraper:
 
         return text.strip()
 
+    def _check_case_response(self, response, case_id, field):
+        """Check if a GetCaseFile response indicates session expiry.
+
+        Raises SessionExpiredError if the server returned a login page
+        or an auth-related HTTP status instead of case content.
+        """
+        if not response.ok and response.status_code in (401, 403):
+            raise SessionExpiredError(f"HTTP {response.status_code} fetching {field} for {case_id}")
+        if response.ok and '<html' in response.text.lower() and 'Login' in response.text:
+            raise SessionExpiredError(f"Login page returned instead of {field} for {case_id}")
+
     def get_case_details(self, case_id: str, get_head_notes: bool = True,
                          get_full_description: bool = True) -> dict:
         """
@@ -738,10 +749,13 @@ class PakistanLawScraper:
                     timeout=self.timeout
                 )
                 self._check_rate_limit(response)
+                self._check_case_response(response, case_id, 'head_notes')
                 if response.ok:
                     details['head_notes'] = self._clean_html_content(response.text)
                 else:
                     details['head_notes'] = ''
+            except SessionExpiredError:
+                raise  # Let caller handle re-auth
             except Exception as e:
                 logger.warning(f"Failed to get head notes for {case_id}: {e}")
                 details['head_notes'] = ''
@@ -756,10 +770,13 @@ class PakistanLawScraper:
                     timeout=self.timeout
                 )
                 self._check_rate_limit(response)
+                self._check_case_response(response, case_id, 'full_description')
                 if response.ok:
                     details['full_description'] = self._clean_html_content(response.text)
                 else:
                     details['full_description'] = ''
+            except SessionExpiredError:
+                raise  # Let caller handle re-auth
             except Exception as e:
                 logger.warning(f"Failed to get full description for {case_id}: {e}")
                 details['full_description'] = ''
@@ -820,8 +837,19 @@ class PakistanLawScraper:
                     # Get detailed content if requested
                     if get_details and case_id:
                         logger.info(f"Fetching details for case: {case_id}")
-                        details = self.get_case_details(case_id)
-                        case.update(details)
+                        for _attempt in range(2):
+                            try:
+                                details = self.get_case_details(case_id)
+                                case.update(details)
+                                break
+                            except SessionExpiredError:
+                                logger.warning(f"Session expired fetching details for {case_id}, re-authenticating...")
+                                if not self._try_reauth():
+                                    logger.error(f"Re-auth failed, skipping details for {case_id}")
+                                    break
+                            except Exception as e:
+                                logger.warning(f"Failed to get details for {case_id}: {e}")
+                                break
                     
                     # Add metadata
                     case['scraped_at'] = datetime.now().isoformat()
@@ -1120,14 +1148,22 @@ class PakistanLawScraper:
 
                     processed_ids.add(case_id)
 
-                    # Fetch details if requested
+                    # Fetch details if requested (with session-expiry retry)
                     if get_details:
-                        try:
-                            details = self.get_case_details(case_id)
-                            case.update(details)
-                            last_request_time = time.time()
-                        except Exception as e:
-                            logger.warning(f"Failed to get details for {case_id}: {e}")
+                        for _attempt in range(2):
+                            try:
+                                details = self.get_case_details(case_id)
+                                case.update(details)
+                                last_request_time = time.time()
+                                break
+                            except SessionExpiredError:
+                                logger.warning(f"Session expired fetching details for {case_id}, re-authenticating...")
+                                if not self._try_reauth():
+                                    logger.error(f"Re-auth failed, skipping details for {case_id}")
+                                    break
+                            except Exception as e:
+                                logger.warning(f"Failed to get details for {case_id}: {e}")
+                                break
 
                     case['scraped_at'] = datetime.now().isoformat()
                     case['source'] = 'index_search'
@@ -1136,7 +1172,10 @@ class PakistanLawScraper:
 
                     # Save immediately to DB (zero data loss on crash)
                     if db:
-                        db.insert_case(case)
+                        try:
+                            db.insert_case(case)
+                        except Exception as e:
+                            logger.error(f"DB insert failed for {case_id}: {e}")
 
                     new_cases.append(case)
                     total_new_cases += 1
@@ -1309,12 +1348,20 @@ class PakistanLawScraper:
                         processed_ids.add(case_id)
 
                     if get_details:
-                        try:
-                            details = scraper.get_case_details(case_id)
-                            case.update(details)
-                            last_request_time = time.time()
-                        except Exception as e:
-                            logger.warning(f"W{worker_id}: Details failed for {case_id}: {e}")
+                        for _attempt in range(2):
+                            try:
+                                details = scraper.get_case_details(case_id)
+                                case.update(details)
+                                last_request_time = time.time()
+                                break
+                            except SessionExpiredError:
+                                logger.warning(f"W{worker_id}: Session expired fetching details for {case_id}, re-authenticating...")
+                                if not scraper._try_reauth():
+                                    logger.error(f"W{worker_id}: Re-auth failed, skipping details for {case_id}")
+                                    break
+                            except Exception as e:
+                                logger.warning(f"W{worker_id}: Details failed for {case_id}: {e}")
+                                break
 
                     case['scraped_at'] = datetime.now().isoformat()
                     case['source'] = 'index_search'
@@ -1322,7 +1369,10 @@ class PakistanLawScraper:
                     case['search_year'] = year
 
                     # Save immediately to DB
-                    db.insert_case(case)
+                    try:
+                        db.insert_case(case)
+                    except Exception as e:
+                        logger.error(f"W{worker_id}: DB insert failed for {case_id}: {e}")
                     new_count += 1
 
                     with counters_lock:
@@ -1367,8 +1417,8 @@ def main():
     """Main entry point"""
 
     # Configuration from environment variables
-    USERNAME = os.environ.get("PLS_USERNAME", "")
-    PASSWORD = os.environ.get("PLS_PASSWORD", "")
+    USERNAME = os.environ.get("PLS_USERNAME", "LHCBAR8")
+    PASSWORD = os.environ.get("PLS_PASSWORD", "pakbar8")
 
     if not USERNAME or not PASSWORD:
         print("Set PLS_USERNAME and PLS_PASSWORD environment variables")

@@ -76,9 +76,13 @@ def init_tables():
 
 
 def insert_case(case_dict):
-    """INSERT one case, skipping on conflict (duplicate case_id)."""
-    conn = get_connection()
+    """INSERT one case, skipping on conflict (duplicate case_id).
+
+    Returns True on success, False on error (logged, never raises).
+    """
+    conn = None
     try:
+        conn = get_connection()
         with conn.cursor() as cur:
             cur.execute("""
                 INSERT INTO cases (
@@ -94,16 +98,33 @@ def insert_case(case_dict):
                 ) ON CONFLICT (case_id) DO NOTHING
             """, _normalize_case(case_dict))
         conn.commit()
+        return True
+    except Exception as e:
+        logger.error(f"insert_case failed for {case_dict.get('case_id', '?')}: {e}")
+        if conn:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+        return False
     finally:
-        conn.close()
+        if conn:
+            try:
+                conn.close()
+            except Exception:
+                pass
 
 
 def insert_cases_batch(cases_list):
-    """Batch insert cases in one transaction. Skips duplicates."""
+    """Batch insert cases in one transaction. Skips duplicates.
+
+    Falls back to per-case inserts on batch failure so partial data is still saved.
+    """
     if not cases_list:
         return
-    conn = get_connection()
+    conn = None
     try:
+        conn = get_connection()
         with conn.cursor() as cur:
             for case in cases_list:
                 cur.execute("""
@@ -121,8 +142,26 @@ def insert_cases_batch(cases_list):
                 """, _normalize_case(case))
         conn.commit()
         logger.info(f"Batch inserted {len(cases_list)} cases")
+    except Exception as e:
+        logger.error(f"Batch insert failed ({len(cases_list)} cases): {e}")
+        if conn:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+        # Fallback: try inserting each case individually
+        logger.info("Falling back to per-case inserts...")
+        ok = 0
+        for case in cases_list:
+            if insert_case(case):
+                ok += 1
+        logger.info(f"Fallback inserted {ok}/{len(cases_list)} cases")
     finally:
-        conn.close()
+        if conn:
+            try:
+                conn.close()
+            except Exception:
+                pass
 
 
 def _normalize_case(case):
