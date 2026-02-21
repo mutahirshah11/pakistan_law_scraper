@@ -56,6 +56,7 @@ def init_tables():
             cur.execute("CREATE INDEX IF NOT EXISTS idx_cases_year ON cases (year);")
             cur.execute("CREATE INDEX IF NOT EXISTS idx_cases_journal ON cases (journal);")
             cur.execute("CREATE INDEX IF NOT EXISTS idx_cases_court ON cases (court);")
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_cases_scraped_at ON cases (scraped_at);")
 
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS scrape_progress (
@@ -79,40 +80,50 @@ def insert_case(case_dict):
     """INSERT one case, skipping on conflict (duplicate case_id).
 
     Returns True on success, False on error (logged, never raises).
+    Retries once on transient failure (idempotent due to ON CONFLICT DO NOTHING).
     """
-    conn = None
-    try:
-        conn = get_connection()
-        with conn.cursor() as cur:
-            cur.execute("""
-                INSERT INTO cases (
-                    case_id, citation, year, journal, page, court,
-                    parties_full, petitioner, respondent,
-                    keywords, summary, head_notes, full_description,
-                    scraped_at, source, search_journal, search_year, search_keyword
-                ) VALUES (
-                    %(case_id)s, %(citation)s, %(year)s, %(journal)s, %(page)s, %(court)s,
-                    %(parties_full)s, %(petitioner)s, %(respondent)s,
-                    %(keywords)s, %(summary)s, %(head_notes)s, %(full_description)s,
-                    %(scraped_at)s, %(source)s, %(search_journal)s, %(search_year)s, %(search_keyword)s
-                ) ON CONFLICT (case_id) DO NOTHING
-            """, _normalize_case(case_dict))
-        conn.commit()
-        return True
-    except Exception as e:
-        logger.error(f"insert_case failed for {case_dict.get('case_id', '?')}: {e}")
-        if conn:
-            try:
-                conn.rollback()
-            except Exception:
-                pass
-        return False
-    finally:
-        if conn:
-            try:
-                conn.close()
-            except Exception:
-                pass
+    import time as _time
+    case_id = case_dict.get('case_id', '?')
+
+    for attempt in range(2):
+        conn = None
+        try:
+            conn = get_connection()
+            with conn.cursor() as cur:
+                cur.execute("""
+                    INSERT INTO cases (
+                        case_id, citation, year, journal, page, court,
+                        parties_full, petitioner, respondent,
+                        keywords, summary, head_notes, full_description,
+                        scraped_at, source, search_journal, search_year, search_keyword
+                    ) VALUES (
+                        %(case_id)s, %(citation)s, %(year)s, %(journal)s, %(page)s, %(court)s,
+                        %(parties_full)s, %(petitioner)s, %(respondent)s,
+                        %(keywords)s, %(summary)s, %(head_notes)s, %(full_description)s,
+                        %(scraped_at)s, %(source)s, %(search_journal)s, %(search_year)s, %(search_keyword)s
+                    ) ON CONFLICT (case_id) DO NOTHING
+                """, _normalize_case(case_dict))
+            conn.commit()
+            return True
+        except Exception as e:
+            if conn:
+                try:
+                    conn.rollback()
+                except Exception:
+                    pass
+            if attempt == 0:
+                logger.warning(f"insert_case attempt 1 failed for {case_id}: {e}, retrying in 2s...")
+                _time.sleep(2)
+            else:
+                logger.error(f"insert_case failed for {case_id} after 2 attempts: {e}")
+                return False
+        finally:
+            if conn:
+                try:
+                    conn.close()
+                except Exception:
+                    pass
+    return False
 
 
 def insert_cases_batch(cases_list):
@@ -275,6 +286,82 @@ def get_case_count():
         with conn.cursor() as cur:
             cur.execute("SELECT COUNT(*) FROM cases")
             return cur.fetchone()[0]
+    finally:
+        conn.close()
+
+
+def get_dashboard_stats():
+    """Return KPI stats for the dashboard in a single DB round-trip.
+
+    Returns dict with all KPI fields, or None on error.
+    """
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""
+                SELECT
+                    COUNT(*)                                                          AS total_cases,
+                    COUNT(*) FILTER (WHERE head_notes IS NOT NULL AND head_notes != '')  AS cases_with_headnotes,
+                    COUNT(*) FILTER (WHERE full_description IS NOT NULL AND full_description != '') AS cases_with_description,
+                    COUNT(*) FILTER (WHERE scraped_at >= NOW() - INTERVAL '1 hour')   AS cases_last_hour,
+                    COUNT(*) FILTER (WHERE scraped_at >= NOW() - INTERVAL '24 hours') AS cases_last_24h,
+                    MAX(scraped_at)                                                   AS latest_scraped_at
+                FROM cases
+            """)
+            row = cur.fetchone()
+            total_cases = row[0] or 0
+            cases_with_headnotes = row[1] or 0
+            cases_with_description = row[2] or 0
+            cases_last_hour = row[3] or 0
+            cases_last_24h = row[4] or 0
+            latest_scraped_at = row[5].isoformat() if row[5] else None
+
+            # Hourly rate: cases in the last hour
+            hourly_rate = cases_last_hour
+
+            # Top 5 journals
+            cur.execute("""
+                SELECT journal, COUNT(*) AS cnt
+                FROM cases
+                WHERE journal != ''
+                GROUP BY journal
+                ORDER BY cnt DESC
+                LIMIT 5
+            """)
+            cases_by_journal = [{'journal': r[0], 'count': r[1]} for r in cur.fetchall()]
+
+            # Combo stats from scrape_progress (single pass)
+            cur.execute("""
+                SELECT
+                    COUNT(*)                                             AS combos_total,
+                    COUNT(*) FILTER (WHERE status = 'completed')         AS combos_completed,
+                    COUNT(*) FILTER (WHERE status = 'in_progress')       AS combos_in_progress,
+                    COUNT(*) FILTER (WHERE status = 'error')             AS combos_error,
+                    COUNT(*) FILTER (WHERE status = 'pending')           AS combos_pending,
+                    COALESCE(SUM(cases_found), 0)                        AS total_cases_found_in_combos
+                FROM scrape_progress
+            """)
+            crow = cur.fetchone()
+
+        return {
+            'total_cases': total_cases,
+            'cases_with_headnotes': cases_with_headnotes,
+            'cases_with_description': cases_with_description,
+            'cases_last_hour': cases_last_hour,
+            'cases_last_24h': cases_last_24h,
+            'hourly_rate': hourly_rate,
+            'cases_by_journal': cases_by_journal,
+            'combos_total': crow[0] or 0,
+            'combos_completed': crow[1] or 0,
+            'combos_in_progress': crow[2] or 0,
+            'combos_error': crow[3] or 0,
+            'combos_pending': crow[4] or 0,
+            'total_cases_found_in_combos': crow[5] or 0,
+            'latest_scraped_at': latest_scraped_at,
+        }
+    except Exception as e:
+        logger.error(f"get_dashboard_stats failed: {e}")
+        return None
     finally:
         conn.close()
 

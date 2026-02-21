@@ -837,7 +837,7 @@ class PakistanLawScraper:
                     # Get detailed content if requested
                     if get_details and case_id:
                         logger.info(f"Fetching details for case: {case_id}")
-                        for _attempt in range(2):
+                        for _attempt in range(3):
                             try:
                                 details = self.get_case_details(case_id)
                                 case.update(details)
@@ -1038,6 +1038,7 @@ class PakistanLawScraper:
                         progress['journals'][journal_key][year_key]['status'] = 'pending'
 
         total_new_cases = 0
+        failed_inserts = 0
 
         # Recalculate total_combinations based on actual scope
         progress['total_combinations'] = len(journals) * (year_end - year_start + 1)
@@ -1150,7 +1151,7 @@ class PakistanLawScraper:
 
                     # Fetch details if requested (with session-expiry retry)
                     if get_details:
-                        for _attempt in range(2):
+                        for _attempt in range(3):
                             try:
                                 details = self.get_case_details(case_id)
                                 case.update(details)
@@ -1173,9 +1174,11 @@ class PakistanLawScraper:
                     # Save immediately to DB (zero data loss on crash)
                     if db:
                         try:
-                            db.insert_case(case)
+                            if not db.insert_case(case):
+                                failed_inserts += 1
                         except Exception as e:
                             logger.error(f"DB insert failed for {case_id}: {e}")
+                            failed_inserts += 1
 
                     new_cases.append(case)
                     total_new_cases += 1
@@ -1218,6 +1221,8 @@ class PakistanLawScraper:
                 if on_progress:
                     on_progress(progress)
 
+        if failed_inserts > 0:
+            logger.warning(f"Index scrape finished with {failed_inserts} failed DB inserts")
         logger.info(f"Index scrape complete: {total_new_cases} new cases scraped")
         return total_new_cases
 
@@ -1258,7 +1263,7 @@ class PakistanLawScraper:
 
         # Shared counters
         counters_lock = threading.Lock()
-        counters = {'total_new': 0, 'completed': completed_count}
+        counters = {'total_new': 0, 'completed': completed_count, 'failed_inserts': 0}
 
         # Create worker scrapers — reuse self as worker 0
         workers = [self]
@@ -1273,8 +1278,17 @@ class PakistanLawScraper:
                 workers.append(w)
                 logger.info(f"Worker {i+1}/{num_workers} logged in")
             else:
-                logger.error(f"Worker {i+1}/{num_workers} failed to login, skipping")
+                # Retry login once after 5s
+                logger.warning(f"Worker {i+1}/{num_workers} login failed, retrying in 5s...")
+                time.sleep(5)
+                if w.login():
+                    workers.append(w)
+                    logger.info(f"Worker {i+1}/{num_workers} logged in on retry")
+                else:
+                    logger.error(f"Worker {i+1}/{num_workers} failed to login after retry, skipping")
 
+        if len(workers) < num_workers:
+            logger.warning(f"CAPACITY REDUCED: only {len(workers)}/{num_workers} workers logged in")
         logger.info(f"Running with {len(workers)} concurrent workers")
 
         def worker_fn(scraper, worker_id):
@@ -1348,7 +1362,7 @@ class PakistanLawScraper:
                         processed_ids.add(case_id)
 
                     if get_details:
-                        for _attempt in range(2):
+                        for _attempt in range(3):
                             try:
                                 details = scraper.get_case_details(case_id)
                                 case.update(details)
@@ -1369,11 +1383,17 @@ class PakistanLawScraper:
                     case['search_year'] = year
 
                     # Save immediately to DB
+                    insert_ok = False
                     try:
-                        db.insert_case(case)
+                        insert_ok = db.insert_case(case)
                     except Exception as e:
                         logger.error(f"W{worker_id}: DB insert failed for {case_id}: {e}")
-                    new_count += 1
+
+                    if insert_ok:
+                        new_count += 1
+                    else:
+                        with counters_lock:
+                            counters['failed_inserts'] += 1
 
                     with counters_lock:
                         counters['total_new'] += 1
@@ -1409,6 +1429,8 @@ class PakistanLawScraper:
             for f in futures:
                 f.result()
 
+        if counters['failed_inserts'] > 0:
+            logger.warning(f"Concurrent scrape finished with {counters['failed_inserts']} failed DB inserts")
         logger.info(f"Concurrent scrape complete: {counters['total_new']} new cases")
         return counters['total_new']
 

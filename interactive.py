@@ -168,7 +168,7 @@ class ScraperController:
 
                         # Get details if requested (with session-expiry retry)
                         if self.get_details and case_id:
-                            for _attempt in range(2):
+                            for _attempt in range(3):
                                 try:
                                     details = self.scraper.get_case_details(case_id)
                                     case.update(details)
