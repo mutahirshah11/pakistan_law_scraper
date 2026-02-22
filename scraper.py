@@ -48,6 +48,14 @@ class EmptyContentError(Exception):
     pass
 
 
+class FieldFetchError(Exception):
+    """Raised when a single field (headnotes or description) fetch fails"""
+    def __init__(self, field, case_id, reason):
+        self.field = field
+        self.case_id = case_id
+        super().__init__(f"{field} fetch failed for {case_id}: {reason}")
+
+
 class PakistanLawScraper:
     """Scraper for Pakistan Law Site"""
     
@@ -97,7 +105,7 @@ class PakistanLawScraper:
         'PTD', 'MLD', 'GBLR', 'CLCN', 'YLRN', 'PCRLJN', 'PLCN', 'PLC(CS)N'
     ]
     
-    def __init__(self, username: str, password: str, delay_range: tuple = (1, 3), timeout: int = 30):
+    def __init__(self, username: str, password: str, delay_range: tuple = (0.1, 0.3), timeout: int = 30):
         """
         Initialize the scraper
 
@@ -116,6 +124,8 @@ class PakistanLawScraper:
         self.processed_case_ids = set()
         self._backoff_until = 0
         self._backoff_extra = 0
+        self._min_interval = 0.15
+        self._last_request_time = 0
 
         # Last login attempt diagnostics (for debugging Railway failures)
         self.last_login_diag = {}
@@ -131,21 +141,41 @@ class PakistanLawScraper:
             'Connection': 'keep-alive',
         })
     
-    def _delay(self):
-        """Add random delay between requests with adaptive backoff"""
-        delay = random.uniform(*self.delay_range)
+    def _throttle(self):
+        """Enforce minimum interval between requests with adaptive backoff"""
+        now = time.time()
+        elapsed = now - self._last_request_time
+        wait = self._min_interval - elapsed
         if time.time() < self._backoff_until:
-            delay += self._backoff_extra
-        time.sleep(delay)
+            wait = max(wait, self._backoff_extra)
+        if wait > 0:
+            time.sleep(wait)
+        self._last_request_time = time.time()
 
-    def _check_rate_limit(self, response):
-        """Adjust backoff if server returns 429/503"""
+    def _handle_response_status(self, response, context="request"):
+        """Check HTTP response status and raise on errors instead of swallowing.
+
+        - 429/503: adds backoff and raises
+        - 401/403: raises SessionExpiredError
+        - Other non-OK: raises RuntimeError
+        - Clears backoff when requests succeed
+        """
+        if response.ok:
+            # Clear backoff on success
+            if time.time() >= self._backoff_until and self._backoff_extra > 0:
+                self._backoff_extra = 0
+            return
+
         if response.status_code in (429, 503):
             self._backoff_extra = min(self._backoff_extra + 5, 30)
             self._backoff_until = time.time() + 60
-            logger.warning(f"Rate limited ({response.status_code}), backoff +{self._backoff_extra}s for 60s")
-        elif time.time() >= self._backoff_until and self._backoff_extra > 0:
-            self._backoff_extra = 0
+            logger.warning(f"Rate limited ({response.status_code}) during {context}, backoff +{self._backoff_extra}s for 60s")
+            raise RuntimeError(f"HTTP {response.status_code} rate limited during {context}")
+
+        if response.status_code in (401, 403):
+            raise SessionExpiredError(f"HTTP {response.status_code} during {context}")
+
+        raise RuntimeError(f"HTTP {response.status_code} during {context}")
     
     def login(self) -> bool:
         """
@@ -211,10 +241,9 @@ class PakistanLawScraper:
 
                 # Step 2: Submit login form
                 login_data = {
-                    'UserName': self.username,
-                    'Password': self.password,
+                    'Login.UserName': self.username,
+                    'Login.Password': self.password,
                     '__RequestVerificationToken': csrf_token,
-                    'AgreeTerms': 'true',
                 }
 
                 headers = {
@@ -371,7 +400,7 @@ class PakistanLawScraper:
         Returns:
             Tuple of (list of cases, total count)
         """
-        self._delay()
+        self._throttle()
 
         # Use different endpoints for initial search vs pagination
         if row == 0:
@@ -684,7 +713,7 @@ class PakistanLawScraper:
         Returns:
             List of case dicts
         """
-        self._delay()
+        self._throttle()
 
         # Map journal name to POST value
         post_book = self.JOURNAL_POST_VALUES.get(book, book)
@@ -709,8 +738,7 @@ class PakistanLawScraper:
                 headers=headers,
                 timeout=self.timeout
             )
-            self._check_rate_limit(response)
-            response.raise_for_status()
+            self._handle_response_status(response, context=f"index_search {book} {year}")
             return self._parse_index_results(response.text)
 
         except SessionExpiredError:
@@ -807,18 +835,58 @@ class PakistanLawScraper:
     def _check_case_response(self, response, case_id, field):
         """Check if a GetCaseFile response indicates session expiry.
 
-        Raises SessionExpiredError if the server returned a login page
-        or an auth-related HTTP status instead of case content.
+        Raises SessionExpiredError if the server returned a login page,
+        an auth-related HTTP status, or an empty body (session lost).
         """
         if not response.ok and response.status_code in (401, 403):
             raise SessionExpiredError(f"HTTP {response.status_code} fetching {field} for {case_id}")
+        if response.ok and not response.text.strip():
+            raise SessionExpiredError(f"Empty response body for {field} of {case_id} — session likely expired")
         if response.ok and '<html' in response.text.lower() and 'Login' in response.text:
             raise SessionExpiredError(f"Login page returned instead of {field} for {case_id}")
+
+    def _fetch_single_field(self, case_id: str, field: str, headers: dict) -> str:
+        """Fetch a single field (head_notes or full_description) for a case.
+
+        Args:
+            case_id: Case identifier
+            field: 'head_notes' or 'full_description'
+            headers: HTTP headers dict
+
+        Returns:
+            Cleaned text content
+
+        Raises:
+            FieldFetchError: On any non-auth failure (HTTP error, empty content, network)
+            SessionExpiredError: On authentication issues (propagated immediately)
+        """
+        head_notes_flag = 1 if field == 'head_notes' else 0
+        self._throttle()
+        try:
+            response = self.session.post(
+                self.CASE_FILE_URL,
+                data={'caseName': case_id, 'headNotes': head_notes_flag},
+                headers=headers,
+                timeout=self.timeout
+            )
+            self._check_case_response(response, case_id, field)
+            self._handle_response_status(response, context=f"{field} for {case_id}")
+            cleaned = self._clean_html_content(response.text)
+            if len(cleaned) < 10:
+                raise FieldFetchError(field, case_id, f"content too short ({len(cleaned)} chars)")
+            return cleaned
+        except (SessionExpiredError, FieldFetchError):
+            raise
+        except Exception as e:
+            raise FieldFetchError(field, case_id, str(e))
 
     def get_case_details(self, case_id: str, get_head_notes: bool = True,
                          get_full_description: bool = True) -> dict:
         """
-        Get detailed case content
+        Get detailed case content using concurrent fetching.
+
+        Fetches headnotes and description in parallel using threads.
+        Returns partial results when possible (e.g. headnotes OK but description failed).
 
         Args:
             case_id: The case identifier (e.g., "2025S818")
@@ -826,14 +894,15 @@ class PakistanLawScraper:
             get_full_description: Whether to fetch full case description
 
         Returns:
-            Dictionary with head_notes and/or full_description
+            Dictionary with head_notes and/or full_description keys
+            (only keys with actual content are included)
 
         Raises:
             SessionExpiredError: If session has expired (always re-raised immediately)
-            EmptyContentError: Only if ALL requested fields came back empty
+            EmptyContentError: Only if ALL requested fields failed
+            FieldFetchError: If a single field failed (caller can retry just that field)
         """
-        details = {}
-        empty_fields = []
+        from concurrent.futures import ThreadPoolExecutor, as_completed
 
         headers = {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -842,70 +911,51 @@ class PakistanLawScraper:
             'Referer': self.LOGIN_URL,
         }
 
+        fields_to_fetch = []
         if get_head_notes:
-            self._delay()
-            try:
-                response = self.session.post(
-                    self.CASE_FILE_URL,
-                    data={'caseName': case_id, 'headNotes': 1},
-                    headers=headers,
-                    timeout=self.timeout
-                )
-                self._check_rate_limit(response)
-                self._check_case_response(response, case_id, 'head_notes')
-                if response.ok:
-                    cleaned = self._clean_html_content(response.text)
-                    if len(cleaned) < 10:
-                        logger.warning(f"Empty/short head_notes for {case_id}")
-                        empty_fields.append('head_notes')
-                    else:
-                        details['head_notes'] = cleaned
-                else:
-                    details['head_notes'] = ''
-            except SessionExpiredError:
-                raise  # Always let caller handle re-auth
-            except EmptyContentError:
-                empty_fields.append('head_notes')
-            except Exception as e:
-                logger.warning(f"Failed to get head notes for {case_id}: {e}")
-                details['head_notes'] = ''
-
+            fields_to_fetch.append('head_notes')
         if get_full_description:
-            self._delay()
-            try:
-                response = self.session.post(
-                    self.CASE_FILE_URL,
-                    data={'caseName': case_id, 'headNotes': 0},
-                    headers=headers,
-                    timeout=self.timeout
-                )
-                self._check_rate_limit(response)
-                self._check_case_response(response, case_id, 'full_description')
-                if response.ok:
-                    cleaned = self._clean_html_content(response.text)
-                    if len(cleaned) < 10:
-                        logger.warning(f"Empty/short full_description for {case_id}")
-                        empty_fields.append('full_description')
-                    else:
-                        details['full_description'] = cleaned
-                else:
-                    details['full_description'] = ''
-            except SessionExpiredError:
-                raise  # Always let caller handle re-auth
-            except EmptyContentError:
-                empty_fields.append('full_description')
-            except Exception as e:
-                logger.warning(f"Failed to get full description for {case_id}: {e}")
-                details['full_description'] = ''
+            fields_to_fetch.append('full_description')
 
-        # Only raise EmptyContentError if ALL requested fields are empty
-        requested = []
-        if get_head_notes:
-            requested.append('head_notes')
-        if get_full_description:
-            requested.append('full_description')
-        if requested and len(empty_fields) == len(requested):
-            raise EmptyContentError(f"All fields empty for {case_id}: {empty_fields}")
+        if not fields_to_fetch:
+            return {}
+
+        details = {}
+        failed_fields = []
+        session_error = None
+
+        if len(fields_to_fetch) == 1:
+            # Single field — no need for thread pool
+            field = fields_to_fetch[0]
+            try:
+                details[field] = self._fetch_single_field(case_id, field, headers)
+            except SessionExpiredError:
+                raise
+            except FieldFetchError:
+                failed_fields.append(field)
+        else:
+            # Two fields — fetch concurrently
+            with ThreadPoolExecutor(max_workers=2) as executor:
+                future_to_field = {
+                    executor.submit(self._fetch_single_field, case_id, field, headers): field
+                    for field in fields_to_fetch
+                }
+                for future in as_completed(future_to_field):
+                    field = future_to_field[future]
+                    try:
+                        details[field] = future.result()
+                    except SessionExpiredError as e:
+                        session_error = e
+                    except FieldFetchError:
+                        failed_fields.append(field)
+
+            # Propagate session errors immediately
+            if session_error:
+                raise session_error
+
+        # If ALL requested fields failed, raise EmptyContentError
+        if len(failed_fields) == len(fields_to_fetch):
+            raise EmptyContentError(f"All fields empty for {case_id}: {failed_fields}")
 
         return details
     
@@ -964,28 +1014,40 @@ class PakistanLawScraper:
                     if get_details and case_id:
                         logger.info(f"Fetching details for case: {case_id}")
                         best_details = {}
+                        need_head = True
+                        need_desc = True
                         for _attempt in range(3):
                             try:
-                                details = self.get_case_details(case_id)
+                                details = self.get_case_details(
+                                    case_id,
+                                    get_head_notes=need_head,
+                                    get_full_description=need_desc
+                                )
                                 for k, v in details.items():
                                     if v and (k not in best_details or not best_details[k]):
                                         best_details[k] = v
-                                break  # Full success
+                                # Update what's still needed
+                                if 'head_notes' in best_details:
+                                    need_head = False
+                                if 'full_description' in best_details:
+                                    need_desc = False
+                                if not need_head and not need_desc:
+                                    break  # All fields obtained
                             except SessionExpiredError:
                                 logger.warning(f"Session expired fetching details for {case_id}, re-authenticating...")
                                 if not self._try_reauth():
                                     logger.error(f"Re-auth failed, skipping details for {case_id}")
                                     break
-                            except EmptyContentError:
+                            except (EmptyContentError, FieldFetchError):
                                 backoff = 5 * (2 ** _attempt)
-                                logger.warning(f"Empty content for {case_id}, attempt {_attempt+1}/3, backing off {backoff}s...")
+                                logger.warning(f"Field fetch issue for {case_id}, attempt {_attempt+1}/3, backing off {backoff}s...")
                                 time.sleep(backoff)
                             except Exception as e:
                                 logger.warning(f"Failed to get details for {case_id}: {e}")
                                 break
                         if best_details:
                             case.update(best_details)
-                    
+
                     # Add metadata
                     case['scraped_at'] = datetime.now().isoformat()
                     case['search_keyword'] = keyword
@@ -1284,25 +1346,36 @@ class PakistanLawScraper:
 
                     processed_ids.add(case_id)
 
-                    # Fetch details if requested (with session-expiry retry)
+                    # Fetch details if requested (with targeted retry)
                     if get_details:
                         best_details = {}
+                        need_head = True
+                        need_desc = True
                         for _attempt in range(3):
                             try:
-                                details = self.get_case_details(case_id)
+                                details = self.get_case_details(
+                                    case_id,
+                                    get_head_notes=need_head,
+                                    get_full_description=need_desc
+                                )
                                 for k, v in details.items():
                                     if v and (k not in best_details or not best_details[k]):
                                         best_details[k] = v
                                 last_request_time = time.time()
-                                break  # Full success
+                                if 'head_notes' in best_details:
+                                    need_head = False
+                                if 'full_description' in best_details:
+                                    need_desc = False
+                                if not need_head and not need_desc:
+                                    break
                             except SessionExpiredError:
                                 logger.warning(f"Session expired fetching details for {case_id}, re-authenticating...")
                                 if not self._try_reauth():
                                     logger.error(f"Re-auth failed, skipping details for {case_id}")
                                     break
-                            except EmptyContentError:
+                            except (EmptyContentError, FieldFetchError):
                                 backoff = 5 * (2 ** _attempt)
-                                logger.warning(f"Empty content for {case_id}, attempt {_attempt+1}/3, backing off {backoff}s...")
+                                logger.warning(f"Field fetch issue for {case_id}, attempt {_attempt+1}/3, backing off {backoff}s...")
                                 time.sleep(backoff)
                             except Exception as e:
                                 logger.warning(f"Failed to get details for {case_id}: {e}")
@@ -1507,22 +1580,33 @@ class PakistanLawScraper:
 
                     if get_details:
                         best_details = {}
+                        need_head = True
+                        need_desc = True
                         for _attempt in range(3):
                             try:
-                                details = scraper.get_case_details(case_id)
+                                details = scraper.get_case_details(
+                                    case_id,
+                                    get_head_notes=need_head,
+                                    get_full_description=need_desc
+                                )
                                 for k, v in details.items():
                                     if v and (k not in best_details or not best_details[k]):
                                         best_details[k] = v
                                 last_request_time = time.time()
-                                break  # Full success
+                                if 'head_notes' in best_details:
+                                    need_head = False
+                                if 'full_description' in best_details:
+                                    need_desc = False
+                                if not need_head and not need_desc:
+                                    break
                             except SessionExpiredError:
                                 logger.warning(f"W{worker_id}: Session expired fetching details for {case_id}, re-authenticating...")
                                 if not scraper._try_reauth():
                                     logger.error(f"W{worker_id}: Re-auth failed, skipping details for {case_id}")
                                     break
-                            except EmptyContentError:
+                            except (EmptyContentError, FieldFetchError):
                                 backoff = 5 * (2 ** _attempt)
-                                logger.warning(f"W{worker_id}: Empty content for {case_id}, attempt {_attempt+1}/3, backing off {backoff}s...")
+                                logger.warning(f"W{worker_id}: Field fetch issue for {case_id}, attempt {_attempt+1}/3, backing off {backoff}s...")
                                 time.sleep(backoff)
                             except Exception as e:
                                 logger.warning(f"W{worker_id}: Details failed for {case_id}: {e}")
@@ -1604,7 +1688,7 @@ def main():
     scraper = PakistanLawScraper(
         username=USERNAME,
         password=PASSWORD,
-        delay_range=(1.5, 3.0)  # Be polite to the server
+        delay_range=(0.1, 0.3)
     )
     
     # Login

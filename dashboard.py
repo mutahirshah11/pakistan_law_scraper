@@ -15,7 +15,7 @@ import threading
 import time
 from datetime import datetime
 from flask import Flask, render_template_string, jsonify, request, send_file
-from scraper import PakistanLawScraper, SessionExpiredError, EmptyContentError
+from scraper import PakistanLawScraper, SessionExpiredError, EmptyContentError, FieldFetchError
 
 try:
     from dotenv import load_dotenv
@@ -116,7 +116,6 @@ def setup_scraper():
     state.scraper = PakistanLawScraper(
         username=username,
         password=config.get('password', os.environ.get('PLS_PASSWORD', 'pakbar8')),
-        delay_range=(1.5, 3.0)
     )
 
     # Primary: auto-login with credentials
@@ -176,21 +175,32 @@ def scrape_worker():
 
                     if state.get_details and case_id:
                         best_details = {}
+                        need_head = True
+                        need_desc = True
                         for _attempt in range(3):
                             try:
-                                details = state.scraper.get_case_details(case_id)
+                                details = state.scraper.get_case_details(
+                                    case_id,
+                                    get_head_notes=need_head,
+                                    get_full_description=need_desc
+                                )
                                 for k, v in details.items():
                                     if v and (k not in best_details or not best_details[k]):
                                         best_details[k] = v
-                                break  # Full success
+                                if 'head_notes' in best_details:
+                                    need_head = False
+                                if 'full_description' in best_details:
+                                    need_desc = False
+                                if not need_head and not need_desc:
+                                    break
                             except SessionExpiredError:
                                 state.errors.append(f"{case_id}: Session expired, re-authenticating...")
                                 if not state.scraper._try_reauth():
                                     state.errors.append(f"{case_id}: Re-auth failed")
                                     break
-                            except EmptyContentError:
+                            except (EmptyContentError, FieldFetchError):
                                 backoff = 5 * (2 ** _attempt)
-                                state.errors.append(f"{case_id}: Empty content, attempt {_attempt+1}/3, backing off {backoff}s...")
+                                state.errors.append(f"{case_id}: Field fetch issue, attempt {_attempt+1}/3, backing off {backoff}s...")
                                 time.sleep(backoff)
                             except Exception as e:
                                 state.errors.append(f"{case_id}: {str(e)[:50]}")
@@ -1252,21 +1262,28 @@ def backfill_worker():
             get_desc = item['missing_description']
 
             best_details = {}
+            need_head = get_head
+            need_desc = get_desc
             for _attempt in range(3):
                 try:
                     details = state.scraper.get_case_details(
                         case_id,
-                        get_head_notes=get_head,
-                        get_full_description=get_desc
+                        get_head_notes=need_head,
+                        get_full_description=need_desc
                     )
                     for k, v in details.items():
                         if v and (k not in best_details or not best_details[k]):
                             best_details[k] = v
-                    break  # Full success
+                    if 'head_notes' in best_details:
+                        need_head = False
+                    if 'full_description' in best_details:
+                        need_desc = False
+                    if not need_head and not need_desc:
+                        break
                 except SessionExpiredError:
                     if not state.scraper._try_reauth():
                         break
-                except EmptyContentError:
+                except (EmptyContentError, FieldFetchError):
                     backoff = 5 * (2 ** _attempt)
                     time.sleep(backoff)
                 except Exception:
