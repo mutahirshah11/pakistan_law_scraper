@@ -26,13 +26,20 @@ app = Flask(__name__)
 
 # Database layer — only active when DATABASE_URL is set
 _db = None
+_db_error = ""
 try:
     import db as database
-    if os.environ.get("DATABASE_URL"):
+    _db_url = os.environ.get("DATABASE_URL", "")
+    if _db_url:
         database.init_tables()
         _db = database
-except ImportError:
-    pass
+    else:
+        _db_error = "DATABASE_URL not set — running in CSV-only mode"
+except Exception as e:
+    _db_error = f"DB init failed: {e}"
+
+if _db_error:
+    print(f"[WARNING] {_db_error}")
 
 # Config file for persistent storage
 CONFIG_FILE = os.path.join(os.path.dirname(__file__), 'scraper_config.json')
@@ -348,6 +355,14 @@ DASHBOARD_HTML = '''
         .error-item { color: #f87171; padding: 3px 0; border-bottom: 1px solid #1e293b; }
         .no-errors { color: #22c55e; }
 
+        /* DB Warning Banner */
+        .db-banner {
+            background: #451a03; border: 1px solid #92400e; border-radius: 8px; padding: 10px 16px;
+            margin-bottom: 16px; display: none; font-size: 13px; color: #fbbf24;
+        }
+        .db-banner .db-banner-title { font-weight: 600; margin-bottom: 2px; }
+        .db-banner .db-banner-detail { color: #f59e0b; font-size: 12px; }
+
         /* Toast */
         .toast { position: fixed; bottom: 20px; right: 20px; padding: 12px 20px; background: #22c55e; color: white; border-radius: 8px; font-size: 14px; opacity: 0; transform: translateY(20px); transition: all 0.3s; }
         .toast.show { opacity: 1; transform: translateY(0); }
@@ -364,6 +379,12 @@ DASHBOARD_HTML = '''
         <header>
             <h1>Pakistan Law Scraper</h1>
         </header>
+
+        <!-- DB Warning Banner -->
+        <div class="db-banner" id="dbBanner">
+            <div class="db-banner-title">DB not connected — showing live session counts only</div>
+            <div class="db-banner-detail" id="dbBannerDetail"></div>
+        </div>
 
         <!-- KPI Cards Row -->
         <div class="kpi-row">
@@ -471,6 +492,8 @@ DASHBOARD_HTML = '''
     <div class="toast" id="toast"></div>
 
     <script>
+        let dbStatsAvailable = false;  // tracks whether /api/dashboard-stats ever succeeded
+
         function showToast(msg, isError) {
             const t = document.getElementById('toast');
             t.textContent = msg;
@@ -502,6 +525,34 @@ DASHBOARD_HTML = '''
             }
 
             document.getElementById('detailWorkers').textContent = d.num_workers || '--';
+
+            // DB connection banner
+            const banner = document.getElementById('dbBanner');
+            if (d.db_connected === false) {
+                banner.style.display = 'block';
+                document.getElementById('dbBannerDetail').textContent = d.db_error || '';
+            } else {
+                banner.style.display = 'none';
+            }
+
+            // KPI fallback: when DB stats are not available, use in-memory data from /api/status
+            if (!dbStatsAvailable) {
+                document.getElementById('kpiTotal').textContent = fmt(d.cases);
+                document.getElementById('kpiTotalSub').textContent = d.db_connected === false ? '(session count)' : '';
+
+                document.getElementById('kpiRate').textContent = '--';
+                document.getElementById('kpiRateSub').textContent = d.db_connected === false ? 'needs DB' : '';
+
+                document.getElementById('kpiCompletion').textContent = '--%';
+                document.getElementById('kpiCompletionSub').textContent = d.db_connected === false ? 'needs DB' : '';
+
+                if (d.combos_total > 0) {
+                    document.getElementById('kpiCombos').textContent = fmt(d.combos_completed) + ' / ' + fmt(d.combos_total);
+                    const comboPct = (d.combos_completed / d.combos_total) * 100;
+                    document.getElementById('kpiCombosBar').style.width = comboPct + '%';
+                    document.getElementById('kpiCombosSub').textContent = '';
+                }
+            }
 
             // Buttons
             document.getElementById('btnStart').disabled = d.running;
@@ -544,6 +595,8 @@ DASHBOARD_HTML = '''
 
         /* ---- Dashboard stats polling (5s) ---- */
         function updateDashboard(s) {
+            dbStatsAvailable = true;
+
             document.getElementById('kpiTotal').textContent = fmt(s.total_cases);
             document.getElementById('kpiTotalSub').textContent = fmt(s.cases_last_24h) + ' in last 24h';
 
@@ -773,6 +826,8 @@ def get_status():
         'combos_completed': state.combos_completed,
         'combos_total': state.combos_total,
         'num_workers': state.num_workers,
+        'db_connected': _db is not None,
+        'db_error': _db_error,
     }
     return jsonify(result)
 
