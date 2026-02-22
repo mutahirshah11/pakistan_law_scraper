@@ -52,7 +52,7 @@ class PakistanLawScraper:
     """Scraper for Pakistan Law Site"""
     
     BASE_URL = "https://www.pakistanlawsite.com"
-    LOGIN_URL = f"{BASE_URL}/Login/Check"
+    LOGIN_URL = f"{BASE_URL}/Login/MainPage"
     SEARCH_URL = f"{BASE_URL}/Login/SearchCaseLaw"
     LOAD_MORE_URL = f"{BASE_URL}/Login/LoadMoreCaseLaw"  # Pagination endpoint
     CASE_FILE_URL = f"{BASE_URL}/Login/GetCaseFile"
@@ -213,7 +213,8 @@ class PakistanLawScraper:
                 login_data = {
                     'UserName': self.username,
                     'Password': self.password,
-                    '__RequestVerificationToken': csrf_token
+                    '__RequestVerificationToken': csrf_token,
+                    'AgreeTerms': 'true',
                 }
 
                 headers = {
