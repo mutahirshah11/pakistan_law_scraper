@@ -1352,13 +1352,44 @@ def backfill_status():
 
 @app.route('/api/relogin', methods=['POST'])
 def relogin():
-    """Force fresh auto-login with credentials"""
+    """Force fresh auto-login with credentials, return diagnostics on failure"""
     if not state.scraper:
         success, msg = setup_scraper()
+        if not success and state.scraper and state.scraper.last_login_diag:
+            diag = state.scraper.last_login_diag
+            detail = diag.get('error', 'Unknown error')
+            status = diag.get('post_status')
+            if status:
+                detail = f"HTTP {status}: {detail}"
+            msg = f"Login failed — {detail}"
         return jsonify({'success': success, 'message': msg})
     if state.scraper.login():
         return jsonify({'success': True, 'message': f'Logged in as {state.scraper.username}'})
-    return jsonify({'success': False, 'message': 'Login failed - check credentials'})
+
+    # Surface diagnostics from the failed login attempt
+    diag = getattr(state.scraper, 'last_login_diag', {})
+    detail = diag.get('error', 'Unknown error')
+    status = diag.get('post_status')
+    snippet = diag.get('post_response_snippet', '')[:200]
+    msg = f"Login failed — {detail}"
+    if status:
+        msg = f"Login failed (HTTP {status}) — {detail}"
+    if snippet:
+        msg += f" | Server response: {snippet}"
+    return jsonify({'success': False, 'message': msg})
+
+
+@app.route('/api/login-debug')
+def login_debug():
+    """Return diagnostic info from the last login attempt for debugging"""
+    if not state.scraper:
+        return jsonify({'error': 'Scraper not initialized', 'diagnostics': {}})
+    diag = getattr(state.scraper, 'last_login_diag', {})
+    return jsonify({
+        'diagnostics': diag,
+        'is_logged_in': state.scraper.is_logged_in,
+        'username': state.scraper.username,
+    })
 
 
 if __name__ == '__main__':

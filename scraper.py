@@ -117,11 +117,17 @@ class PakistanLawScraper:
         self._backoff_until = 0
         self._backoff_extra = 0
 
-        # Set up session headers
+        # Last login attempt diagnostics (for debugging Railway failures)
+        self.last_login_diag = {}
+
+        # Set up session headers (browser-like to reduce WAF false positives)
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Cache-Control': 'max-age=0',
+            'Upgrade-Insecure-Requests': '1',
             'Connection': 'keep-alive',
         })
     
@@ -143,81 +149,167 @@ class PakistanLawScraper:
     
     def login(self) -> bool:
         """
-        Login to Pakistan Law Site
+        Login to Pakistan Law Site with retry and diagnostics.
+
+        Retries up to 2 times with exponential backoff (5s, 15s).
+        Stores diagnostic info in self.last_login_diag for debugging.
 
         Returns:
             True if login successful, False otherwise
         """
-        logger.info(f"Attempting login as {self.username}...")
+        max_attempts = 3
+        backoff_delays = [0, 5, 15]  # seconds before each attempt
 
-        try:
-            # Step 1: Get the login page to extract CSRF token
-            logger.info("Fetching login page...")
-            response = self.session.get(self.LOGIN_URL, timeout=self.timeout)
-            response.raise_for_status()
+        for attempt in range(max_attempts):
+            if backoff_delays[attempt] > 0:
+                logger.info(f"Login retry {attempt}/{max_attempts-1}, waiting {backoff_delays[attempt]}s...")
+                time.sleep(backoff_delays[attempt])
 
-            # Extract CSRF token from the page
-            soup = BeautifulSoup(response.text, 'html.parser')
-            token_input = soup.find('input', {'name': '__RequestVerificationToken'})
-            csrf_token = token_input.get('value', '') if token_input else ''
-
-            if csrf_token:
-                logger.info("Found CSRF token")
-            else:
-                logger.warning("No CSRF token found, proceeding without it")
-
-            # Step 2: Submit login form
-            login_data = {
-                'UserName': self.username,
-                'Password': self.password,
-                '__RequestVerificationToken': csrf_token
+            diag = {
+                'attempt': attempt + 1,
+                'timestamp': datetime.now().isoformat(),
+                'username': self.username,
+                'csrf_found': False,
+                'post_status': None,
+                'post_url': None,
+                'post_response_snippet': '',
+                'cookies_received': {},
+                'error': None,
+                'verified': False,
             }
 
-            # Set form headers
-            headers = {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Origin': self.BASE_URL,
-                'Referer': self.LOGIN_URL,
-            }
+            try:
+                # Fresh session on retry to clear stale cookies/state
+                if attempt > 0:
+                    logger.info("Creating fresh session for retry...")
+                    old_headers = dict(self.session.headers)
+                    self.session = requests.Session()
+                    self.session.headers.update(old_headers)
 
-            logger.info("Submitting login credentials...")
-            response = self.session.post(
-                self.LOGIN_URL,
-                data=login_data,
-                headers=headers,
-                timeout=self.timeout,
-                allow_redirects=True
-            )
+                logger.info(f"Attempting login as {self.username} (attempt {attempt+1}/{max_attempts})...")
 
-            # Step 3: Check cookies were set
-            session_cookie = self.session.cookies.get('ASP.NET_SessionId')
-            if session_cookie:
-                logger.info(f"Session cookie obtained: {session_cookie[:10]}...")
-            else:
-                logger.warning("No session cookie received")
+                # Step 1: Get the login page to extract CSRF token
+                logger.info("Fetching login page...")
+                response = self.session.get(self.LOGIN_URL, timeout=self.timeout)
+                response.raise_for_status()
 
-            # Step 4: ALWAYS verify by trying a test search
-            # This is the only reliable way to know if we're authenticated
-            logger.info("Verifying login with test search...")
-            if self._verify_login():
-                self.is_logged_in = True
-                logger.info("Login verified successfully!")
-                return True
+                # Extract CSRF token from the page
+                soup = BeautifulSoup(response.text, 'html.parser')
+                token_input = soup.find('input', {'name': '__RequestVerificationToken'})
+                csrf_token = token_input.get('value', '') if token_input else ''
 
-            logger.error("Login failed - search verification returned no results")
-            logger.error("Please provide manual cookies using set_cookies()")
-            self.is_logged_in = False
-            return False
+                if csrf_token:
+                    logger.info("Found CSRF token")
+                    diag['csrf_found'] = True
+                else:
+                    # Fail fast — server will reject login without CSRF token
+                    diag['error'] = 'No CSRF token found on login page'
+                    diag['post_response_snippet'] = response.text[:500]
+                    logger.error(f"No CSRF token found (attempt {attempt+1}). Login page snippet: {response.text[:300]}")
+                    self.last_login_diag = diag
+                    continue  # retry
 
-        except requests.exceptions.Timeout:
-            logger.error("Login failed: Request timed out")
-            return False
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Login failed: Network error - {e}")
-            return False
-        except Exception as e:
-            logger.error(f"Login failed: {e}")
-            return False
+                # Step 2: Submit login form
+                login_data = {
+                    'UserName': self.username,
+                    'Password': self.password,
+                    '__RequestVerificationToken': csrf_token
+                }
+
+                headers = {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Origin': self.BASE_URL,
+                    'Referer': self.LOGIN_URL,
+                }
+
+                logger.info("Submitting login credentials...")
+                response = self.session.post(
+                    self.LOGIN_URL,
+                    data=login_data,
+                    headers=headers,
+                    timeout=self.timeout,
+                    allow_redirects=True
+                )
+
+                # Step 3: Diagnostic logging
+                diag['post_status'] = response.status_code
+                diag['post_url'] = str(response.url)
+                diag['post_response_snippet'] = response.text[:500]
+                diag['cookies_received'] = {k: v[:20] + '...' if len(v) > 20 else v
+                                             for k, v in self.session.cookies.get_dict().items()}
+
+                logger.info(f"Login POST response: status={response.status_code}, url={response.url}")
+                logger.info(f"Cookies after login: {list(self.session.cookies.get_dict().keys())}")
+                logger.debug(f"Response snippet: {response.text[:500]}")
+
+                # Step 4: Check HTTP status — fail fast on clear errors
+                if response.status_code in (401, 403):
+                    diag['error'] = f'HTTP {response.status_code} — access denied by server (possible WAF/IP block)'
+                    logger.error(f"Login blocked: HTTP {response.status_code}. Response: {response.text[:300]}")
+                    self.last_login_diag = diag
+                    continue  # retry
+                elif response.status_code == 429:
+                    diag['error'] = f'HTTP 429 — rate limited by server'
+                    logger.error(f"Login rate limited (429). Response: {response.text[:300]}")
+                    self.last_login_diag = diag
+                    continue  # retry
+                elif response.status_code >= 500:
+                    diag['error'] = f'HTTP {response.status_code} — server error'
+                    logger.error(f"Login server error: HTTP {response.status_code}. Response: {response.text[:300]}")
+                    self.last_login_diag = diag
+                    continue  # retry
+
+                # Step 5: Check response content for known error indicators
+                response_lower = response.text.lower()
+                for indicator in ['invalid username', 'invalid password', 'account locked',
+                                  'temporarily blocked', 'access denied', 'too many']:
+                    if indicator in response_lower:
+                        diag['error'] = f'Server response contains "{indicator}"'
+                        logger.error(f"Login rejected: found '{indicator}' in response. Snippet: {response.text[:300]}")
+                        self.last_login_diag = diag
+                        break
+                if diag['error']:
+                    continue  # retry
+
+                # Step 6: Check cookies were set
+                session_cookie = self.session.cookies.get('ASP.NET_SessionId')
+                if session_cookie:
+                    logger.info(f"Session cookie obtained: {session_cookie[:10]}...")
+                else:
+                    logger.warning("No session cookie received after login POST")
+
+                # Step 7: Verify by trying a test search
+                logger.info("Verifying login with test search...")
+                if self._verify_login():
+                    diag['verified'] = True
+                    diag['error'] = None
+                    self.last_login_diag = diag
+                    self.is_logged_in = True
+                    logger.info("Login verified successfully!")
+                    return True
+
+                diag['error'] = 'Search verification failed — login POST may have been silently rejected'
+                logger.error(f"Login verification failed (attempt {attempt+1}). POST was {response.status_code} but search returned no results.")
+                self.last_login_diag = diag
+
+            except requests.exceptions.Timeout:
+                diag['error'] = 'Request timed out'
+                logger.error(f"Login timed out (attempt {attempt+1})")
+                self.last_login_diag = diag
+            except requests.exceptions.RequestException as e:
+                diag['error'] = f'Network error: {e}'
+                logger.error(f"Login network error (attempt {attempt+1}): {e}")
+                self.last_login_diag = diag
+            except Exception as e:
+                diag['error'] = f'Unexpected error: {e}'
+                logger.error(f"Login unexpected error (attempt {attempt+1}): {e}")
+                self.last_login_diag = diag
+
+        # All attempts failed
+        logger.error(f"Login failed after {max_attempts} attempts. Last diagnostics: {self.last_login_diag}")
+        logger.error("Please provide manual cookies using set_cookies()")
+        self.is_logged_in = False
+        return False
 
     def _verify_login(self) -> bool:
         """Verify login by attempting a small test search"""
