@@ -13,7 +13,7 @@ Author: Built for Hassan/Zensbot
 """
 
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment
 import pandas as pd
 import time
 import random
@@ -60,7 +60,8 @@ class PakistanLawScraper:
     """Scraper for Pakistan Law Site"""
     
     BASE_URL = "https://www.pakistanlawsite.com"
-    LOGIN_URL = f"{BASE_URL}/Login/MainPage"
+    LOGIN_URL = f"{BASE_URL}/Login/MainPage"   # GET - login page (for CSRF token)
+    LOGIN_POST_URL = f"{BASE_URL}/Login/Login"  # POST - actual form action
     SEARCH_URL = f"{BASE_URL}/Login/SearchCaseLaw"
     LOAD_MORE_URL = f"{BASE_URL}/Login/LoadMoreCaseLaw"  # Pagination endpoint
     CASE_FILE_URL = f"{BASE_URL}/Login/GetCaseFile"
@@ -145,7 +146,9 @@ class PakistanLawScraper:
         """Enforce minimum interval between requests with adaptive backoff"""
         now = time.time()
         elapsed = now - self._last_request_time
-        wait = self._min_interval - elapsed
+        # Use delay_range for actual throttling (was previously ignoring it)
+        target_delay = random.uniform(self.delay_range[0], self.delay_range[1])
+        wait = target_delay - elapsed
         if time.time() < self._backoff_until:
             wait = max(wait, self._backoff_extra)
         if wait > 0:
@@ -254,7 +257,7 @@ class PakistanLawScraper:
 
                 logger.info("Submitting login credentials...")
                 response = self.session.post(
-                    self.LOGIN_URL,
+                    self.LOGIN_POST_URL,   # /Login/Login (actual form action)
                     data=login_data,
                     headers=headers,
                     timeout=self.timeout,
@@ -436,9 +439,11 @@ class PakistanLawScraper:
                 headers=headers,
                 timeout=self.timeout
             )
-            response.raise_for_status()
+            self._handle_response_status(response, context=f"initial_search {keyword}")
             return self._parse_search_results(response.text, keyword)
 
+        except SessionExpiredError:
+            raise  # Let caller handle re-authentication
         except requests.exceptions.Timeout:
             logger.error(f"Initial search timed out for '{keyword}'")
             return [], 0
@@ -470,9 +475,11 @@ class PakistanLawScraper:
                 headers=headers,
                 timeout=self.timeout
             )
-            response.raise_for_status()
+            self._handle_response_status(response, context=f"load_more {keyword} row {row}")
             return self._parse_search_results(response.text, keyword)
 
+        except SessionExpiredError:
+            raise  # Let caller handle re-authentication
         except requests.exceptions.Timeout:
             logger.error(f"Load more timed out for '{keyword}' at row {row}")
             return [], 0
@@ -494,6 +501,13 @@ class PakistanLawScraper:
         Returns:
             Tuple of (list of case dicts, total count)
         """
+        # Detect session expiry: server returns a full HTML login page instead of results
+        if ('<html' in html.lower()
+                and 'caseLawTable' not in html
+                and 'Citation Name' not in html):
+            raise SessionExpiredError(
+                "Session expired - received login page instead of search results")
+
         soup = BeautifulSoup(html, 'html.parser')
         cases = []
 
@@ -612,8 +626,23 @@ class PakistanLawScraper:
         
         # Pattern: YEAR JOURNAL PAGE COURT
         # Example: 2025 PLC(CS) 1046 SUPREME-COURT-AZAD-KASHMIR
-        
+        # Special case: "PLC N" journal has a space, e.g.: 2025 PLC N 123 LAHORE-HIGH-COURT
+
+        # Known two-word journal abbreviations (journal name contains a space)
+        TWO_WORD_JOURNALS = {'PLC N'}
+
         parts = citation.split()
+
+        # Check for two-word journal match first
+        if len(parts) >= 3:
+            candidate = f"{parts[1]} {parts[2]}"
+            if candidate in TWO_WORD_JOURNALS:
+                result['year'] = parts[0]
+                result['journal'] = candidate
+                result['page'] = parts[3] if len(parts) > 3 else ''
+                result['court'] = ' '.join(parts[4:]) if len(parts) > 4 else ''
+                return result
+
         if len(parts) >= 4:
             result['year'] = parts[0]
             result['journal'] = parts[1]
@@ -626,7 +655,7 @@ class PakistanLawScraper:
         elif len(parts) == 2:
             result['year'] = parts[0]
             result['journal'] = parts[1]
-        
+
         return result
     
     def _parse_index_results(self, html: str) -> list:
@@ -772,9 +801,13 @@ class PakistanLawScraper:
                 pass
 
         # Decode unicode escapes if present (e.g., \u003c -> <)
+        # NOTE: html.encode().decode('unicode_escape') is NOT used here because
+        # it corrupts non-ASCII characters (e.g., Urdu/Arabic text in cases).
+        # Instead, we use regex to replace only \uXXXX sequences safely.
         try:
             if '\\u' in html:
-                html = html.encode().decode('unicode_escape')
+                html = re.sub(r'\\u([0-9a-fA-F]{4})',
+                              lambda m: chr(int(m.group(1), 16)), html)
         except Exception:
             pass
 
@@ -785,11 +818,13 @@ class PakistanLawScraper:
         for element in soup(['script', 'style', 'head', 'meta', 'link', 'title']):
             element.decompose()
 
-        # Remove Word/Office XML comments (<!--[if gte mso 9]> ... <![endif]-->)
-        import re as regex_module
-        for comment in soup.find_all(string=lambda t: t and ('<!--' in str(t) or 'mso' in str(t).lower())):
-            if hasattr(comment, 'extract'):
-                comment.extract()
+        # Remove HTML comments (includes Word/Office XML like <!--[if gte mso 9]>...<![endif]-->)
+        for comment in soup.find_all(string=lambda t: isinstance(t, Comment)):
+            comment.extract()
+        # Also remove text nodes containing Word style markers (mso-*)
+        for node in soup.find_all(string=lambda t: t and 'mso' in str(t).lower()):
+            if hasattr(node, 'extract'):
+                node.extract()
 
         # Get text content
         text = soup.get_text(separator='\n')
@@ -995,8 +1030,20 @@ class PakistanLawScraper:
             keyword_cases = []
             
             while True:
-                cases, total = self.search_cases(keyword=keyword, year=year, row=row)
-                
+                try:
+                    cases, total = self.search_cases(keyword=keyword, year=year, row=row)
+                except SessionExpiredError:
+                    logger.warning(f"Session expired searching '{keyword}' at row {row}, re-authenticating...")
+                    if not self._try_reauth():
+                        logger.error(f"Re-auth failed, skipping remaining results for '{keyword}'")
+                        break
+                    # Retry same row after successful re-auth
+                    try:
+                        cases, total = self.search_cases(keyword=keyword, year=year, row=row)
+                    except Exception as e:
+                        logger.error(f"Retry after re-auth also failed for '{keyword}': {e}")
+                        break
+
                 if not cases:
                     logger.info(f"No more results for '{keyword}' at row {row}")
                     break
