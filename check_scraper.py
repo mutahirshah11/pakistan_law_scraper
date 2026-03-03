@@ -7,7 +7,7 @@ Run karo: python check_scraper.py
 """
 
 from scraper import PakistanLawScraper
-import json
+import json 
 import os
 
 # ─── Credentials ──────────────────────────────────────────
