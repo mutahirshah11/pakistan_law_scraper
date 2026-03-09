@@ -1552,7 +1552,7 @@ class PakistanLawScraper:
 
                 # Mark completed — but if we found cases and EVERY insert failed,
                 # mark as error so it retries on next run (prevents silent data loss)
-                if new_cases and len(new_cases) == 0 and len(cases) > 0 and failed_inserts > 0:
+                if len(new_cases) == 0 and len(cases) > 0 and failed_inserts > 0:
                     err_msg = f"All {failed_inserts} DB inserts failed for {len(cases)} cases"
                     logger.error(f"{journal} {year}: {err_msg} — marking as error for retry")
                     progress['journals'][journal][year_str] = {'status': 'error', 'error_message': err_msg}
