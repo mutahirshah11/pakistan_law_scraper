@@ -75,7 +75,7 @@ def main():
             count = None
             for attempt in range(3):
                 try:
-                    cases = scraper.index_search(year=year, book=journal)
+                    cases = scraper.index_search_full(year=year, book=journal)
                     count = len(cases)
                     break
                 except SessionExpiredError:

@@ -406,14 +406,13 @@ def get_cases_missing_details(limit=500):
 
 
 def reset_all():
-    """Full reset: delete all rows from scrape_progress and cases tables."""
+    """Full reset: truncate cases and scrape_progress, resetting id sequence to 1."""
     conn = get_connection()
     try:
         with conn.cursor() as cur:
-            cur.execute("DELETE FROM scrape_progress")
-            cur.execute("DELETE FROM cases")
+            cur.execute("TRUNCATE TABLE cases, scrape_progress RESTART IDENTITY")
         conn.commit()
-        logger.info("Full reset: deleted all rows from scrape_progress and cases")
+        logger.info("Full reset: truncated cases + scrape_progress, sequences reset to 1")
     finally:
         conn.close()
 
