@@ -730,18 +730,18 @@ class PakistanLawScraper:
         logger.info(f"Parsed {len(cases)} cases from index results")
         return cases
 
-    def index_search(self, year: int, book: str, court: str = "", row: int = 0) -> list:
+    def index_search(self, year: int, book: str, court: str = "") -> list:
         """
-        Search the citation index for a specific journal + year combination
+        Search the citation index for a specific journal + year combination.
+        The endpoint returns ALL matching cases in a single response (no server-side pagination).
 
         Args:
             year: The year to search (e.g., 2024)
             book: Journal name (e.g., 'PLD', 'PLCN')
             court: Optional court filter
-            row: Starting row for pagination (0, 50, 100, ...)
 
         Returns:
-            List of case dicts for this page (empty list = no more results)
+            List of all case dicts for this journal+year
         """
         self._throttle()
 
@@ -752,7 +752,6 @@ class PakistanLawScraper:
             'year': str(year),
             'book': post_book,
             'court': court,
-            'Row': row,
         }
 
         headers = {
@@ -1346,48 +1345,28 @@ class PakistanLawScraper:
                                 self._save_progress(progress_file, progress)
                             continue
 
-                # Paginated fetch — loop over all pages until empty
-                all_page_cases = []
+                # Fetch all cases for this journal+year (IndexSearch returns all at once)
+                cases = None
                 last_error = None
-                fetch_error = False
-                fetch_stopped = False
-                row = 0
-                while True:
-                    if should_stop and should_stop():
-                        fetch_stopped = True
+                for attempt in range(3):
+                    try:
+                        cases = self.index_search(year, journal)
+                        last_request_time = time.time()
                         break
-
-                    page_cases = None
-                    for attempt in range(3):
-                        try:
-                            page_cases = self.index_search(year, journal, row=row)
-                            last_request_time = time.time()
+                    except SessionExpiredError:
+                        logger.warning(f"Session expired during {journal} {year}, re-authenticating...")
+                        if self._try_reauth():
+                            continue
+                        else:
+                            last_error = 'Session expired, re-auth failed'
                             break
-                        except SessionExpiredError:
-                            logger.warning(f"Session expired during {journal} {year} row {row}, re-authenticating...")
-                            if self._try_reauth():
-                                continue
-                            else:
-                                last_error = 'Session expired, re-auth failed'
-                                break
-                        except Exception as e:
-                            last_error = str(e)
-                            backoff = 10 * (attempt + 1)
-                            logger.warning(f"Attempt {attempt+1}/3 failed for {journal} {year} row {row}: {e}, retrying in {backoff}s")
-                            time.sleep(backoff)
+                    except Exception as e:
+                        last_error = str(e)
+                        backoff = 10 * (attempt + 1)
+                        logger.warning(f"Attempt {attempt+1}/3 failed for {journal} {year}: {e}, retrying in {backoff}s")
+                        time.sleep(backoff)
 
-                    if page_cases is None:
-                        fetch_error = True
-                        break
-                    if not page_cases:
-                        break  # no more results for this combo
-                    all_page_cases.extend(page_cases)
-                    logger.info(f"  {journal} {year} row {row}: {len(page_cases)} cases (running total: {len(all_page_cases)})")
-                    row += 50
-
-                cases = all_page_cases
-
-                if fetch_error and not cases:
+                if cases is None:
                     progress['journals'][journal][year_str] = {
                         'status': 'error',
                         'error_message': last_error or 'Unknown error'
@@ -1476,7 +1455,7 @@ class PakistanLawScraper:
                 if not db:
                     self._append_cases_to_csv(new_cases, output_file)
 
-                if stopped_mid_combo or fetch_stopped:
+                if stopped_mid_combo:
                     # Mark as pending so it resumes correctly next time
                     progress['journals'][journal][year_str] = {
                         'status': 'pending',
@@ -1603,48 +1582,28 @@ class PakistanLawScraper:
                                              error_message='Session expired, re-auth failed')
                             continue
 
-                # Paginated fetch — loop over all pages until empty
-                all_page_cases = []
+                # Fetch all cases for this journal+year (IndexSearch returns all at once)
+                cases = None
                 last_error = None
-                fetch_error = False
-                w_fetch_stopped = False
-                row = 0
-                while True:
-                    if should_stop and should_stop():
-                        w_fetch_stopped = True
+                for attempt in range(3):
+                    try:
+                        cases = scraper.index_search(year, journal)
+                        last_request_time = time.time()
                         break
-
-                    page_cases = None
-                    for attempt in range(3):
-                        try:
-                            page_cases = scraper.index_search(year, journal, row=row)
-                            last_request_time = time.time()
+                    except SessionExpiredError:
+                        logger.warning(f"W{worker_id}: Session expired on {journal} {year_str}, re-auth...")
+                        if scraper._try_reauth():
+                            continue
+                        else:
+                            last_error = 'Session expired, re-auth failed'
                             break
-                        except SessionExpiredError:
-                            logger.warning(f"W{worker_id}: Session expired on {journal} {year_str} row {row}, re-auth...")
-                            if scraper._try_reauth():
-                                continue
-                            else:
-                                last_error = 'Session expired, re-auth failed'
-                                break
-                        except Exception as e:
-                            last_error = str(e)
-                            backoff = 10 * (attempt + 1)
-                            logger.warning(f"W{worker_id}: Attempt {attempt+1}/3 for {journal} {year_str} row {row}: {e}, retry in {backoff}s")
-                            time.sleep(backoff)
+                    except Exception as e:
+                        last_error = str(e)
+                        backoff = 10 * (attempt + 1)
+                        logger.warning(f"W{worker_id}: Attempt {attempt+1}/3 for {journal} {year_str}: {e}, retry in {backoff}s")
+                        time.sleep(backoff)
 
-                    if page_cases is None:
-                        fetch_error = True
-                        break
-                    if not page_cases:
-                        break  # no more results
-                    all_page_cases.extend(page_cases)
-                    logger.info(f"  W{worker_id}: {journal} {year_str} row {row}: {len(page_cases)} cases (total: {len(all_page_cases)})")
-                    row += 50
-
-                cases = all_page_cases
-
-                if fetch_error and not cases:
+                if cases is None:
                     db.update_progress(journal, year_str, 'error',
                                      error_message=last_error or 'Unknown error')
                     continue
@@ -1728,7 +1687,7 @@ class PakistanLawScraper:
                     if on_case_scraped:
                         on_case_scraped(current_total)
 
-                if stopped or w_fetch_stopped:
+                if stopped:
                     db.update_progress(journal, year_str, 'pending')
                     logger.info(f"W{worker_id}: Stopped mid-combo {journal} {year_str}, saved {new_count} cases")
                     break

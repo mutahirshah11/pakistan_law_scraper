@@ -111,24 +111,35 @@ def check_case_details(scraper, case_id):
 
 
 def check_index_search(scraper):
-    separator("STEP 5: INDEX SEARCH CHECK (PLD 2025)")
-    print("Fetching citation index for PLD 2025...")
+    separator("STEP 5: INDEX SEARCH CHECK (PLD 2024 + PLD 1980)")
+    print("Checking how many cases IndexSearch returns per journal+year...\n")
 
-    cases = scraper.index_search(year=2025, book="PLD")
+    # Test a recent year
+    cases_2024 = scraper.index_search(year=2024, book="PLD")
+    print(f"  PLD 2024 : {len(cases_2024)} cases")
 
-    if cases:
-        print(f"\n[OK] Index search worked!")
-        print(f"     Total PLD 2025 cases: {len(cases)}")
+    # Test an older year
+    cases_1980 = scraper.index_search(year=1980, book="PLD")
+    print(f"  PLD 1980 : {len(cases_1980)} cases")
+
+    # Test another journal
+    cases_scmr = scraper.index_search(year=2024, book="SCMR")
+    print(f"  SCMR 2024: {len(cases_scmr)} cases")
+
+    all_cases = cases_2024
+    if all_cases:
+        print(f"\n[OK] Index search working!")
+        print(f"     Total PLD 2024 cases: {len(cases_2024)}")
         print()
-        print("  First 3 index cases:")
-        for i, c in enumerate(cases[:3], 1):
+        print("  First 3 PLD 2024 cases:")
+        for i, c in enumerate(cases_2024[:3], 1):
             print(f"  [{i}] ID      : {c.get('case_id', 'N/A')}")
             print(f"      Citation: {c.get('citation', 'N/A')}")
             print(f"      Parties : {c.get('parties_full', 'N/A')[:60]}")
     else:
         print("\n[FAIL] Index search returned nothing!")
 
-    return cases
+    return all_cases
 
 
 def check_csv_output(scraper):
