@@ -127,6 +127,7 @@ class PakistanLawScraper:
         self._backoff_extra = 0
         self._min_interval = 0.15
         self._last_request_time = 0
+        self._throttle_lock = threading.Lock()  # thread-safe throttle
 
         # Last login attempt diagnostics (for debugging Railway failures)
         self.last_login_diag = {}
@@ -143,17 +144,17 @@ class PakistanLawScraper:
         })
     
     def _throttle(self):
-        """Enforce minimum interval between requests with adaptive backoff"""
-        now = time.time()
-        elapsed = now - self._last_request_time
-        # Use delay_range for actual throttling (was previously ignoring it)
-        target_delay = random.uniform(self.delay_range[0], self.delay_range[1])
-        wait = target_delay - elapsed
-        if time.time() < self._backoff_until:
-            wait = max(wait, self._backoff_extra)
-        if wait > 0:
-            time.sleep(wait)
-        self._last_request_time = time.time()
+        """Enforce minimum interval between requests with adaptive backoff (thread-safe)"""
+        with self._throttle_lock:
+            now = time.time()
+            elapsed = now - self._last_request_time
+            target_delay = random.uniform(self.delay_range[0], self.delay_range[1])
+            wait = target_delay - elapsed
+            if time.time() < self._backoff_until:
+                wait = max(wait, self._backoff_extra)
+            if wait > 0:
+                time.sleep(wait)
+            self._last_request_time = time.time()
 
     def _handle_response_status(self, response, context="request"):
         """Check HTTP response status and raise on errors instead of swallowing.
@@ -671,6 +672,10 @@ class PakistanLawScraper:
         Raises:
             SessionExpiredError: If the response indicates session expiry
         """
+        # Detect empty/corrupt response — treat as transient error, not silent 0-result
+        if not html or len(html.strip()) < 20:
+            raise SessionExpiredError("Empty or corrupt response from IndexSearch — possible session expiry or network glitch")
+
         # Detect session expiry: full HTML page without expected table
         if '<html' in html.lower() and 'archivedpatientGrid' not in html:
             raise SessionExpiredError("Session expired - received login page instead of results")
