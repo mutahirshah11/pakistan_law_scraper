@@ -672,9 +672,11 @@ class PakistanLawScraper:
         Raises:
             SessionExpiredError: If the response indicates session expiry
         """
-        # Detect empty/corrupt response — treat as transient error, not silent 0-result
-        if not html or len(html.strip()) < 20:
-            raise SessionExpiredError("Empty or corrupt response from IndexSearch — possible session expiry or network glitch")
+        # Detect empty/corrupt response — legitimate empty-result responses still contain
+        # a full HTML table structure (200+ chars). Anything under 100 chars is a network
+        # glitch or session issue — raise so the retry loop can handle it.
+        if not html or len(html.strip()) < 100:
+            raise SessionExpiredError(f"Empty/corrupt IndexSearch response ({len(html)} chars) — possible session expiry or network glitch")
 
         # Detect session expiry: full HTML page without expected table
         if '<html' in html.lower() and 'archivedpatientGrid' not in html:
@@ -779,11 +781,12 @@ class PakistanLawScraper:
         except SessionExpiredError:
             raise  # Let caller handle re-auth
         except requests.exceptions.Timeout:
-            logger.error(f"Index search timed out for {book} {year}")
-            return []
+            # Raise so the caller's retry loop can retry with backoff.
+            # Do NOT return [] — an empty list is indistinguishable from
+            # "no cases for this year" and would mark the combo completed.
+            raise RuntimeError(f"Index search timed out for {book} {year}")
         except requests.exceptions.RequestException as e:
-            logger.error(f"Index search failed for {book} {year}: {e}")
-            return []
+            raise RuntimeError(f"Index search network error for {book} {year}: {e}")
 
     def _clean_html_content(self, html: str) -> str:
         """
@@ -1473,18 +1476,28 @@ class PakistanLawScraper:
                     logger.info(f"Stop requested mid-combo {journal} {year}, wrote {len(new_cases)} partial cases")
                     break
 
-                # Mark completed
-                progress['journals'][journal][year_str] = {
-                    'status': 'completed',
-                    'cases_found': len(cases)
-                }
-                progress['completed_count'] = completed_count + 1
-                completed_count += 1
-                progress['total_cases_found'] = progress.get('total_cases_found', 0) + len(cases)
-                if db:
-                    db.update_progress(journal, year_str, 'completed', cases_found=len(cases))
+                # Mark completed — but if we found cases and EVERY insert failed,
+                # mark as error so it retries on next run (prevents silent data loss)
+                if new_cases and len(new_cases) == 0 and len(cases) > 0 and failed_inserts > 0:
+                    err_msg = f"All {failed_inserts} DB inserts failed for {len(cases)} cases"
+                    logger.error(f"{journal} {year}: {err_msg} — marking as error for retry")
+                    progress['journals'][journal][year_str] = {'status': 'error', 'error_message': err_msg}
+                    if db:
+                        db.update_progress(journal, year_str, 'error', error_message=err_msg)
+                    else:
+                        self._save_progress(progress_file, progress)
                 else:
-                    self._save_progress(progress_file, progress)
+                    progress['journals'][journal][year_str] = {
+                        'status': 'completed',
+                        'cases_found': len(cases)
+                    }
+                    progress['completed_count'] = completed_count + 1
+                    completed_count += 1
+                    progress['total_cases_found'] = progress.get('total_cases_found', 0) + len(cases)
+                    if db:
+                        db.update_progress(journal, year_str, 'completed', cases_found=len(cases))
+                    else:
+                        self._save_progress(progress_file, progress)
 
                 logger.info(f"[{completed_count}/{progress['total_combinations']}] {journal} {year}: {len(cases)} found, {len(new_cases)} new")
 
@@ -1535,9 +1548,10 @@ class PakistanLawScraper:
         counters_lock = threading.Lock()
         counters = {'total_new': 0, 'completed': completed_count, 'failed_inserts': 0}
 
-        # Create worker scrapers — reuse self as worker 0
-        workers = [self]
-        for i in range(1, num_workers):
+        # Create worker scrapers — each worker gets its OWN instance + session
+        # so requests.Session is never shared across threads
+        workers = []
+        for i in range(num_workers):
             w = PakistanLawScraper(
                 username=self.username,
                 password=self.password,
@@ -1710,7 +1724,7 @@ class PakistanLawScraper:
                     on_progress({
                         'completed_count': comp,
                         'total_combinations': total_combos,
-                        'journals': {journal: {year_str: {'status': 'in_progress'}}}
+                        'journals': {journal: {year_str: {'status': 'completed', 'cases_found': len(cases)}}}
                     })
 
         # Launch workers
