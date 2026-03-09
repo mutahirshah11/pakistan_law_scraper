@@ -1,0 +1,350 @@
+2026-03-09 17:48:24,436 - INFO - Attempting login as LHCBAR8 (attempt 1/3)...
+2026-03-09 17:48:24,436 - INFO - Fetching login page...
+2026-03-09 17:48:27,188 - INFO - Found CSRF token
+2026-03-09 17:48:27,188 - INFO - Submitting login credentials...
+2026-03-09 17:48:27,510 - INFO - Login POST response: status=200, url=https://www.pakistanlawsite.com/Login/Login
+2026-03-09 17:48:27,510 - INFO - Cookies after login: ['__RequestVerificationToken', 'ASP.NET_SessionId']
+2026-03-09 17:48:27,510 - INFO - Session cookie obtained: 2uuxtdwtf0...
+2026-03-09 17:48:27,511 - INFO - Verifying login with test search...
+2026-03-09 17:48:28,734 - INFO - Login verified successfully!
+2026-03-09 17:48:28,735 - INFO - Parsed 0 cases from index results
+2026-03-09 17:48:28,735 - INFO - Parsed 0 cases from index results
+2026-03-09 17:48:28,737 - INFO - Parsed 0 cases from search results for 'PLD' (Total: 0)
+2026-03-09 17:48:31,897 - INFO - Parsed 335 cases from index results
+2026-03-09 17:48:33,233 - INFO - Parsed 331 cases from index results
+2026-03-09 17:48:34,167 - INFO - Parsed 211 cases from index results
+2026-03-09 17:48:36,559 - INFO - Parsed 231 cases from index results
+2026-03-09 17:48:38,905 - INFO - Parsed 272 cases from index results
+2026-03-09 17:48:40,257 - INFO - Parsed 272 cases from index results
+2026-03-09 17:48:41,268 - INFO - Parsed 364 cases from index results
+2026-03-09 17:48:44,056 - INFO - Parsed 799 cases from index results
+2026-03-09 17:48:45,775 - INFO - Parsed 478 cases from index results
+2026-03-09 17:48:47,866 - INFO - Parsed 311 cases from index results
+2026-03-09 17:48:49,575 - INFO - Parsed 321 cases from index results
+2026-03-09 17:48:50,801 - INFO - Parsed 266 cases from index results
+2026-03-09 17:48:52,290 - INFO - Parsed 437 cases from index results
+2026-03-09 17:48:53,607 - INFO - Parsed 384 cases from index results
+2026-03-09 17:48:55,853 - INFO - Parsed 407 cases from index results
+2026-03-09 17:48:57,518 - INFO - Parsed 290 cases from index results
+2026-03-09 17:48:58,590 - INFO - Parsed 240 cases from index results
+2026-03-09 17:48:58,801 - INFO - Parsed 0 cases from index results
+2026-03-09 17:49:00,470 - INFO - Parsed 233 cases from index results
+2026-03-09 17:49:02,024 - INFO - Parsed 145 cases from index results
+2026-03-09 17:49:03,091 - INFO - Parsed 176 cases from index results
+2026-03-09 17:49:03,202 - INFO - Parsed 0 cases from index results
+2026-03-09 17:49:06,719 - INFO - Parsed 815 cases from index results
+2026-03-09 17:49:14,291 - INFO - Parsed 1042 cases from index results
+2026-03-09 17:49:18,533 - INFO - Parsed 429 cases from index results
+2026-03-09 17:49:21,267 - INFO - Parsed 353 cases from index results
+2026-03-09 17:49:22,481 - INFO - Parsed 511 cases from index results
+2026-03-09 17:49:24,098 - INFO - Parsed 466 cases from index results
+2026-03-09 17:49:26,415 - INFO - Parsed 432 cases from index results
+2026-03-09 17:49:28,666 - INFO - Parsed 259 cases from index results
+2026-03-09 17:49:30,156 - INFO - Parsed 213 cases from index results
+2026-03-09 17:49:31,191 - INFO - Parsed 247 cases from index results
+2026-03-09 17:49:31,899 - INFO - Parsed 171 cases from index results
+2026-03-09 17:49:32,744 - INFO - Parsed 77 cases from index results
+2026-03-09 17:49:33,222 - INFO - Parsed 44 cases from index results
+2026-03-09 17:49:33,588 - INFO - Parsed 41 cases from index results
+2026-03-09 17:49:35,984 - INFO - Parsed 261 cases from index results
+2026-03-09 17:49:37,413 - INFO - Parsed 235 cases from index results
+2026-03-09 17:49:38,445 - INFO - Parsed 231 cases from index results
+2026-03-09 17:49:38,819 - INFO - Parsed 178 cases from index results
+2026-03-09 17:49:40,845 - INFO - Parsed 638 cases from index results
+2026-03-09 17:49:44,157 - INFO - Parsed 332 cases from index results
+2026-03-09 17:49:46,466 - INFO - Parsed 279 cases from index results
+2026-03-09 17:49:47,478 - INFO - Parsed 152 cases from index results
+2026-03-09 17:49:49,150 - INFO - Parsed 435 cases from index results
+2026-03-09 17:49:51,812 - INFO - Parsed 482 cases from index results
+2026-03-09 17:49:54,565 - INFO - Parsed 344 cases from index results
+2026-03-09 17:49:56,033 - INFO - Parsed 278 cases from index results
+2026-03-09 17:49:56,759 - INFO - Parsed 128 cases from index results
+2026-03-09 17:49:57,232 - INFO - Parsed 0 cases from index results
+2026-03-09 17:49:57,921 - INFO - Parsed 0 cases from index results
+2026-03-09 17:49:59,034 - INFO - Parsed 0 cases from index results
+2026-03-09 17:50:00,011 - INFO - Parsed 52 cases from index results
+2026-03-09 17:50:00,240 - INFO - Parsed 0 cases from index results
+2026-03-09 17:50:00,926 - INFO - Parsed 0 cases from index results
+2026-03-09 17:50:01,498 - INFO - Parsed 0 cases from index results
+2026-03-09 17:50:04,116 - INFO - Parsed 159 cases from index results
+2026-03-09 17:50:04,407 - INFO - Parsed 0 cases from index results
+2026-03-09 17:50:05,337 - INFO - Parsed 0 cases from index results
+2026-03-09 17:50:07,576 - INFO - Parsed 203 cases from index results
+2026-03-09 17:50:07,865 - INFO - Parsed 0 cases from index results
+2026-03-09 17:50:09,133 - INFO - Parsed 0 cases from index results
+2026-03-09 17:50:09,394 - INFO - Parsed 0 cases from index results
+2026-03-09 17:50:10,537 - INFO - Parsed 0 cases from index results
+2026-03-09 17:50:11,319 - INFO - Parsed 0 cases from index results
+2026-03-09 17:50:12,113 - INFO - Parsed 39 cases from index results
+2026-03-09 17:50:13,092 - INFO - Parsed 0 cases from index results
+2026-03-09 17:50:14,747 - INFO - Parsed 272 cases from index results
+2026-03-09 17:50:20,611 - INFO - Parsed 273 cases from index results
+2026-03-09 17:50:30,126 - INFO - Stop requested mid-combo PLD 2025, wrote 5 partial cases
+2026-03-09 17:50:30,127 - INFO - Index scrape complete: 5 new cases scraped
+2026-03-09 17:50:32,340 - INFO - Parsed 272 cases from index results
+
+=================================================================
+  TEST 1: LOGIN
+=================================================================
+  [PASS] Login succeeds
+
+=================================================================
+  TEST 2: SESSION EXPIRY DETECTION (unit test, no network)
+=================================================================
+  [PASS] Empty HTML -> returns [] (not crash)
+         got 0 cases
+         [WARN] Empty response returns [] -> combo will be marked 'completed 0 cases'
+         This means session expiry without HTML tag is SILENT DATA LOSS
+  [PASS] Login page HTML -> raises SessionExpiredError
+  [PASS] Empty grid HTML -> returns []
+         got 0 cases
+  [PASS] Search login page -> raises SessionExpiredError
+  [PASS] Empty search HTML -> returns ([], 0) without crash
+         cases=0, total=0
+         [WARN] Empty search response silently returns 0 results
+
+=================================================================
+  TEST 3: CITATION PARSER
+=================================================================
+  [PASS] _parse_citation: '2024 PLD 1 SUPREME-COURT'
+  [PASS] _parse_citation: '2025 SCMR 1706 SUPREME-COURT'
+  [PASS] _parse_citation: '2024  PLD  272  LAHORE-HIGH-COURT'
+  [PASS] _parse_citation: '2020 PLC(CS) 100 FEDERAL-SERVICE-TRIBUNAL'
+  [PASS] _parse_citation: '2019 PLC N 50 LAHORE-HIGH-COURT'
+  [PASS] _parse_citation: '2010 CLC 999'
+  [PASS] _parse_citation: '2000 YLR 1'
+  [PASS] _parse_citation: ''
+
+=================================================================
+  TEST 4: THROTTLE THREAD SAFETY
+=================================================================
+  [PASS] _throttle() called from 5 threads simultaneously — no crash
+  [FAIL] _throttle() enforces some delay between calls
+         min gap between calls: 0.028s
+
+=================================================================
+  TEST 5: CASE COUNT ESTIMATION (all 16 journals × 6 sample years)
+=================================================================
+  Sampling years: 1980, 1990, 2000, 2010, 2020, 2024 per journal
+  This takes ~3-4 minutes...
+
+  PLD          1980:  335 cases
+  PLD          1990:  331 cases
+  PLD          2000:  211 cases
+  PLD          2010:  231 cases
+  PLD          2020:  272 cases
+  PLD          2024:  272 cases
+               -> avg 275/year × 80 years = ~22,026 cases
+
+  SCMR         1980:  364 cases
+  SCMR         1990:  799 cases
+  SCMR         2000:  478 cases
+  SCMR         2010:  311 cases
+  SCMR         2020:  321 cases
+  SCMR         2024:  266 cases
+               -> avg 423/year × 55 years = ~23,274 cases
+
+  CLC          1990:  437 cases
+  CLC          2000:  384 cases
+  CLC          2010:  407 cases
+  CLC          2020:  290 cases
+  CLC          2024:  240 cases
+               -> avg 352/year × 37 years = ~13,009 cases
+
+  CLD          2000:    0 cases
+  CLD          2010:  233 cases
+  CLD          2020:  145 cases
+  CLD          2024:  176 cases
+               -> avg 138/year × 28 years = ~3,878 cases
+
+  YLR          1990:    0 cases
+  YLR          2000:  815 cases
+  YLR          2010: 1042 cases
+  YLR          2020:  429 cases
+  YLR          2024:  353 cases
+               -> avg 528/year × 37 years = ~19,528 cases
+
+  PCrLJ        1990:  511 cases
+  PCrLJ        2000:  466 cases
+  PCrLJ        2010:  432 cases
+  PCrLJ        2020:  259 cases
+  PCrLJ        2024:  213 cases
+               -> avg 376/year × 37 years = ~13,919 cases
+
+  PLC          1990:  247 cases
+  PLC          2000:  171 cases
+  PLC          2010:   77 cases
+  PLC          2020:   44 cases
+  PLC          2024:   41 cases
+               -> avg 116/year × 37 years = ~4,292 cases
+
+  PLC(CS)      2010:  261 cases
+  PLC(CS)      2020:  235 cases
+  PLC(CS)      2024:  231 cases
+               -> avg 242/year × 22 years = ~5,331 cases
+
+  PTD          1990:  178 cases
+  PTD          2000:  638 cases
+  PTD          2010:  332 cases
+  PTD          2020:  279 cases
+  PTD          2024:  152 cases
+               -> avg 316/year × 37 years = ~11,684 cases
+
+  MLD          2000:  435 cases
+  MLD          2010:  482 cases
+  MLD          2020:  344 cases
+  MLD          2024:  278 cases
+               -> avg 385/year × 28 years = ~10,773 cases
+
+  GBLR         2010:  128 cases
+  GBLR         2020:    0 cases
+  GBLR         2024:    0 cases
+               -> avg 43/year × 18 years = ~768 cases
+
+  CLCN         2010:    0 cases
+  CLCN         2020:   52 cases
+  CLCN         2024:    0 cases
+               -> avg 17/year × 25 years = ~433 cases
+
+  YLRN         2000:    0 cases
+  YLRN         2010:    0 cases
+  YLRN         2020:  159 cases
+  YLRN         2024:    0 cases
+               -> avg 40/year × 28 years = ~1,113 cases
+
+  PCRLJN       2010:    0 cases
+  PCRLJN       2020:  203 cases
+  PCRLJN       2024:    0 cases
+               -> avg 68/year × 25 years = ~1,691 cases
+
+  PLCN         2010:    0 cases
+  PLCN         2020:    0 cases
+  PLCN         2024:    0 cases
+
+  PLC(CS)N     2010:    0 cases
+  PLC(CS)N     2020:   39 cases
+  PLC(CS)N     2024:    0 cases
+               -> avg 13/year × 17 years = ~221 cases
+
+
+=================================================================
+  ESTIMATION SUMMARY
+=================================================================
+  JOURNAL          AVG/YR  YEARS   ESTIMATE
+  ----------------------------------------
+  PLD                 275     80   ~  22,026
+  SCMR                423     55   ~  23,274
+  CLC                 352     37   ~  13,009
+  CLD                 138     28   ~   3,878
+  YLR                 528     37   ~  19,528
+  PCrLJ               376     37   ~  13,919
+  PLC                 116     37   ~   4,292
+  PLC(CS)             242     22   ~   5,331
+  PTD                 316     37   ~  11,684
+  MLD                 385     28   ~  10,773
+  GBLR                 43     18   ~     768
+  CLCN                 17     25   ~     433
+  YLRN                 40     28   ~   1,113
+  PCRLJN               68     25   ~   1,691
+  PLCN                  0     25   ~       0
+  PLC(CS)N             13     17   ~     221
+  ----------------------------------------
+  TOTAL ESTIMATE                   ~ 131,940
+
+  Journals with data: 15/16
+  ESTIMATED TOTAL CASES: ~131,940
+  [PASS] Total case estimation completed
+         ~131,940 cases across all journals
+
+=================================================================
+  TEST 6: CASE DETAILS FETCH
+=================================================================
+  Getting a live case ID from PLD 2024...
+  Using case_id: 2024F1
+  [PASS] index_search returns cases for details test
+         case_id=2024F1
+  [PASS] get_case_details returns head_notes
+         5006 chars
+  [PASS] get_case_details returns full_description
+         15686 chars
+  [PASS] get_case_details(head_only) works
+         dict_keys(['head_notes'])
+  [PASS] get_case_details(desc_only) works
+         dict_keys(['full_description'])
+  [PASS] Invalid case_id -> raises FieldFetchError/EmptyContentError
+
+=================================================================
+  TEST 7: END-TO-END MINI SCRAPE (PLD 2025, max 5 cases with details)
+=================================================================
+  Running scrape_all_index for PLD 2025 only (max 5 cases)...
+
+  [PASS] scrape_all_index runs without crashing
+  [PASS] scrape_all_index scrapes > 0 cases
+         cases scraped: 5
+  [PASS] Output CSV created
+         _test_output.csv
+  [PASS] CSV has expected columns
+         columns: ['citation', 'year', 'journal', 'page', 'court', 'parties_full', 'petitioner', 'respondent', 'case_id', 'head_notes', 'full_description', 'scraped_at', 'source', 'search_journal', 'search_year']
+  [PASS] CSV rows have head_notes content
+         sample head_notes len: 3262
+  [PASS] CSV rows have full_description content
+         sample desc len: 35495
+
+=================================================================
+  TEST 8: DUPLICATE DEDUP (processed_ids set)
+=================================================================
+  [PASS] No duplicates in single journal+year results
+         duplicates found: []
+  [PASS] All case_ids unique within one combo
+         272 total, 272 unique
+
+=================================================================
+  TEST 9: SESSION STILL VALID AFTER ALL TESTS
+=================================================================
+  [PASS] Session still valid after all tests
+
+  Total time: 2.2 minutes
+
+=================================================================
+  FINAL REPORT
+=================================================================
+  [PASS] Login succeeds
+  [PASS] Empty HTML -> returns [] (not crash)
+  [PASS] Login page HTML -> raises SessionExpiredError
+  [PASS] Empty grid HTML -> returns []
+  [PASS] Search login page -> raises SessionExpiredError
+  [PASS] Empty search HTML -> returns ([], 0) without crash
+  [PASS] _parse_citation: '2024 PLD 1 SUPREME-COURT'
+  [PASS] _parse_citation: '2025 SCMR 1706 SUPREME-COURT'
+  [PASS] _parse_citation: '2024  PLD  272  LAHORE-HIGH-COURT'
+  [PASS] _parse_citation: '2020 PLC(CS) 100 FEDERAL-SERVICE-TRIBUNAL'
+  [PASS] _parse_citation: '2019 PLC N 50 LAHORE-HIGH-COURT'
+  [PASS] _parse_citation: '2010 CLC 999'
+  [PASS] _parse_citation: '2000 YLR 1'
+  [PASS] _parse_citation: ''
+  [PASS] _throttle() called from 5 threads simultaneously — no crash
+  [FAIL] _throttle() enforces some delay between calls
+  [PASS] Total case estimation completed
+  [PASS] index_search returns cases for details test
+  [PASS] get_case_details returns head_notes
+  [PASS] get_case_details returns full_description
+  [PASS] get_case_details(head_only) works
+  [PASS] get_case_details(desc_only) works
+  [PASS] Invalid case_id -> raises FieldFetchError/EmptyContentError
+  [PASS] scrape_all_index runs without crashing
+  [PASS] scrape_all_index scrapes > 0 cases
+  [PASS] Output CSV created
+  [PASS] CSV has expected columns
+  [PASS] CSV rows have head_notes content
+  [PASS] CSV rows have full_description content
+  [PASS] No duplicates in single journal+year results
+  [PASS] All case_ids unique within one combo
+  [PASS] Session still valid after all tests
+
+  31/32 tests passed  |  1 failed
+
+  FAILURES:
+    - _throttle() enforces some delay between calls
+      min gap between calls: 0.028s
+
+=================================================================

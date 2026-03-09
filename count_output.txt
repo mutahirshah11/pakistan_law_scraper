@@ -1,0 +1,1915 @@
+2026-03-09 18:16:35,323 - INFO - Attempting login as LHCBAR8 (attempt 1/3)...
+2026-03-09 18:16:35,324 - INFO - Fetching login page...
+2026-03-09 18:16:37,081 - INFO - Found CSRF token
+2026-03-09 18:16:37,081 - INFO - Submitting login credentials...
+2026-03-09 18:16:37,460 - INFO - Login POST response: status=200, url=https://www.pakistanlawsite.com/Login/Login
+2026-03-09 18:16:37,460 - INFO - Cookies after login: ['__RequestVerificationToken', 'ASP.NET_SessionId']
+2026-03-09 18:16:37,461 - INFO - Session cookie obtained: rtax4teecy...
+2026-03-09 18:16:37,461 - INFO - Verifying login with test search...
+2026-03-09 18:16:39,069 - INFO - Login verified successfully!
+2026-03-09 18:16:39,809 - INFO - Parsed 68 cases from index results
+2026-03-09 18:16:47,416 - INFO - Parsed 57 cases from index results
+2026-03-09 18:16:48,281 - INFO - Parsed 194 cases from index results
+2026-03-09 18:16:49,332 - INFO - Parsed 239 cases from index results
+2026-03-09 18:16:50,109 - INFO - Parsed 250 cases from index results
+2026-03-09 18:16:51,012 - INFO - Parsed 337 cases from index results
+2026-03-09 18:16:51,766 - INFO - Parsed 245 cases from index results
+2026-03-09 18:16:52,734 - INFO - Parsed 334 cases from index results
+2026-03-09 18:16:53,584 - INFO - Parsed 289 cases from index results
+2026-03-09 18:16:55,190 - INFO - Parsed 465 cases from index results
+2026-03-09 18:16:56,896 - INFO - Parsed 542 cases from index results
+2026-03-09 18:16:58,120 - INFO - Parsed 432 cases from index results
+2026-03-09 18:16:59,397 - INFO - Parsed 541 cases from index results
+2026-03-09 18:17:02,146 - INFO - Parsed 629 cases from index results
+2026-03-09 18:17:03,887 - INFO - Parsed 536 cases from index results
+2026-03-09 18:17:05,741 - INFO - Parsed 564 cases from index results
+2026-03-09 18:17:07,487 - INFO - Parsed 636 cases from index results
+2026-03-09 18:17:08,945 - INFO - Parsed 535 cases from index results
+2026-03-09 18:17:10,361 - INFO - Parsed 502 cases from index results
+2026-03-09 18:17:12,416 - INFO - Parsed 663 cases from index results
+2026-03-09 18:17:14,084 - INFO - Parsed 497 cases from index results
+2026-03-09 18:17:15,678 - INFO - Parsed 509 cases from index results
+2026-03-09 18:17:17,295 - INFO - Parsed 479 cases from index results
+2026-03-09 18:17:18,544 - INFO - Parsed 406 cases from index results
+2026-03-09 18:17:19,533 - INFO - Parsed 464 cases from index results
+2026-03-09 18:17:20,287 - INFO - Parsed 330 cases from index results
+2026-03-09 18:17:21,135 - INFO - Parsed 331 cases from index results
+2026-03-09 18:17:21,903 - INFO - Parsed 228 cases from index results
+2026-03-09 18:17:23,128 - INFO - Parsed 509 cases from index results
+2026-03-09 18:17:25,355 - INFO - Parsed 610 cases from index results
+2026-03-09 18:17:27,220 - INFO - Parsed 518 cases from index results
+2026-03-09 18:17:28,880 - INFO - Parsed 582 cases from index results
+2026-03-09 18:17:30,275 - INFO - Parsed 464 cases from index results
+2026-03-09 18:17:31,366 - INFO - Parsed 335 cases from index results
+2026-03-09 18:17:32,718 - INFO - Parsed 473 cases from index results
+2026-03-09 18:17:34,576 - INFO - Parsed 562 cases from index results
+2026-03-09 18:17:37,163 - INFO - Parsed 522 cases from index results
+2026-03-09 18:17:38,563 - INFO - Parsed 391 cases from index results
+2026-03-09 18:17:40,184 - INFO - Parsed 399 cases from index results
+2026-03-09 18:17:41,999 - INFO - Parsed 412 cases from index results
+2026-03-09 18:17:43,781 - INFO - Parsed 451 cases from index results
+2026-03-09 18:17:45,212 - INFO - Parsed 387 cases from index results
+2026-03-09 18:17:46,430 - INFO - Parsed 399 cases from index results
+2026-03-09 18:17:48,090 - INFO - Parsed 331 cases from index results
+2026-03-09 18:17:49,672 - INFO - Parsed 374 cases from index results
+2026-03-09 18:17:50,966 - INFO - Parsed 384 cases from index results
+2026-03-09 18:17:52,143 - INFO - Parsed 417 cases from index results
+2026-03-09 18:17:53,239 - INFO - Parsed 402 cases from index results
+2026-03-09 18:17:54,187 - INFO - Parsed 331 cases from index results
+2026-03-09 18:17:54,827 - INFO - Parsed 311 cases from index results
+2026-03-09 18:17:55,984 - INFO - Parsed 306 cases from index results
+2026-03-09 18:17:56,559 - INFO - Parsed 233 cases from index results
+2026-03-09 18:17:58,179 - INFO - Parsed 194 cases from index results
+2026-03-09 18:17:59,403 - INFO - Parsed 211 cases from index results
+2026-03-09 18:18:00,735 - INFO - Parsed 290 cases from index results
+2026-03-09 18:18:02,558 - INFO - Parsed 284 cases from index results
+2026-03-09 18:18:04,997 - INFO - Parsed 399 cases from index results
+2026-03-09 18:18:08,319 - INFO - Parsed 430 cases from index results
+2026-03-09 18:18:10,802 - INFO - Parsed 345 cases from index results
+2026-03-09 18:18:13,731 - INFO - Parsed 416 cases from index results
+2026-03-09 18:18:16,188 - INFO - Parsed 316 cases from index results
+2026-03-09 18:18:18,428 - INFO - Parsed 377 cases from index results
+2026-03-09 18:18:21,113 - INFO - Parsed 288 cases from index results
+2026-03-09 18:18:23,786 - INFO - Parsed 231 cases from index results
+2026-03-09 18:18:26,399 - INFO - Parsed 332 cases from index results
+2026-03-09 18:18:29,957 - INFO - Parsed 287 cases from index results
+2026-03-09 18:18:32,615 - INFO - Parsed 271 cases from index results
+2026-03-09 18:18:35,073 - INFO - Parsed 271 cases from index results
+2026-03-09 18:18:38,045 - INFO - Parsed 233 cases from index results
+2026-03-09 18:18:40,722 - INFO - Parsed 280 cases from index results
+2026-03-09 18:18:42,745 - INFO - Parsed 259 cases from index results
+2026-03-09 18:18:44,623 - INFO - Parsed 263 cases from index results
+2026-03-09 18:18:46,632 - INFO - Parsed 255 cases from index results
+2026-03-09 18:18:48,990 - INFO - Parsed 272 cases from index results
+2026-03-09 18:18:51,482 - INFO - Parsed 255 cases from index results
+2026-03-09 18:18:54,128 - INFO - Parsed 278 cases from index results
+2026-03-09 18:18:55,966 - INFO - Parsed 259 cases from index results
+2026-03-09 18:18:57,527 - INFO - Parsed 272 cases from index results
+2026-03-09 18:18:58,658 - INFO - Parsed 273 cases from index results
+2026-03-09 18:18:58,908 - INFO - Parsed 46 cases from index results
+2026-03-09 18:18:59,487 - INFO - Parsed 0 cases from index results
+2026-03-09 18:18:59,827 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:00,379 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:01,239 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:01,686 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:02,560 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:03,002 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:03,482 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:04,408 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:04,695 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:05,359 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:06,039 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:06,381 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:06,867 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:07,678 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:07,972 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:08,520 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:09,357 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:09,657 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:10,655 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:10,862 - INFO - Parsed 0 cases from index results
+2026-03-09 18:19:13,405 - INFO - Parsed 699 cases from index results
+2026-03-09 18:19:14,767 - INFO - Parsed 420 cases from index results
+2026-03-09 18:19:16,274 - INFO - Parsed 415 cases from index results
+2026-03-09 18:19:17,430 - INFO - Parsed 294 cases from index results
+2026-03-09 18:19:18,404 - INFO - Parsed 282 cases from index results
+2026-03-09 18:19:19,106 - INFO - Parsed 199 cases from index results
+2026-03-09 18:19:20,022 - INFO - Parsed 218 cases from index results
+2026-03-09 18:19:20,788 - INFO - Parsed 243 cases from index results
+2026-03-09 18:19:21,820 - INFO - Parsed 263 cases from index results
+2026-03-09 18:19:22,412 - INFO - Parsed 149 cases from index results
+2026-03-09 18:19:24,058 - INFO - Parsed 186 cases from index results
+2026-03-09 18:19:25,018 - INFO - Parsed 270 cases from index results
+2026-03-09 18:19:26,192 - INFO - Parsed 364 cases from index results
+2026-03-09 18:19:28,053 - INFO - Parsed 540 cases from index results
+2026-03-09 18:19:30,227 - INFO - Parsed 594 cases from index results
+2026-03-09 18:19:32,923 - INFO - Parsed 613 cases from index results
+2026-03-09 18:19:35,580 - INFO - Parsed 739 cases from index results
+2026-03-09 18:19:38,529 - INFO - Parsed 873 cases from index results
+2026-03-09 18:19:41,860 - INFO - Parsed 938 cases from index results
+2026-03-09 18:19:45,283 - INFO - Parsed 902 cases from index results
+2026-03-09 18:19:48,910 - INFO - Parsed 1009 cases from index results
+2026-03-09 18:19:52,726 - INFO - Parsed 1221 cases from index results
+2026-03-09 18:19:55,198 - INFO - Parsed 799 cases from index results
+2026-03-09 18:19:58,475 - INFO - Parsed 853 cases from index results
+2026-03-09 18:20:00,349 - INFO - Parsed 390 cases from index results
+2026-03-09 18:20:02,424 - INFO - Parsed 475 cases from index results
+2026-03-09 18:20:05,030 - INFO - Parsed 656 cases from index results
+2026-03-09 18:20:07,205 - INFO - Parsed 580 cases from index results
+2026-03-09 18:20:09,276 - INFO - Parsed 537 cases from index results
+2026-03-09 18:20:11,351 - INFO - Parsed 445 cases from index results
+2026-03-09 18:20:14,546 - INFO - Parsed 696 cases from index results
+2026-03-09 18:20:17,182 - INFO - Parsed 550 cases from index results
+2026-03-09 18:20:19,540 - INFO - Parsed 478 cases from index results
+2026-03-09 18:20:21,314 - INFO - Parsed 403 cases from index results
+2026-03-09 18:20:23,606 - INFO - Parsed 486 cases from index results
+2026-03-09 18:20:26,400 - INFO - Parsed 488 cases from index results
+2026-03-09 18:20:29,351 - INFO - Parsed 574 cases from index results
+2026-03-09 18:20:32,021 - INFO - Parsed 465 cases from index results
+2026-03-09 18:20:34,662 - INFO - Parsed 492 cases from index results
+2026-03-09 18:20:37,379 - INFO - Parsed 452 cases from index results
+2026-03-09 18:20:40,460 - INFO - Parsed 534 cases from index results
+2026-03-09 18:20:42,447 - INFO - Parsed 299 cases from index results
+2026-03-09 18:20:44,511 - INFO - Parsed 311 cases from index results
+2026-03-09 18:20:47,392 - INFO - Parsed 450 cases from index results
+2026-03-09 18:20:49,239 - INFO - Parsed 274 cases from index results
+2026-03-09 18:20:50,929 - INFO - Parsed 214 cases from index results
+2026-03-09 18:20:52,425 - INFO - Parsed 197 cases from index results
+2026-03-09 18:20:54,114 - INFO - Parsed 178 cases from index results
+2026-03-09 18:20:55,661 - INFO - Parsed 251 cases from index results
+2026-03-09 18:20:57,194 - INFO - Parsed 238 cases from index results
+2026-03-09 18:20:58,192 - INFO - Parsed 194 cases from index results
+2026-03-09 18:21:00,124 - INFO - Parsed 241 cases from index results
+2026-03-09 18:21:02,143 - INFO - Parsed 321 cases from index results
+2026-03-09 18:21:04,571 - INFO - Parsed 341 cases from index results
+2026-03-09 18:21:06,522 - INFO - Parsed 330 cases from index results
+2026-03-09 18:21:08,199 - INFO - Parsed 280 cases from index results
+2026-03-09 18:21:09,464 - INFO - Parsed 266 cases from index results
+2026-03-09 18:21:10,641 - INFO - Parsed 264 cases from index results
+2026-03-09 18:21:10,853 - INFO - Parsed 30 cases from index results
+2026-03-09 18:21:11,579 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:12,107 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:12,684 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:13,424 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:13,905 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:14,764 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:15,277 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:15,797 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:16,701 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:17,265 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:17,928 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:18,433 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:18,981 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:19,701 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:20,266 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:21,050 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:21,774 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:22,739 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:22,989 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:23,454 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:24,813 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:24,948 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:25,389 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:26,119 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:26,434 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:27,066 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:27,765 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:28,341 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:29,191 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:29,687 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:30,701 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:31,512 - INFO - Parsed 0 cases from index results
+2026-03-09 18:21:32,748 - INFO - Parsed 224 cases from index results
+2026-03-09 18:21:34,854 - INFO - Parsed 494 cases from index results
+2026-03-09 18:21:36,482 - INFO - Parsed 437 cases from index results
+2026-03-09 18:21:39,080 - INFO - Parsed 820 cases from index results
+2026-03-09 18:21:42,354 - INFO - Parsed 981 cases from index results
+2026-03-09 18:21:46,096 - INFO - Parsed 956 cases from index results
+2026-03-09 18:21:48,837 - INFO - Parsed 716 cases from index results
+2026-03-09 18:21:51,778 - INFO - Parsed 788 cases from index results
+2026-03-09 18:21:54,346 - INFO - Parsed 706 cases from index results
+2026-03-09 18:21:56,714 - INFO - Parsed 713 cases from index results
+2026-03-09 18:21:59,084 - INFO - Parsed 618 cases from index results
+2026-03-09 18:22:04,375 - INFO - Parsed 437 cases from index results
+2026-03-09 18:22:16,280 - INFO - Parsed 596 cases from index results
+2026-03-09 18:22:22,531 - INFO - Parsed 600 cases from index results
+2026-03-09 18:22:26,796 - INFO - Parsed 575 cases from index results
+2026-03-09 18:22:29,814 - INFO - Parsed 565 cases from index results
+2026-03-09 18:22:36,648 - INFO - Parsed 387 cases from index results
+2026-03-09 18:22:39,066 - INFO - Parsed 335 cases from index results
+2026-03-09 18:22:40,812 - INFO - Parsed 373 cases from index results
+2026-03-09 18:22:43,327 - INFO - Parsed 372 cases from index results
+2026-03-09 18:22:55,066 - INFO - Parsed 391 cases from index results
+2026-03-09 18:22:57,256 - INFO - Parsed 384 cases from index results
+2026-03-09 18:22:59,320 - INFO - Parsed 397 cases from index results
+2026-03-09 18:23:01,370 - INFO - Parsed 365 cases from index results
+2026-03-09 18:23:03,376 - INFO - Parsed 391 cases from index results
+2026-03-09 18:23:05,696 - INFO - Parsed 330 cases from index results
+2026-03-09 18:23:07,771 - INFO - Parsed 370 cases from index results
+2026-03-09 18:23:10,016 - INFO - Parsed 452 cases from index results
+2026-03-09 18:23:12,142 - INFO - Parsed 394 cases from index results
+2026-03-09 18:23:13,775 - INFO - Parsed 387 cases from index results
+2026-03-09 18:23:15,405 - INFO - Parsed 260 cases from index results
+2026-03-09 18:23:17,561 - INFO - Parsed 407 cases from index results
+2026-03-09 18:23:19,380 - INFO - Parsed 348 cases from index results
+2026-03-09 18:23:21,296 - INFO - Parsed 319 cases from index results
+2026-03-09 18:23:23,525 - INFO - Parsed 315 cases from index results
+2026-03-09 18:23:25,510 - INFO - Parsed 304 cases from index results
+2026-03-09 18:23:27,208 - INFO - Parsed 269 cases from index results
+2026-03-09 18:23:29,257 - INFO - Parsed 263 cases from index results
+2026-03-09 18:23:30,647 - INFO - Parsed 234 cases from index results
+2026-03-09 18:23:32,004 - INFO - Parsed 248 cases from index results
+2026-03-09 18:23:33,853 - INFO - Parsed 284 cases from index results
+2026-03-09 18:23:35,776 - INFO - Parsed 290 cases from index results
+2026-03-09 18:23:37,715 - INFO - Parsed 296 cases from index results
+2026-03-09 18:23:39,455 - INFO - Parsed 257 cases from index results
+2026-03-09 18:23:40,817 - INFO - Parsed 254 cases from index results
+2026-03-09 18:23:42,182 - INFO - Parsed 240 cases from index results
+2026-03-09 18:23:43,132 - INFO - Parsed 256 cases from index results
+2026-03-09 18:23:43,298 - INFO - Parsed 26 cases from index results
+2026-03-09 18:23:43,818 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:44,650 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:44,941 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:46,104 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:46,286 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:46,664 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:47,468 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:47,820 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:48,278 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:48,964 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:49,508 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:50,006 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:50,708 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:51,097 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:52,093 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:52,634 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:53,042 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:54,117 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:54,642 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:55,177 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:55,982 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:56,704 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:57,552 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:57,953 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:58,586 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:59,320 - INFO - Parsed 0 cases from index results
+2026-03-09 18:23:59,752 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:00,254 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:01,053 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:01,268 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:02,025 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:02,445 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:03,304 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:03,680 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:04,395 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:05,170 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:05,644 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:06,842 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:07,116 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:07,432 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:08,324 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:08,716 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:09,348 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:09,814 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:10,464 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:10,927 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:11,597 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:12,632 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:12,751 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:14,051 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:14,364 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:14,795 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:15,799 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:16,176 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:16,789 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:19,462 - INFO - Parsed 331 cases from index results
+2026-03-09 18:24:21,137 - INFO - Parsed 251 cases from index results
+2026-03-09 18:24:22,977 - INFO - Parsed 293 cases from index results
+2026-03-09 18:24:24,938 - INFO - Parsed 375 cases from index results
+2026-03-09 18:24:26,651 - INFO - Parsed 288 cases from index results
+2026-03-09 18:24:28,232 - INFO - Parsed 250 cases from index results
+2026-03-09 18:24:29,400 - INFO - Parsed 201 cases from index results
+2026-03-09 18:24:31,178 - INFO - Parsed 249 cases from index results
+2026-03-09 18:24:32,640 - INFO - Parsed 233 cases from index results
+2026-03-09 18:24:34,652 - INFO - Parsed 217 cases from index results
+2026-03-09 18:24:36,321 - INFO - Parsed 214 cases from index results
+2026-03-09 18:24:38,140 - INFO - Parsed 235 cases from index results
+2026-03-09 18:24:39,567 - INFO - Parsed 197 cases from index results
+2026-03-09 18:24:41,170 - INFO - Parsed 218 cases from index results
+2026-03-09 18:24:42,972 - INFO - Parsed 246 cases from index results
+2026-03-09 18:24:44,294 - INFO - Parsed 203 cases from index results
+2026-03-09 18:24:45,554 - INFO - Parsed 176 cases from index results
+2026-03-09 18:24:46,996 - INFO - Parsed 170 cases from index results
+2026-03-09 18:24:48,538 - INFO - Parsed 145 cases from index results
+2026-03-09 18:24:49,684 - INFO - Parsed 151 cases from index results
+2026-03-09 18:24:51,094 - INFO - Parsed 138 cases from index results
+2026-03-09 18:24:52,462 - INFO - Parsed 168 cases from index results
+2026-03-09 18:24:53,716 - INFO - Parsed 176 cases from index results
+2026-03-09 18:24:54,694 - INFO - Parsed 157 cases from index results
+2026-03-09 18:24:54,875 - INFO - Parsed 16 cases from index results
+2026-03-09 18:24:55,756 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:56,296 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:56,962 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:57,621 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:58,203 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:58,500 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:59,065 - INFO - Parsed 0 cases from index results
+2026-03-09 18:24:59,760 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:00,481 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:01,399 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:01,856 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:02,605 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:03,313 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:03,541 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:03,936 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:04,540 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:05,128 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:05,561 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:06,022 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:06,789 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:07,240 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:07,785 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:08,529 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:08,863 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:09,261 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:10,037 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:10,661 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:11,987 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:12,442 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:12,769 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:13,354 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:14,188 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:14,594 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:15,275 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:15,877 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:16,434 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:17,436 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:17,956 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:18,578 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:19,379 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:19,899 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:20,770 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:21,407 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:22,186 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:22,779 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:23,682 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:23,988 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:24,528 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:25,230 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:25,798 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:26,649 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:27,162 - INFO - Parsed 0 cases from index results
+2026-03-09 18:25:29,130 - INFO - Parsed 708 cases from index results
+2026-03-09 18:25:32,327 - INFO - Parsed 815 cases from index results
+2026-03-09 18:25:34,588 - INFO - Parsed 892 cases from index results
+2026-03-09 18:25:39,964 - INFO - Parsed 1101 cases from index results
+2026-03-09 18:25:44,307 - INFO - Parsed 885 cases from index results
+2026-03-09 18:25:47,520 - INFO - Parsed 724 cases from index results
+2026-03-09 18:25:54,715 - INFO - Parsed 1000 cases from index results
+2026-03-09 18:26:00,368 - INFO - Parsed 1139 cases from index results
+2026-03-09 18:26:05,205 - INFO - Parsed 1069 cases from index results
+2026-03-09 18:26:09,197 - INFO - Parsed 1000 cases from index results
+2026-03-09 18:26:13,187 - INFO - Parsed 837 cases from index results
+2026-03-09 18:26:19,932 - INFO - Parsed 1042 cases from index results
+2026-03-09 18:26:24,500 - INFO - Parsed 825 cases from index results
+2026-03-09 18:26:28,567 - INFO - Parsed 746 cases from index results
+2026-03-09 18:26:32,625 - INFO - Parsed 688 cases from index results
+2026-03-09 18:26:35,990 - INFO - Parsed 555 cases from index results
+2026-03-09 18:26:40,628 - INFO - Parsed 493 cases from index results
+2026-03-09 18:26:44,666 - INFO - Parsed 509 cases from index results
+2026-03-09 18:26:48,263 - INFO - Parsed 445 cases from index results
+2026-03-09 18:26:51,927 - INFO - Parsed 482 cases from index results
+2026-03-09 18:26:55,612 - INFO - Parsed 442 cases from index results
+2026-03-09 18:26:59,701 - INFO - Parsed 429 cases from index results
+2026-03-09 18:27:03,321 - INFO - Parsed 368 cases from index results
+2026-03-09 18:27:06,739 - INFO - Parsed 372 cases from index results
+2026-03-09 18:27:10,349 - INFO - Parsed 373 cases from index results
+2026-03-09 18:27:12,598 - INFO - Parsed 353 cases from index results
+2026-03-09 18:27:14,114 - INFO - Parsed 407 cases from index results
+2026-03-09 18:27:14,436 - INFO - Parsed 28 cases from index results
+2026-03-09 18:27:14,980 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:15,714 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:16,327 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:17,115 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:17,896 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:18,509 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:19,123 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:20,002 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:20,581 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:21,119 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:21,946 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:22,225 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:22,802 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:23,577 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:23,837 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:24,379 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:25,231 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:25,511 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:26,379 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:26,938 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:27,597 - INFO - Parsed 0 cases from index results
+2026-03-09 18:27:31,254 - INFO - Parsed 535 cases from index results
+2026-03-09 18:27:32,991 - INFO - Parsed 440 cases from index results
+2026-03-09 18:27:33,796 - INFO - Parsed 303 cases from index results
+2026-03-09 18:27:34,412 - INFO - Parsed 277 cases from index results
+2026-03-09 18:27:35,240 - INFO - Parsed 271 cases from index results
+2026-03-09 18:27:35,698 - INFO - Parsed 209 cases from index results
+2026-03-09 18:27:36,327 - INFO - Parsed 141 cases from index results
+2026-03-09 18:27:36,974 - INFO - Parsed 333 cases from index results
+2026-03-09 18:27:37,832 - INFO - Parsed 379 cases from index results
+2026-03-09 18:27:39,677 - INFO - Parsed 440 cases from index results
+2026-03-09 18:27:40,381 - INFO - Parsed 325 cases from index results
+2026-03-09 18:27:41,137 - INFO - Parsed 327 cases from index results
+2026-03-09 18:27:41,904 - INFO - Parsed 333 cases from index results
+2026-03-09 18:27:42,793 - INFO - Parsed 359 cases from index results
+2026-03-09 18:27:43,610 - INFO - Parsed 401 cases from index results
+2026-03-09 18:27:45,220 - INFO - Parsed 791 cases from index results
+2026-03-09 18:27:50,738 - INFO - Parsed 962 cases from index results
+2026-03-09 18:28:02,756 - INFO - Parsed 961 cases from index results
+2026-03-09 18:28:06,475 - INFO - Parsed 1078 cases from index results
+2026-03-09 18:28:08,365 - INFO - Parsed 890 cases from index results
+2026-03-09 18:28:09,828 - INFO - Parsed 835 cases from index results
+2026-03-09 18:28:11,532 - INFO - Parsed 840 cases from index results
+2026-03-09 18:28:12,903 - INFO - Parsed 511 cases from index results
+2026-03-09 18:28:14,556 - INFO - Parsed 703 cases from index results
+2026-03-09 18:28:16,606 - INFO - Parsed 728 cases from index results
+2026-03-09 18:28:19,441 - INFO - Parsed 723 cases from index results
+2026-03-09 18:28:22,373 - INFO - Parsed 860 cases from index results
+2026-03-09 18:28:24,292 - INFO - Parsed 599 cases from index results
+2026-03-09 18:28:26,488 - INFO - Parsed 506 cases from index results
+2026-03-09 18:28:28,240 - INFO - Parsed 502 cases from index results
+2026-03-09 18:28:30,254 - INFO - Parsed 458 cases from index results
+2026-03-09 18:28:32,127 - INFO - Parsed 506 cases from index results
+2026-03-09 18:28:33,962 - INFO - Parsed 466 cases from index results
+2026-03-09 18:28:35,956 - INFO - Parsed 514 cases from index results
+2026-03-09 18:28:38,134 - INFO - Parsed 394 cases from index results
+2026-03-09 18:28:40,891 - INFO - Parsed 470 cases from index results
+2026-03-09 18:28:43,927 - INFO - Parsed 503 cases from index results
+2026-03-09 18:28:46,791 - INFO - Parsed 449 cases from index results
+2026-03-09 18:28:50,326 - INFO - Parsed 445 cases from index results
+2026-03-09 18:28:53,126 - INFO - Parsed 460 cases from index results
+2026-03-09 18:28:55,130 - INFO - Parsed 391 cases from index results
+2026-03-09 18:28:57,039 - INFO - Parsed 350 cases from index results
+2026-03-09 18:28:59,517 - INFO - Parsed 432 cases from index results
+2026-03-09 18:29:01,950 - INFO - Parsed 395 cases from index results
+2026-03-09 18:29:04,254 - INFO - Parsed 362 cases from index results
+2026-03-09 18:29:06,704 - INFO - Parsed 332 cases from index results
+2026-03-09 18:29:08,785 - INFO - Parsed 346 cases from index results
+2026-03-09 18:29:10,747 - INFO - Parsed 292 cases from index results
+2026-03-09 18:29:13,196 - INFO - Parsed 342 cases from index results
+2026-03-09 18:29:15,263 - INFO - Parsed 246 cases from index results
+2026-03-09 18:29:17,183 - INFO - Parsed 261 cases from index results
+2026-03-09 18:29:19,440 - INFO - Parsed 222 cases from index results
+2026-03-09 18:29:21,658 - INFO - Parsed 259 cases from index results
+2026-03-09 18:29:23,869 - INFO - Parsed 256 cases from index results
+2026-03-09 18:29:26,299 - INFO - Parsed 244 cases from index results
+2026-03-09 18:29:28,028 - INFO - Parsed 212 cases from index results
+2026-03-09 18:29:29,520 - INFO - Parsed 213 cases from index results
+2026-03-09 18:29:30,492 - INFO - Parsed 243 cases from index results
+2026-03-09 18:29:30,901 - INFO - Parsed 20 cases from index results
+2026-03-09 18:29:31,225 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:31,991 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:32,575 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:33,253 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:33,936 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:34,251 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:35,169 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:35,677 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:36,361 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:36,799 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:37,621 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:38,342 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:38,701 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:39,291 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:39,771 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:40,933 - INFO - Parsed 280 cases from index results
+2026-03-09 18:29:41,521 - INFO - Parsed 190 cases from index results
+2026-03-09 18:29:41,825 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:42,551 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:43,048 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:43,663 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:44,120 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:44,687 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:46,159 - INFO - Parsed 247 cases from index results
+2026-03-09 18:29:46,988 - INFO - Parsed 172 cases from index results
+2026-03-09 18:29:47,623 - INFO - Parsed 154 cases from index results
+2026-03-09 18:29:48,122 - INFO - Parsed 88 cases from index results
+2026-03-09 18:29:48,778 - INFO - Parsed 76 cases from index results
+2026-03-09 18:29:49,191 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:50,624 - INFO - Parsed 315 cases from index results
+2026-03-09 18:29:51,996 - INFO - Parsed 285 cases from index results
+2026-03-09 18:29:53,065 - INFO - Parsed 261 cases from index results
+2026-03-09 18:29:53,489 - INFO - Parsed 180 cases from index results
+2026-03-09 18:29:53,953 - INFO - Parsed 0 cases from index results
+2026-03-09 18:29:55,453 - INFO - Parsed 205 cases from index results
+2026-03-09 18:29:56,272 - INFO - Parsed 206 cases from index results
+2026-03-09 18:29:57,430 - INFO - Parsed 323 cases from index results
+2026-03-09 18:29:58,874 - INFO - Parsed 415 cases from index results
+2026-03-09 18:30:00,243 - INFO - Parsed 347 cases from index results
+2026-03-09 18:30:01,665 - INFO - Parsed 369 cases from index results
+2026-03-09 18:30:02,749 - INFO - Parsed 290 cases from index results
+2026-03-09 18:30:04,032 - INFO - Parsed 308 cases from index results
+2026-03-09 18:30:05,255 - INFO - Parsed 302 cases from index results
+2026-03-09 18:30:07,531 - INFO - Parsed 247 cases from index results
+2026-03-09 18:30:08,725 - INFO - Parsed 205 cases from index results
+2026-03-09 18:30:09,819 - INFO - Parsed 201 cases from index results
+2026-03-09 18:30:11,016 - INFO - Parsed 274 cases from index results
+2026-03-09 18:30:12,023 - INFO - Parsed 222 cases from index results
+2026-03-09 18:30:13,114 - INFO - Parsed 228 cases from index results
+2026-03-09 18:30:14,125 - INFO - Parsed 210 cases from index results
+2026-03-09 18:30:15,086 - INFO - Parsed 221 cases from index results
+2026-03-09 18:30:16,233 - INFO - Parsed 140 cases from index results
+2026-03-09 18:30:16,890 - INFO - Parsed 129 cases from index results
+2026-03-09 18:30:18,032 - INFO - Parsed 171 cases from index results
+2026-03-09 18:30:18,907 - INFO - Parsed 166 cases from index results
+2026-03-09 18:30:19,348 - INFO - Parsed 68 cases from index results
+2026-03-09 18:30:20,170 - INFO - Parsed 87 cases from index results
+2026-03-09 18:30:20,823 - INFO - Parsed 75 cases from index results
+2026-03-09 18:30:21,537 - INFO - Parsed 88 cases from index results
+2026-03-09 18:30:22,505 - INFO - Parsed 118 cases from index results
+2026-03-09 18:30:23,267 - INFO - Parsed 110 cases from index results
+2026-03-09 18:30:24,025 - INFO - Parsed 72 cases from index results
+2026-03-09 18:30:24,399 - INFO - Parsed 58 cases from index results
+2026-03-09 18:30:26,227 - INFO - Parsed 77 cases from index results
+2026-03-09 18:30:27,131 - INFO - Parsed 81 cases from index results
+2026-03-09 18:30:28,003 - INFO - Parsed 93 cases from index results
+2026-03-09 18:30:28,727 - INFO - Parsed 71 cases from index results
+2026-03-09 18:30:29,460 - INFO - Parsed 70 cases from index results
+2026-03-09 18:30:30,064 - INFO - Parsed 46 cases from index results
+2026-03-09 18:30:30,813 - INFO - Parsed 83 cases from index results
+2026-03-09 18:30:31,210 - INFO - Parsed 40 cases from index results
+2026-03-09 18:30:31,975 - INFO - Parsed 46 cases from index results
+2026-03-09 18:30:32,439 - INFO - Parsed 33 cases from index results
+2026-03-09 18:30:33,324 - INFO - Parsed 44 cases from index results
+2026-03-09 18:30:33,696 - INFO - Parsed 37 cases from index results
+2026-03-09 18:30:34,468 - INFO - Parsed 27 cases from index results
+2026-03-09 18:30:35,193 - INFO - Parsed 31 cases from index results
+2026-03-09 18:30:35,843 - INFO - Parsed 41 cases from index results
+2026-03-09 18:30:36,353 - INFO - Parsed 33 cases from index results
+2026-03-09 18:30:36,909 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:37,314 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:37,910 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:38,671 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:39,150 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:39,770 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:40,700 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:40,947 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:41,483 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:42,248 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:42,919 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:43,445 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:44,284 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:44,500 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:45,408 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:45,943 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:46,956 - INFO - Parsed 27 cases from index results
+2026-03-09 18:30:47,222 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:47,764 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:48,551 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:48,842 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:49,575 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:50,385 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:50,809 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:51,667 - INFO - Parsed 20 cases from index results
+2026-03-09 18:30:52,840 - INFO - Parsed 106 cases from index results
+2026-03-09 18:30:52,941 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:53,909 - INFO - Parsed 37 cases from index results
+2026-03-09 18:30:54,344 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:54,950 - INFO - Parsed 0 cases from index results
+2026-03-09 18:30:56,289 - INFO - Parsed 132 cases from index results
+2026-03-09 18:30:56,610 - INFO - Parsed 61 cases from index results
+2026-03-09 18:30:57,547 - INFO - Parsed 45 cases from index results
+2026-03-09 18:30:57,793 - INFO - Parsed 32 cases from index results
+2026-03-09 18:30:59,242 - INFO - Parsed 281 cases from index results
+2026-03-09 18:31:00,661 - INFO - Parsed 414 cases from index results
+2026-03-09 18:31:01,498 - INFO - Parsed 311 cases from index results
+2026-03-09 18:31:03,360 - INFO - Parsed 523 cases from index results
+2026-03-09 18:31:05,910 - INFO - Parsed 845 cases from index results
+2026-03-09 18:31:07,582 - INFO - Parsed 561 cases from index results
+2026-03-09 18:31:10,278 - INFO - Parsed 443 cases from index results
+2026-03-09 18:31:11,429 - INFO - Parsed 275 cases from index results
+2026-03-09 18:31:12,751 - INFO - Parsed 371 cases from index results
+2026-03-09 18:31:14,169 - INFO - Parsed 359 cases from index results
+2026-03-09 18:31:14,975 - INFO - Parsed 154 cases from index results
+2026-03-09 18:31:16,535 - INFO - Parsed 344 cases from index results
+2026-03-09 18:31:18,339 - INFO - Parsed 458 cases from index results
+2026-03-09 18:31:20,169 - INFO - Parsed 405 cases from index results
+2026-03-09 18:31:22,092 - INFO - Parsed 455 cases from index results
+2026-03-09 18:31:23,521 - INFO - Parsed 370 cases from index results
+2026-03-09 18:31:24,950 - INFO - Parsed 355 cases from index results
+2026-03-09 18:31:26,137 - INFO - Parsed 292 cases from index results
+2026-03-09 18:31:27,621 - INFO - Parsed 322 cases from index results
+2026-03-09 18:31:28,878 - INFO - Parsed 280 cases from index results
+2026-03-09 18:31:30,605 - INFO - Parsed 258 cases from index results
+2026-03-09 18:31:31,761 - INFO - Parsed 258 cases from index results
+2026-03-09 18:31:33,026 - INFO - Parsed 327 cases from index results
+2026-03-09 18:31:34,582 - INFO - Parsed 306 cases from index results
+2026-03-09 18:31:36,022 - INFO - Parsed 306 cases from index results
+2026-03-09 18:31:37,702 - INFO - Parsed 293 cases from index results
+2026-03-09 18:31:39,104 - INFO - Parsed 271 cases from index results
+2026-03-09 18:31:40,743 - INFO - Parsed 305 cases from index results
+2026-03-09 18:31:42,520 - INFO - Parsed 279 cases from index results
+2026-03-09 18:31:43,796 - INFO - Parsed 198 cases from index results
+2026-03-09 18:31:45,626 - INFO - Parsed 261 cases from index results
+2026-03-09 18:31:47,376 - INFO - Parsed 298 cases from index results
+2026-03-09 18:31:48,959 - INFO - Parsed 266 cases from index results
+2026-03-09 18:31:50,620 - INFO - Parsed 197 cases from index results
+2026-03-09 18:31:52,036 - INFO - Parsed 192 cases from index results
+2026-03-09 18:31:53,426 - INFO - Parsed 204 cases from index results
+2026-03-09 18:31:54,834 - INFO - Parsed 175 cases from index results
+2026-03-09 18:31:55,748 - INFO - Parsed 173 cases from index results
+2026-03-09 18:31:56,777 - INFO - Parsed 145 cases from index results
+2026-03-09 18:31:57,892 - INFO - Parsed 196 cases from index results
+2026-03-09 18:31:59,428 - INFO - Parsed 235 cases from index results
+2026-03-09 18:32:01,206 - INFO - Parsed 197 cases from index results
+2026-03-09 18:32:02,540 - INFO - Parsed 197 cases from index results
+2026-03-09 18:32:03,892 - INFO - Parsed 213 cases from index results
+2026-03-09 18:32:06,078 - INFO - Parsed 231 cases from index results
+2026-03-09 18:32:07,094 - INFO - Parsed 223 cases from index results
+2026-03-09 18:32:07,374 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:07,889 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:08,720 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:08,999 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:09,678 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:10,294 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:11,216 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:11,640 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:12,147 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:12,953 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:13,388 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:14,286 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:14,909 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:15,409 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:17,034 - INFO - Parsed 186 cases from index results
+2026-03-09 18:32:17,885 - INFO - Parsed 144 cases from index results
+2026-03-09 18:32:17,999 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:19,359 - INFO - Parsed 143 cases from index results
+2026-03-09 18:32:20,089 - INFO - Parsed 114 cases from index results
+2026-03-09 18:32:20,978 - INFO - Parsed 112 cases from index results
+2026-03-09 18:32:21,884 - INFO - Parsed 96 cases from index results
+2026-03-09 18:32:21,985 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:23,186 - INFO - Parsed 119 cases from index results
+2026-03-09 18:32:24,066 - INFO - Parsed 117 cases from index results
+2026-03-09 18:32:24,166 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:25,859 - INFO - Parsed 154 cases from index results
+2026-03-09 18:32:26,533 - INFO - Parsed 89 cases from index results
+2026-03-09 18:32:27,723 - INFO - Parsed 85 cases from index results
+2026-03-09 18:32:28,120 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:28,930 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:29,320 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:29,723 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:30,545 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:31,056 - INFO - Parsed 0 cases from index results
+2026-03-09 18:32:32,752 - INFO - Parsed 114 cases from index results
+2026-03-09 18:32:33,803 - INFO - Parsed 111 cases from index results
+2026-03-09 18:32:35,149 - INFO - Parsed 105 cases from index results
+2026-03-09 18:32:35,691 - INFO - Parsed 96 cases from index results
+2026-03-09 18:32:36,363 - INFO - Parsed 111 cases from index results
+2026-03-09 18:32:37,117 - INFO - Parsed 167 cases from index results
+2026-03-09 18:32:37,879 - INFO - Parsed 156 cases from index results
+2026-03-09 18:32:38,553 - INFO - Parsed 126 cases from index results
+2026-03-09 18:32:39,218 - INFO - Parsed 157 cases from index results
+2026-03-09 18:32:40,136 - INFO - Parsed 254 cases from index results
+2026-03-09 18:32:41,105 - INFO - Parsed 178 cases from index results
+2026-03-09 18:32:42,162 - INFO - Parsed 234 cases from index results
+2026-03-09 18:32:43,564 - INFO - Parsed 295 cases from index results
+2026-03-09 18:32:45,012 - INFO - Parsed 277 cases from index results
+2026-03-09 18:32:46,232 - INFO - Parsed 251 cases from index results
+2026-03-09 18:32:47,170 - INFO - Parsed 196 cases from index results
+2026-03-09 18:32:47,879 - INFO - Parsed 167 cases from index results
+2026-03-09 18:32:48,764 - INFO - Parsed 390 cases from index results
+2026-03-09 18:32:50,854 - INFO - Parsed 613 cases from index results
+2026-03-09 18:32:52,790 - INFO - Parsed 711 cases from index results
+2026-03-09 18:32:54,477 - INFO - Parsed 638 cases from index results
+2026-03-09 18:32:57,575 - INFO - Parsed 829 cases from index results
+2026-03-09 18:32:58,908 - INFO - Parsed 635 cases from index results
+2026-03-09 18:33:03,723 - INFO - Parsed 552 cases from index results
+2026-03-09 18:33:06,661 - INFO - Parsed 381 cases from index results
+2026-03-09 18:33:11,112 - INFO - Parsed 478 cases from index results
+2026-03-09 18:33:15,153 - INFO - Parsed 511 cases from index results
+2026-03-09 18:33:18,940 - INFO - Parsed 448 cases from index results
+2026-03-09 18:33:22,539 - INFO - Parsed 409 cases from index results
+2026-03-09 18:33:25,224 - INFO - Parsed 276 cases from index results
+2026-03-09 18:33:27,726 - INFO - Parsed 332 cases from index results
+2026-03-09 18:33:31,626 - INFO - Parsed 361 cases from index results
+2026-03-09 18:33:34,127 - INFO - Parsed 270 cases from index results
+2026-03-09 18:33:37,481 - INFO - Parsed 284 cases from index results
+2026-03-09 18:33:41,113 - INFO - Parsed 213 cases from index results
+2026-03-09 18:33:43,934 - INFO - Parsed 294 cases from index results
+2026-03-09 18:33:46,183 - INFO - Parsed 275 cases from index results
+2026-03-09 18:33:48,010 - INFO - Parsed 267 cases from index results
+2026-03-09 18:33:50,261 - INFO - Parsed 233 cases from index results
+2026-03-09 18:33:53,332 - INFO - Parsed 238 cases from index results
+2026-03-09 18:33:56,117 - INFO - Parsed 279 cases from index results
+2026-03-09 18:33:57,995 - INFO - Parsed 237 cases from index results
+2026-03-09 18:33:59,891 - INFO - Parsed 248 cases from index results
+2026-03-09 18:34:00,857 - INFO - Parsed 172 cases from index results
+2026-03-09 18:34:01,624 - INFO - Parsed 152 cases from index results
+2026-03-09 18:34:02,300 - INFO - Parsed 222 cases from index results
+2026-03-09 18:34:02,408 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:03,076 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:03,742 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:04,382 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:04,852 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:05,656 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:06,193 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:07,115 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:07,548 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:08,199 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:08,664 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:09,249 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:09,701 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:10,132 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:10,917 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:11,708 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:12,079 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:12,712 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:13,104 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:13,662 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:14,413 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:14,919 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:15,417 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:16,143 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:16,589 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:17,181 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:17,756 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:18,385 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:18,847 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:19,254 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:20,082 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:20,878 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:21,380 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:21,898 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:22,687 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:23,247 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:23,898 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:24,537 - INFO - Parsed 0 cases from index results
+2026-03-09 18:34:26,854 - INFO - Parsed 517 cases from index results
+2026-03-09 18:34:28,504 - INFO - Parsed 639 cases from index results
+2026-03-09 18:34:31,109 - INFO - Parsed 976 cases from index results
+2026-03-09 18:34:34,740 - INFO - Parsed 1236 cases from index results
+2026-03-09 18:34:36,969 - INFO - Parsed 668 cases from index results
+2026-03-09 18:34:41,714 - INFO - Parsed 1737 cases from index results
+2026-03-09 18:34:43,585 - INFO - Parsed 446 cases from index results
+2026-03-09 18:34:46,420 - INFO - Parsed 634 cases from index results
+2026-03-09 18:34:48,220 - INFO - Parsed 589 cases from index results
+2026-03-09 18:34:50,025 - INFO - Parsed 614 cases from index results
+2026-03-09 18:34:51,870 - INFO - Parsed 646 cases from index results
+2026-03-09 18:34:53,134 - INFO - Parsed 463 cases from index results
+2026-03-09 18:34:54,340 - INFO - Parsed 435 cases from index results
+2026-03-09 18:34:56,604 - INFO - Parsed 793 cases from index results
+2026-03-09 18:34:57,951 - INFO - Parsed 404 cases from index results
+2026-03-09 18:34:59,998 - INFO - Parsed 750 cases from index results
+2026-03-09 18:35:01,473 - INFO - Parsed 435 cases from index results
+2026-03-09 18:35:03,329 - INFO - Parsed 495 cases from index results
+2026-03-09 18:35:04,836 - INFO - Parsed 478 cases from index results
+2026-03-09 18:35:07,411 - INFO - Parsed 490 cases from index results
+2026-03-09 18:35:10,203 - INFO - Parsed 485 cases from index results
+2026-03-09 18:35:12,307 - INFO - Parsed 501 cases from index results
+2026-03-09 18:35:14,553 - INFO - Parsed 510 cases from index results
+2026-03-09 18:35:17,363 - INFO - Parsed 541 cases from index results
+2026-03-09 18:35:18,728 - INFO - Parsed 452 cases from index results
+2026-03-09 18:35:20,360 - INFO - Parsed 376 cases from index results
+2026-03-09 18:35:22,963 - INFO - Parsed 482 cases from index results
+2026-03-09 18:35:24,845 - INFO - Parsed 429 cases from index results
+2026-03-09 18:35:26,810 - INFO - Parsed 456 cases from index results
+2026-03-09 18:35:29,065 - INFO - Parsed 396 cases from index results
+2026-03-09 18:35:31,403 - INFO - Parsed 415 cases from index results
+2026-03-09 18:35:33,208 - INFO - Parsed 345 cases from index results
+2026-03-09 18:35:35,317 - INFO - Parsed 433 cases from index results
+2026-03-09 18:35:36,995 - INFO - Parsed 414 cases from index results
+2026-03-09 18:35:38,828 - INFO - Parsed 397 cases from index results
+2026-03-09 18:35:40,784 - INFO - Parsed 347 cases from index results
+2026-03-09 18:35:42,839 - INFO - Parsed 344 cases from index results
+2026-03-09 18:35:45,256 - INFO - Parsed 362 cases from index results
+2026-03-09 18:35:47,298 - INFO - Parsed 359 cases from index results
+2026-03-09 18:35:48,834 - INFO - Parsed 300 cases from index results
+2026-03-09 18:35:49,909 - INFO - Parsed 278 cases from index results
+2026-03-09 18:35:50,574 - INFO - Parsed 269 cases from index results
+2026-03-09 18:35:50,936 - INFO - Parsed 31 cases from index results
+2026-03-09 18:35:51,424 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:52,389 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:52,684 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:53,412 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:53,978 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:54,409 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:55,178 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:55,494 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:55,825 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:56,758 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:57,143 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:57,669 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:58,541 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:58,932 - INFO - Parsed 0 cases from index results
+2026-03-09 18:35:59,339 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:00,043 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:00,598 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:01,204 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:02,117 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:02,670 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:03,744 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:04,129 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:04,293 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:05,000 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:05,505 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:06,238 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:07,002 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:07,408 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:07,840 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:08,567 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:09,121 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:09,766 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:10,167 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:10,804 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:12,289 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:12,586 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:13,125 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:13,546 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:14,289 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:14,920 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:15,024 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:15,582 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:16,294 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:17,352 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:17,761 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:18,067 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:18,553 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:19,520 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:20,006 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:20,476 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:20,908 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:21,583 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:22,086 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:22,959 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:23,334 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:24,196 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:24,757 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:25,248 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:25,937 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:26,522 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:27,036 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:27,796 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:28,387 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:29,629 - INFO - Parsed 128 cases from index results
+2026-03-09 18:36:30,224 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:30,731 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:31,242 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:31,782 - INFO - Parsed 47 cases from index results
+2026-03-09 18:36:32,695 - INFO - Parsed 80 cases from index results
+2026-03-09 18:36:33,163 - INFO - Parsed 86 cases from index results
+2026-03-09 18:36:33,417 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:34,369 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:34,984 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:35,637 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:36,247 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:36,554 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:37,261 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:37,415 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:38,247 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:38,494 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:39,362 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:39,947 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:40,682 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:41,167 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:41,905 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:42,471 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:43,354 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:43,880 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:44,842 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:45,253 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:45,735 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:46,257 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:46,997 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:47,525 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:48,264 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:48,625 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:49,143 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:49,737 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:50,128 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:50,908 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:51,547 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:52,028 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:52,428 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:53,213 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:53,744 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:54,253 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:54,735 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:55,471 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:55,814 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:56,912 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:57,245 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:57,638 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:58,232 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:59,096 - INFO - Parsed 0 cases from index results
+2026-03-09 18:36:59,643 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:00,607 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:01,038 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:02,002 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:02,785 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:03,167 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:03,669 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:04,233 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:04,956 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:05,789 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:06,376 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:07,079 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:07,876 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:08,549 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:09,297 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:09,707 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:10,441 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:11,070 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:12,081 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:12,421 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:13,204 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:13,716 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:14,369 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:15,127 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:16,094 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:16,477 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:16,885 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:17,623 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:18,035 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:18,791 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:19,536 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:20,351 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:20,780 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:21,509 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:22,111 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:23,187 - INFO - Parsed 155 cases from index results
+2026-03-09 18:37:24,574 - INFO - Parsed 235 cases from index results
+2026-03-09 18:37:25,521 - INFO - Parsed 133 cases from index results
+2026-03-09 18:37:26,140 - INFO - Parsed 68 cases from index results
+2026-03-09 18:37:26,608 - INFO - Parsed 52 cases from index results
+2026-03-09 18:37:26,907 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:27,551 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:28,069 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:28,933 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:29,613 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:30,260 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:31,132 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:31,524 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:32,276 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:33,054 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:33,868 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:34,563 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:35,294 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:35,713 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:36,137 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:36,936 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:37,737 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:38,610 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:39,095 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:39,889 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:40,208 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:41,131 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:41,592 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:42,492 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:42,821 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:43,297 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:44,089 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:44,639 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:45,164 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:46,111 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:46,702 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:47,521 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:47,851 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:48,821 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:49,738 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:50,076 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:50,715 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:51,200 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:51,848 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:52,194 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:53,036 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:53,359 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:53,966 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:54,486 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:54,958 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:55,554 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:56,115 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:56,412 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:56,884 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:57,878 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:58,216 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:58,593 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:59,222 - INFO - Parsed 0 cases from index results
+2026-03-09 18:37:59,636 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:00,485 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:01,026 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:01,768 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:02,189 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:02,883 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:03,513 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:03,829 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:04,599 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:04,852 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:05,788 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:06,289 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:06,945 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:07,599 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:07,971 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:08,966 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:09,151 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:10,096 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:11,011 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:11,329 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:12,061 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:12,915 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:14,497 - INFO - Parsed 175 cases from index results
+2026-03-09 18:38:17,081 - INFO - Parsed 443 cases from index results
+2026-03-09 18:38:18,948 - INFO - Parsed 293 cases from index results
+2026-03-09 18:38:20,324 - INFO - Parsed 113 cases from index results
+2026-03-09 18:38:21,863 - INFO - Parsed 159 cases from index results
+2026-03-09 18:38:23,977 - INFO - Parsed 161 cases from index results
+2026-03-09 18:38:25,687 - INFO - Parsed 211 cases from index results
+2026-03-09 18:38:26,344 - INFO - Parsed 84 cases from index results
+2026-03-09 18:38:26,483 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:26,904 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:27,639 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:28,306 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:29,247 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:29,599 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:30,284 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:30,963 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:31,961 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:32,189 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:33,372 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:33,601 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:34,425 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:34,829 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:35,528 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:36,150 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:36,950 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:37,537 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:38,429 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:38,815 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:39,543 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:39,905 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:40,520 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:41,094 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:41,684 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:42,013 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:43,065 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:43,190 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:44,073 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:44,457 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:45,101 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:45,932 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:46,610 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:47,140 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:47,452 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:48,199 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:49,121 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:49,671 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:50,327 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:51,131 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:51,951 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:52,602 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:53,217 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:53,697 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:54,158 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:54,745 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:55,377 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:55,847 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:56,397 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:56,892 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:57,480 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:57,932 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:58,635 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:59,277 - INFO - Parsed 0 cases from index results
+2026-03-09 18:38:59,874 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:00,630 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:01,090 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:01,947 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:02,280 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:03,006 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:03,401 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:03,899 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:04,868 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:05,333 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:05,905 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:06,482 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:07,151 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:07,589 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:08,532 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:08,933 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:09,443 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:10,293 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:11,770 - INFO - Parsed 131 cases from index results
+2026-03-09 18:39:13,541 - INFO - Parsed 253 cases from index results
+2026-03-09 18:39:15,083 - INFO - Parsed 228 cases from index results
+2026-03-09 18:39:16,189 - INFO - Parsed 164 cases from index results
+2026-03-09 18:39:18,594 - INFO - Parsed 203 cases from index results
+2026-03-09 18:39:19,427 - INFO - Parsed 89 cases from index results
+2026-03-09 18:39:20,824 - INFO - Parsed 130 cases from index results
+2026-03-09 18:39:22,000 - INFO - Parsed 110 cases from index results
+2026-03-09 18:39:22,226 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:22,720 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:23,312 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:24,266 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:24,714 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:25,249 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:25,959 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:26,652 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:27,314 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:27,955 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:28,501 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:29,284 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:29,734 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:30,327 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:30,829 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:31,492 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:32,379 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:32,929 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:33,592 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:34,389 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:34,916 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:35,701 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:35,979 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:36,949 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:37,195 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:37,821 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:38,608 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:39,380 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:40,130 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:40,669 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:41,547 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:42,170 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:42,910 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:43,191 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:44,005 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:44,885 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:45,328 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:45,919 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:46,775 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:47,108 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:48,018 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:48,540 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:49,072 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:49,812 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:50,231 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:50,595 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:51,521 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:51,939 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:52,814 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:53,087 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:53,340 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:54,153 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:54,659 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:55,528 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:56,047 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:56,944 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:57,624 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:58,390 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:59,024 - INFO - Parsed 0 cases from index results
+2026-03-09 18:39:59,416 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:00,135 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:00,680 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:01,580 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:01,949 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:02,732 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:03,067 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:03,972 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:04,357 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:04,741 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:05,233 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:05,855 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:06,202 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:06,820 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:07,778 - INFO - Parsed 14 cases from index results
+2026-03-09 18:40:08,264 - INFO - Parsed 32 cases from index results
+2026-03-09 18:40:08,478 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:09,116 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:09,696 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:10,314 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:11,089 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:11,538 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:11,984 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:12,573 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:13,098 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:13,870 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:14,538 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:15,323 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:15,536 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:16,290 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:17,068 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:17,615 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:18,344 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:19,048 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:19,562 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:20,345 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:20,861 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:21,428 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:22,112 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:22,879 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:23,628 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:24,327 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:24,736 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:25,718 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:26,043 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:26,496 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:27,216 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:27,589 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:28,245 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:28,958 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:29,339 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:29,916 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:30,698 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:31,302 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:32,047 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:32,490 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:33,360 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:33,986 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:34,913 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:35,519 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:36,050 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:36,844 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:37,418 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:38,155 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:38,703 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:39,579 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:39,994 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:40,592 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:41,051 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:41,658 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:41,953 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:42,396 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:42,993 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:43,526 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:44,440 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:44,869 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:45,602 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:46,537 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:47,113 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:47,607 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:48,445 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:48,915 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:49,716 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:50,362 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:50,904 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:51,556 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:52,022 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:52,513 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:52,932 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:53,700 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:53,970 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:54,511 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:55,477 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:56,034 - INFO - Parsed 0 cases from index results
+2026-03-09 18:40:57,257 - INFO - Parsed 118 cases from index results
+2026-03-09 18:40:58,064 - INFO - Parsed 203 cases from index results
+2026-03-09 18:40:58,596 - INFO - Parsed 77 cases from index results
+2026-03-09 18:40:58,810 - INFO - Parsed 39 cases from index results
+2026-03-09 18:40:59,504 - INFO - Parsed 34 cases from index results
+2026-03-09 18:40:59,803 - INFO - Parsed 0 cases from index results
+2026-03-09 18:41:00,683 - INFO - Parsed 58 cases from index results
+2026-03-09 18:41:01,251 - INFO - Parsed 0 cases from index results
+2026-03-09 18:41:01,844 - INFO - Parsed 0 cases from index results
+2026-03-09 18:41:02,611 - INFO - Parsed 0 cases from index results
+=================================================================
+  EXACT CASE COUNT  (all 16 journals x 1947-2026)
+=================================================================
+  This will make 1,280 requests.
+  ETA: ~20-25 minutes.
+
+  Login OK
+
+  PLD          1947:    68 cases  |  [1/1280]  ETA: 15.8m  Running total: 68
+  PLD          1948:    57 cases  |  [2/1280]  ETA: 88.9m  Running total: 125
+  PLD          1949:   194 cases  |  [3/1280]  ETA: 65.4m  Running total: 319
+  PLD          1950:   239 cases  |  [4/1280]  ETA: 54.6m  Running total: 558
+  PLD          1951:   250 cases  |  [5/1280]  ETA: 46.9m  Running total: 808
+  PLD          1952:   337 cases  |  [6/1280]  ETA: 42.3m  Running total: 1,145
+  PLD          1953:   245 cases  |  [7/1280]  ETA: 38.5m  Running total: 1,390
+  PLD          1954:   334 cases  |  [8/1280]  ETA: 36.2m  Running total: 1,724
+  PLD          1955:   289 cases  |  [9/1280]  ETA: 34.2m  Running total: 2,013
+  PLD          1956:   465 cases  |  [10/1280]  ETA: 34.1m  Running total: 2,478
+  PLD          1957:   542 cases  |  [11/1280]  ETA: 34.3m  Running total: 3,020
+  PLD          1958:   432 cases  |  [12/1280]  ETA: 33.6m  Running total: 3,452
+  PLD          1959:   541 cases  |  [13/1280]  ETA: 33.0m  Running total: 3,993
+  PLD          1960:   629 cases  |  [14/1280]  ETA: 34.8m  Running total: 4,622
+  PLD          1961:   536 cases  |  [15/1280]  ETA: 34.9m  Running total: 5,158
+  PLD          1962:   564 cases  |  [16/1280]  ETA: 35.1m  Running total: 5,722
+  PLD          1963:   636 cases  |  [17/1280]  ETA: 35.2m  Running total: 6,358
+  PLD          1964:   535 cases  |  [18/1280]  ETA: 34.9m  Running total: 6,893
+  PLD          1965:   502 cases  |  [19/1280]  ETA: 34.6m  Running total: 7,395
+  PLD          1966:   663 cases  |  [20/1280]  ETA: 35.0m  Running total: 8,058
+  PLD          1967:   497 cases  |  [21/1280]  ETA: 35.0m  Running total: 8,555
+  PLD          1968:   509 cases  |  [22/1280]  ETA: 34.9m  Running total: 9,064
+  PLD          1969:   479 cases  |  [23/1280]  ETA: 34.8m  Running total: 9,543
+  PLD          1970:   406 cases  |  [24/1280]  ETA: 34.4m  Running total: 9,949
+  PLD          1971:   464 cases  |  [25/1280]  ETA: 33.9m  Running total: 10,413
+  PLD          1972:   330 cases  |  [26/1280]  ETA: 33.1m  Running total: 10,743
+  PLD          1973:   331 cases  |  [27/1280]  ETA: 32.5m  Running total: 11,074
+  PLD          1974:   228 cases  |  [28/1280]  ETA: 31.9m  Running total: 11,302
+  PLD          1975:   509 cases  |  [29/1280]  ETA: 31.7m  Running total: 11,811
+  PLD          1976:   610 cases  |  [30/1280]  ETA: 32.1m  Running total: 12,421
+  PLD          1977:   518 cases  |  [31/1280]  ETA: 32.3m  Running total: 12,939
+  PLD          1978:   582 cases  |  [32/1280]  ETA: 32.4m  Running total: 13,521
+  PLD          1979:   464 cases  |  [33/1280]  ETA: 32.2m  Running total: 13,985
+  PLD          1980:   335 cases  |  [34/1280]  ETA: 31.9m  Running total: 14,320
+  PLD          1981:   473 cases  |  [35/1280]  ETA: 31.8m  Running total: 14,793
+  PLD          1982:   562 cases  |  [36/1280]  ETA: 32.0m  Running total: 15,355
+  PLD          1983:   522 cases  |  [37/1280]  ETA: 32.5m  Running total: 15,877
+  PLD          1984:   391 cases  |  [38/1280]  ETA: 32.4m  Running total: 16,268
+  PLD          1985:   399 cases  |  [39/1280]  ETA: 32.4m  Running total: 16,667
+  PLD          1986:   412 cases  |  [40/1280]  ETA: 32.5m  Running total: 17,079
+  PLD          1987:   451 cases  |  [41/1280]  ETA: 32.6m  Running total: 17,530
+  PLD          1988:   387 cases  |  [42/1280]  ETA: 32.5m  Running total: 17,917
+  PLD          1989:   399 cases  |  [43/1280]  ETA: 32.3m  Running total: 18,316
+  PLD          1990:   331 cases  |  [44/1280]  ETA: 32.3m  Running total: 18,647
+  PLD          1991:   374 cases  |  [45/1280]  ETA: 32.3m  Running total: 19,021
+  PLD          1992:   384 cases  |  [46/1280]  ETA: 32.1m  Running total: 19,405
+  PLD          1993:   417 cases  |  [47/1280]  ETA: 32.0m  Running total: 19,822
+  PLD          1994:   402 cases  |  [48/1280]  ETA: 31.7m  Running total: 20,224
+  PLD          1995:   331 cases  |  [49/1280]  ETA: 31.5m  Running total: 20,555
+  PLD          1996:   311 cases  |  [50/1280]  ETA: 31.1m  Running total: 20,866
+  PLD          1997:   306 cases  |  [51/1280]  ETA: 30.9m  Running total: 21,172
+  PLD          1998:   233 cases  |  [52/1280]  ETA: 30.5m  Running total: 21,405
+  PLD          1999:   194 cases  |  [53/1280]  ETA: 30.5m  Running total: 21,599
+  PLD          2000:   211 cases  |  [54/1280]  ETA: 30.4m  Running total: 21,810
+  PLD          2001:   290 cases  |  [55/1280]  ETA: 30.3m  Running total: 22,100
+  PLD          2002:   284 cases  |  [56/1280]  ETA: 30.4m  Running total: 22,384
+  PLD          2003:   399 cases  |  [57/1280]  ETA: 30.7m  Running total: 22,783
+  PLD          2004:   430 cases  |  [58/1280]  ETA: 31.3m  Running total: 23,213
+  PLD          2005:   345 cases  |  [59/1280]  ETA: 31.6m  Running total: 23,558
+  PLD          2006:   416 cases  |  [60/1280]  ETA: 32.1m  Running total: 23,974
+  PLD          2007:   316 cases  |  [61/1280]  ETA: 32.3m  Running total: 24,290
+  PLD          2008:   377 cases  |  [62/1280]  ETA: 32.5m  Running total: 24,667
+  PLD          2009:   288 cases  |  [63/1280]  ETA: 32.9m  Running total: 24,955
+  PLD          2010:   231 cases  |  [64/1280]  ETA: 33.2m  Running total: 25,186
+  PLD          2011:   332 cases  |  [65/1280]  ETA: 33.4m  Running total: 25,518
+  PLD          2012:   287 cases  |  [66/1280]  ETA: 34.0m  Running total: 25,805
+  PLD          2013:   271 cases  |  [67/1280]  ETA: 34.3m  Running total: 26,076
+  PLD          2014:   271 cases  |  [68/1280]  ETA: 34.5m  Running total: 26,347
+  PLD          2015:   233 cases  |  [69/1280]  ETA: 34.8m  Running total: 26,580
+  PLD          2016:   280 cases  |  [70/1280]  ETA: 35.0m  Running total: 26,860
+  PLD          2017:   259 cases  |  [71/1280]  ETA: 35.1m  Running total: 27,119
+  PLD          2018:   263 cases  |  [72/1280]  ETA: 35.1m  Running total: 27,382
+  PLD          2019:   255 cases  |  [73/1280]  ETA: 35.2m  Running total: 27,637
+  PLD          2020:   272 cases  |  [74/1280]  ETA: 35.3m  Running total: 27,909
+  PLD          2021:   255 cases  |  [75/1280]  ETA: 35.5m  Running total: 28,164
+  PLD          2022:   278 cases  |  [76/1280]  ETA: 35.7m  Running total: 28,442
+  PLD          2023:   259 cases  |  [77/1280]  ETA: 35.6m  Running total: 28,701
+  PLD          2024:   272 cases  |  [78/1280]  ETA: 35.6m  Running total: 28,973
+  PLD          2025:   273 cases  |  [79/1280]  ETA: 35.4m  Running total: 29,246
+  PLD          2026:    46 cases  |  [80/1280]  ETA: 35.0m  Running total: 29,292
+
+  PLD          TOTAL:     29,292 cases (80 years with data)
+
+  SCMR         1968:   699 cases  |  [102/1280]  ETA: 29.7m  Running total: 29,991
+  SCMR         1969:   420 cases  |  [103/1280]  ETA: 29.7m  Running total: 30,411
+  SCMR         1970:   415 cases  |  [104/1280]  ETA: 29.6m  Running total: 30,826
+  SCMR         1971:   294 cases  |  [105/1280]  ETA: 29.5m  Running total: 31,120
+  SCMR         1972:   282 cases  |  [106/1280]  ETA: 29.4m  Running total: 31,402
+  SCMR         1973:   199 cases  |  [107/1280]  ETA: 29.2m  Running total: 31,601
+  SCMR         1974:   218 cases  |  [108/1280]  ETA: 29.1m  Running total: 31,819
+  SCMR         1975:   243 cases  |  [109/1280]  ETA: 29.0m  Running total: 32,062
+  SCMR         1976:   263 cases  |  [110/1280]  ETA: 28.9m  Running total: 32,325
+  SCMR         1977:   149 cases  |  [111/1280]  ETA: 28.7m  Running total: 32,474
+  SCMR         1978:   186 cases  |  [112/1280]  ETA: 28.7m  Running total: 32,660
+  SCMR         1979:   270 cases  |  [113/1280]  ETA: 28.6m  Running total: 32,930
+  SCMR         1980:   364 cases  |  [114/1280]  ETA: 28.5m  Running total: 33,294
+  SCMR         1981:   540 cases  |  [115/1280]  ETA: 28.5m  Running total: 33,834
+  SCMR         1982:   594 cases  |  [116/1280]  ETA: 28.6m  Running total: 34,428
+  SCMR         1983:   613 cases  |  [117/1280]  ETA: 28.8m  Running total: 35,041
+  SCMR         1984:   739 cases  |  [118/1280]  ETA: 29.0m  Running total: 35,780
+  SCMR         1985:   873 cases  |  [119/1280]  ETA: 29.2m  Running total: 36,653
+  SCMR         1986:   938 cases  |  [120/1280]  ETA: 29.4m  Running total: 37,591
+  SCMR         1987:   902 cases  |  [121/1280]  ETA: 29.7m  Running total: 38,493
+  SCMR         1988:  1009 cases  |  [122/1280]  ETA: 30.0m  Running total: 39,502
+  SCMR         1989:  1221 cases  |  [123/1280]  ETA: 30.4m  Running total: 40,723
+  SCMR         1990:   799 cases  |  [124/1280]  ETA: 30.5m  Running total: 41,522
+  SCMR         1991:   853 cases  |  [125/1280]  ETA: 30.7m  Running total: 42,375
+  SCMR         1992:   390 cases  |  [126/1280]  ETA: 30.7m  Running total: 42,765
+  SCMR         1993:   475 cases  |  [127/1280]  ETA: 30.8m  Running total: 43,240
+  SCMR         1994:   656 cases  |  [128/1280]  ETA: 30.9m  Running total: 43,896
+  SCMR         1995:   580 cases  |  [129/1280]  ETA: 31.0m  Running total: 44,476
+  SCMR         1996:   537 cases  |  [130/1280]  ETA: 31.0m  Running total: 45,013
+  SCMR         1997:   445 cases  |  [131/1280]  ETA: 31.0m  Running total: 45,458
+  SCMR         1998:   696 cases  |  [132/1280]  ETA: 31.2m  Running total: 46,154
+  SCMR         1999:   550 cases  |  [133/1280]  ETA: 31.4m  Running total: 46,704
+  SCMR         2000:   478 cases  |  [134/1280]  ETA: 31.4m  Running total: 47,182
+  SCMR         2001:   403 cases  |  [135/1280]  ETA: 31.4m  Running total: 47,585
+  SCMR         2002:   486 cases  |  [136/1280]  ETA: 31.5m  Running total: 48,071
+  SCMR         2003:   488 cases  |  [137/1280]  ETA: 31.6m  Running total: 48,559
+  SCMR         2004:   574 cases  |  [138/1280]  ETA: 31.8m  Running total: 49,133
+  SCMR         2005:   465 cases  |  [139/1280]  ETA: 31.9m  Running total: 49,598
+  SCMR         2006:   492 cases  |  [140/1280]  ETA: 32.0m  Running total: 50,090
+  SCMR         2007:   452 cases  |  [141/1280]  ETA: 32.1m  Running total: 50,542
+  SCMR         2008:   534 cases  |  [142/1280]  ETA: 32.2m  Running total: 51,076
+  SCMR         2009:   299 cases  |  [143/1280]  ETA: 32.3m  Running total: 51,375
+  SCMR         2010:   311 cases  |  [144/1280]  ETA: 32.3m  Running total: 51,686
+  SCMR         2011:   450 cases  |  [145/1280]  ETA: 32.4m  Running total: 52,136
+  SCMR         2012:   274 cases  |  [146/1280]  ETA: 32.4m  Running total: 52,410
+  SCMR         2013:   214 cases  |  [147/1280]  ETA: 32.4m  Running total: 52,624
+  SCMR         2014:   197 cases  |  [148/1280]  ETA: 32.3m  Running total: 52,821
+  SCMR         2015:   178 cases  |  [149/1280]  ETA: 32.3m  Running total: 52,999
+  SCMR         2016:   251 cases  |  [150/1280]  ETA: 32.2m  Running total: 53,250
+  SCMR         2017:   238 cases  |  [151/1280]  ETA: 32.2m  Running total: 53,488
+  SCMR         2018:   194 cases  |  [152/1280]  ETA: 32.0m  Running total: 53,682
+  SCMR         2019:   241 cases  |  [153/1280]  ETA: 32.0m  Running total: 53,923
+  SCMR         2020:   321 cases  |  [154/1280]  ETA: 32.1m  Running total: 54,244
+  SCMR         2021:   341 cases  |  [155/1280]  ETA: 32.1m  Running total: 54,585
+  SCMR         2022:   330 cases  |  [156/1280]  ETA: 32.1m  Running total: 54,915
+  SCMR         2023:   280 cases  |  [157/1280]  ETA: 32.1m  Running total: 55,195
+  SCMR         2024:   266 cases  |  [158/1280]  ETA: 32.0m  Running total: 55,461
+  SCMR         2025:   264 cases  |  [159/1280]  ETA: 31.9m  Running total: 55,725
+  SCMR         2026:    30 cases  |  [160/1280]  ETA: 31.7m  Running total: 55,755
+
+  SCMR         TOTAL:     26,463 cases (59 years with data)
+
+  CLC          1979:   224 cases  |  [193/1280]  ETA: 27.6m  Running total: 55,979
+  CLC          1980:   494 cases  |  [194/1280]  ETA: 27.6m  Running total: 56,473
+  CLC          1981:   437 cases  |  [195/1280]  ETA: 27.6m  Running total: 56,910
+  CLC          1982:   820 cases  |  [196/1280]  ETA: 27.7m  Running total: 57,730
+  CLC          1983:   981 cases  |  [197/1280]  ETA: 27.8m  Running total: 58,711
+  CLC          1984:   956 cases  |  [198/1280]  ETA: 28.0m  Running total: 59,667
+  CLC          1985:   716 cases  |  [199/1280]  ETA: 28.0m  Running total: 60,383
+  CLC          1986:   788 cases  |  [200/1280]  ETA: 28.1m  Running total: 61,171
+  CLC          1987:   706 cases  |  [201/1280]  ETA: 28.2m  Running total: 61,877
+  CLC          1988:   713 cases  |  [202/1280]  ETA: 28.3m  Running total: 62,590
+  CLC          1989:   618 cases  |  [203/1280]  ETA: 28.3m  Running total: 63,208
+  CLC          1990:   437 cases  |  [204/1280]  ETA: 28.6m  Running total: 63,645
+  CLC          1991:   596 cases  |  [205/1280]  ETA: 29.5m  Running total: 64,241
+  CLC          1992:   600 cases  |  [206/1280]  ETA: 29.8m  Running total: 64,841
+  CLC          1993:   575 cases  |  [207/1280]  ETA: 30.0m  Running total: 65,416
+  CLC          1994:   565 cases  |  [208/1280]  ETA: 30.1m  Running total: 65,981
+  CLC          1995:   387 cases  |  [209/1280]  ETA: 30.5m  Running total: 66,368
+  CLC          1996:   335 cases  |  [210/1280]  ETA: 30.6m  Running total: 66,703
+  CLC          1997:   373 cases  |  [211/1280]  ETA: 30.5m  Running total: 67,076
+  CLC          1998:   372 cases  |  [212/1280]  ETA: 30.6m  Running total: 67,448
+  CLC          1999:   391 cases  |  [213/1280]  ETA: 31.4m  Running total: 67,839
+  CLC          2000:   384 cases  |  [214/1280]  ETA: 31.4m  Running total: 68,223
+  CLC          2001:   397 cases  |  [215/1280]  ETA: 31.4m  Running total: 68,620
+  CLC          2002:   365 cases  |  [216/1280]  ETA: 31.4m  Running total: 68,985
+  CLC          2003:   391 cases  |  [217/1280]  ETA: 31.4m  Running total: 69,376
+  CLC          2004:   330 cases  |  [218/1280]  ETA: 31.4m  Running total: 69,706
+  CLC          2005:   370 cases  |  [219/1280]  ETA: 31.4m  Running total: 70,076
+  CLC          2006:   452 cases  |  [220/1280]  ETA: 31.4m  Running total: 70,528
+  CLC          2007:   394 cases  |  [221/1280]  ETA: 31.4m  Running total: 70,922
+  CLC          2008:   387 cases  |  [222/1280]  ETA: 31.4m  Running total: 71,309
+  CLC          2009:   260 cases  |  [223/1280]  ETA: 31.3m  Running total: 71,569
+  CLC          2010:   407 cases  |  [224/1280]  ETA: 31.3m  Running total: 71,976
+  CLC          2011:   348 cases  |  [225/1280]  ETA: 31.3m  Running total: 72,324
+  CLC          2012:   319 cases  |  [226/1280]  ETA: 31.3m  Running total: 72,643
+  CLC          2013:   315 cases  |  [227/1280]  ETA: 31.3m  Running total: 72,958
+  CLC          2014:   304 cases  |  [228/1280]  ETA: 31.3m  Running total: 73,262
+  CLC          2015:   269 cases  |  [229/1280]  ETA: 31.2m  Running total: 73,531
+  CLC          2016:   263 cases  |  [230/1280]  ETA: 31.2m  Running total: 73,794
+  CLC          2017:   234 cases  |  [231/1280]  ETA: 31.2m  Running total: 74,028
+  CLC          2018:   248 cases  |  [232/1280]  ETA: 31.1m  Running total: 74,276
+  CLC          2019:   284 cases  |  [233/1280]  ETA: 31.1m  Running total: 74,560
+  CLC          2020:   290 cases  |  [234/1280]  ETA: 31.0m  Running total: 74,850
+  CLC          2021:   296 cases  |  [235/1280]  ETA: 31.0m  Running total: 75,146
+  CLC          2022:   257 cases  |  [236/1280]  ETA: 31.0m  Running total: 75,403
+  CLC          2023:   254 cases  |  [237/1280]  ETA: 30.9m  Running total: 75,657
+  CLC          2024:   240 cases  |  [238/1280]  ETA: 30.9m  Running total: 75,897
+  CLC          2025:   256 cases  |  [239/1280]  ETA: 30.8m  Running total: 76,153
+  CLC          2026:    26 cases  |  [240/1280]  ETA: 30.6m  Running total: 76,179
+
+  CLC          TOTAL:     20,424 cases (48 years with data)
+
+  CLD          2002:   331 cases  |  [296/1280]  ETA: 25.5m  Running total: 76,510
+  CLD          2003:   251 cases  |  [297/1280]  ETA: 25.5m  Running total: 76,761
+  CLD          2004:   293 cases  |  [298/1280]  ETA: 25.5m  Running total: 77,054
+  CLD          2005:   375 cases  |  [299/1280]  ETA: 25.5m  Running total: 77,429
+  CLD          2006:   288 cases  |  [300/1280]  ETA: 25.5m  Running total: 77,717
+  CLD          2007:   250 cases  |  [301/1280]  ETA: 25.4m  Running total: 77,967
+  CLD          2008:   201 cases  |  [302/1280]  ETA: 25.4m  Running total: 78,168
+  CLD          2009:   249 cases  |  [303/1280]  ETA: 25.4m  Running total: 78,417
+  CLD          2010:   233 cases  |  [304/1280]  ETA: 25.3m  Running total: 78,650
+  CLD          2011:   217 cases  |  [305/1280]  ETA: 25.3m  Running total: 78,867
+  CLD          2012:   214 cases  |  [306/1280]  ETA: 25.3m  Running total: 79,081
+  CLD          2013:   235 cases  |  [307/1280]  ETA: 25.3m  Running total: 79,316
+  CLD          2014:   197 cases  |  [308/1280]  ETA: 25.3m  Running total: 79,513
+  CLD          2015:   218 cases  |  [309/1280]  ETA: 25.2m  Running total: 79,731
+  CLD          2016:   246 cases  |  [310/1280]  ETA: 25.2m  Running total: 79,977
+  CLD          2017:   203 cases  |  [311/1280]  ETA: 25.2m  Running total: 80,180
+  CLD          2018:   176 cases  |  [312/1280]  ETA: 25.2m  Running total: 80,356
+  CLD          2019:   170 cases  |  [313/1280]  ETA: 25.1m  Running total: 80,526
+  CLD          2020:   145 cases  |  [314/1280]  ETA: 25.1m  Running total: 80,671
+  CLD          2021:   151 cases  |  [315/1280]  ETA: 25.0m  Running total: 80,822
+  CLD          2022:   138 cases  |  [316/1280]  ETA: 25.0m  Running total: 80,960
+  CLD          2023:   168 cases  |  [317/1280]  ETA: 25.0m  Running total: 81,128
+  CLD          2024:   176 cases  |  [318/1280]  ETA: 24.9m  Running total: 81,304
+  CLD          2025:   157 cases  |  [319/1280]  ETA: 24.9m  Running total: 81,461
+  CLD          2026:    16 cases  |  [320/1280]  ETA: 24.8m  Running total: 81,477
+
+  CLD          TOTAL:      5,298 cases (25 years with data)
+
+  YLR          1999:   708 cases  |  [373/1280]  ETA: 21.5m  Running total: 82,185
+  YLR          2000:   815 cases  |  [374/1280]  ETA: 21.5m  Running total: 83,000
+  YLR          2001:   892 cases  |  [375/1280]  ETA: 21.5m  Running total: 83,892
+  YLR          2002:  1101 cases  |  [376/1280]  ETA: 21.7m  Running total: 84,993
+  YLR          2003:   885 cases  |  [377/1280]  ETA: 21.8m  Running total: 85,878
+  YLR          2004:   724 cases  |  [378/1280]  ETA: 21.8m  Running total: 86,602
+  YLR          2005:  1000 cases  |  [379/1280]  ETA: 22.0m  Running total: 87,602
+  YLR          2006:  1139 cases  |  [380/1280]  ETA: 22.2m  Running total: 88,741
+  YLR          2007:  1069 cases  |  [381/1280]  ETA: 22.3m  Running total: 89,810
+  YLR          2008:  1000 cases  |  [382/1280]  ETA: 22.3m  Running total: 90,810
+  YLR          2009:   837 cases  |  [383/1280]  ETA: 22.4m  Running total: 91,647
+  YLR          2010:  1042 cases  |  [384/1280]  ETA: 22.6m  Running total: 92,689
+  YLR          2011:   825 cases  |  [385/1280]  ETA: 22.7m  Running total: 93,514
+  YLR          2012:   746 cases  |  [386/1280]  ETA: 22.8m  Running total: 94,260
+  YLR          2013:   688 cases  |  [387/1280]  ETA: 22.8m  Running total: 94,948
+  YLR          2014:   555 cases  |  [388/1280]  ETA: 22.9m  Running total: 95,503
+  YLR          2015:   493 cases  |  [389/1280]  ETA: 23.0m  Running total: 95,996
+  YLR          2016:   509 cases  |  [390/1280]  ETA: 23.0m  Running total: 96,505
+  YLR          2017:   445 cases  |  [391/1280]  ETA: 23.1m  Running total: 96,950
+  YLR          2018:   482 cases  |  [392/1280]  ETA: 23.1m  Running total: 97,432
+  YLR          2019:   442 cases  |  [393/1280]  ETA: 23.2m  Running total: 97,874
+  YLR          2020:   429 cases  |  [394/1280]  ETA: 23.3m  Running total: 98,303
+  YLR          2021:   368 cases  |  [395/1280]  ETA: 23.3m  Running total: 98,671
+  YLR          2022:   372 cases  |  [396/1280]  ETA: 23.4m  Running total: 99,043
+  YLR          2023:   373 cases  |  [397/1280]  ETA: 23.4m  Running total: 99,416
+  YLR          2024:   353 cases  |  [398/1280]  ETA: 23.4m  Running total: 99,769
+  YLR          2025:   407 cases  |  [399/1280]  ETA: 23.4m  Running total: 100,176
+  YLR          2026:    28 cases  |  [400/1280]  ETA: 23.3m  Running total: 100,204
+
+  YLR          TOTAL:     18,727 cases (28 years with data)
+
+  PCrLJ        1968:   535 cases  |  [422/1280]  ETA: 22.1m  Running total: 100,739
+  PCrLJ        1969:   440 cases  |  [423/1280]  ETA: 22.1m  Running total: 101,179
+  PCrLJ        1970:   303 cases  |  [424/1280]  ETA: 22.0m  Running total: 101,482
+  PCrLJ        1971:   277 cases  |  [425/1280]  ETA: 22.0m  Running total: 101,759
+  PCrLJ        1972:   271 cases  |  [426/1280]  ETA: 21.9m  Running total: 102,030
+  PCrLJ        1973:   209 cases  |  [427/1280]  ETA: 21.9m  Running total: 102,239
+  PCrLJ        1974:   141 cases  |  [428/1280]  ETA: 21.8m  Running total: 102,380
+  PCrLJ        1975:   333 cases  |  [429/1280]  ETA: 21.8m  Running total: 102,713
+  PCrLJ        1976:   379 cases  |  [430/1280]  ETA: 21.7m  Running total: 103,092
+  PCrLJ        1977:   440 cases  |  [431/1280]  ETA: 21.7m  Running total: 103,532
+  PCrLJ        1978:   325 cases  |  [432/1280]  ETA: 21.6m  Running total: 103,857
+  PCrLJ        1979:   327 cases  |  [433/1280]  ETA: 21.6m  Running total: 104,184
+  PCrLJ        1980:   333 cases  |  [434/1280]  ETA: 21.5m  Running total: 104,517
+  PCrLJ        1981:   359 cases  |  [435/1280]  ETA: 21.5m  Running total: 104,876
+  PCrLJ        1982:   401 cases  |  [436/1280]  ETA: 21.4m  Running total: 105,277
+  PCrLJ        1983:   791 cases  |  [437/1280]  ETA: 21.4m  Running total: 106,068
+  PCrLJ        1984:   962 cases  |  [438/1280]  ETA: 21.5m  Running total: 107,030
+  PCrLJ        1985:   961 cases  |  [439/1280]  ETA: 21.8m  Running total: 107,991
+  PCrLJ        1986:  1078 cases  |  [440/1280]  ETA: 21.9m  Running total: 109,069
+  PCrLJ        1987:   890 cases  |  [441/1280]  ETA: 21.9m  Running total: 109,959
+  PCrLJ        1988:   835 cases  |  [442/1280]  ETA: 21.8m  Running total: 110,794
+  PCrLJ        1989:   840 cases  |  [443/1280]  ETA: 21.8m  Running total: 111,634
+  PCrLJ        1990:   511 cases  |  [444/1280]  ETA: 21.8m  Running total: 112,145
+  PCrLJ        1991:   703 cases  |  [445/1280]  ETA: 21.8m  Running total: 112,848
+  PCrLJ        1992:   728 cases  |  [446/1280]  ETA: 21.7m  Running total: 113,576
+  PCrLJ        1993:   723 cases  |  [447/1280]  ETA: 21.8m  Running total: 114,299
+  PCrLJ        1994:   860 cases  |  [448/1280]  ETA: 21.8m  Running total: 115,159
+  PCrLJ        1995:   599 cases  |  [449/1280]  ETA: 21.8m  Running total: 115,758
+  PCrLJ        1996:   506 cases  |  [450/1280]  ETA: 21.7m  Running total: 116,264
+  PCrLJ        1997:   502 cases  |  [451/1280]  ETA: 21.7m  Running total: 116,766
+  PCrLJ        1998:   458 cases  |  [452/1280]  ETA: 21.7m  Running total: 117,224
+  PCrLJ        1999:   506 cases  |  [453/1280]  ETA: 21.7m  Running total: 117,730
+  PCrLJ        2000:   466 cases  |  [454/1280]  ETA: 21.7m  Running total: 118,196
+  PCrLJ        2001:   514 cases  |  [455/1280]  ETA: 21.7m  Running total: 118,710
+  PCrLJ        2002:   394 cases  |  [456/1280]  ETA: 21.7m  Running total: 119,104
+  PCrLJ        2003:   470 cases  |  [457/1280]  ETA: 21.7m  Running total: 119,574
+  PCrLJ        2004:   503 cases  |  [458/1280]  ETA: 21.7m  Running total: 120,077
+  PCrLJ        2005:   449 cases  |  [459/1280]  ETA: 21.7m  Running total: 120,526
+  PCrLJ        2006:   445 cases  |  [460/1280]  ETA: 21.7m  Running total: 120,971
+  PCrLJ        2007:   460 cases  |  [461/1280]  ETA: 21.7m  Running total: 121,431
+  PCrLJ        2008:   391 cases  |  [462/1280]  ETA: 21.7m  Running total: 121,822
+  PCrLJ        2009:   350 cases  |  [463/1280]  ETA: 21.7m  Running total: 122,172
+  PCrLJ        2010:   432 cases  |  [464/1280]  ETA: 21.7m  Running total: 122,604
+  PCrLJ        2011:   395 cases  |  [465/1280]  ETA: 21.7m  Running total: 122,999
+  PCrLJ        2012:   362 cases  |  [466/1280]  ETA: 21.7m  Running total: 123,361
+  PCrLJ        2013:   332 cases  |  [467/1280]  ETA: 21.7m  Running total: 123,693
+  PCrLJ        2014:   346 cases  |  [468/1280]  ETA: 21.7m  Running total: 124,039
+  PCrLJ        2015:   292 cases  |  [469/1280]  ETA: 21.7m  Running total: 124,331
+  PCrLJ        2016:   342 cases  |  [470/1280]  ETA: 21.7m  Running total: 124,673
+  PCrLJ        2017:   246 cases  |  [471/1280]  ETA: 21.6m  Running total: 124,919
+  PCrLJ        2018:   261 cases  |  [472/1280]  ETA: 21.6m  Running total: 125,180
+  PCrLJ        2019:   222 cases  |  [473/1280]  ETA: 21.6m  Running total: 125,402
+  PCrLJ        2020:   259 cases  |  [474/1280]  ETA: 21.6m  Running total: 125,661
+  PCrLJ        2021:   256 cases  |  [475/1280]  ETA: 21.6m  Running total: 125,917
+  PCrLJ        2022:   244 cases  |  [476/1280]  ETA: 21.6m  Running total: 126,161
+  PCrLJ        2023:   212 cases  |  [477/1280]  ETA: 21.6m  Running total: 126,373
+  PCrLJ        2024:   213 cases  |  [478/1280]  ETA: 21.5m  Running total: 126,586
+  PCrLJ        2025:   243 cases  |  [479/1280]  ETA: 21.5m  Running total: 126,829
+  PCrLJ        2026:    20 cases  |  [480/1280]  ETA: 21.4m  Running total: 126,849
+
+  PCrLJ        TOTAL:     26,645 cases (59 years with data)
+
+  PLC          1962:   280 cases  |  [496/1280]  ETA: 20.6m  Running total: 127,129
+  PLC          1963:   190 cases  |  [497/1280]  ETA: 20.5m  Running total: 127,319
+  PLC          1970:   247 cases  |  [504/1280]  ETA: 20.2m  Running total: 127,566
+  PLC          1971:   172 cases  |  [505/1280]  ETA: 20.2m  Running total: 127,738
+  PLC          1972:   154 cases  |  [506/1280]  ETA: 20.1m  Running total: 127,892
+  PLC          1973:    88 cases  |  [507/1280]  ETA: 20.1m  Running total: 127,980
+  PLC          1974:    76 cases  |  [508/1280]  ETA: 20.0m  Running total: 128,056
+  PLC          1976:   315 cases  |  [510/1280]  ETA: 19.9m  Running total: 128,371
+  PLC          1977:   285 cases  |  [511/1280]  ETA: 19.9m  Running total: 128,656
+  PLC          1978:   261 cases  |  [512/1280]  ETA: 19.8m  Running total: 128,917
+  PLC          1979:   180 cases  |  [513/1280]  ETA: 19.8m  Running total: 129,097
+  PLC          1981:   205 cases  |  [515/1280]  ETA: 19.7m  Running total: 129,302
+  PLC          1982:   206 cases  |  [516/1280]  ETA: 19.7m  Running total: 129,508
+  PLC          1983:   323 cases  |  [517/1280]  ETA: 19.6m  Running total: 129,831
+  PLC          1984:   415 cases  |  [518/1280]  ETA: 19.6m  Running total: 130,246
+  PLC          1985:   347 cases  |  [519/1280]  ETA: 19.6m  Running total: 130,593
+  PLC          1986:   369 cases  |  [520/1280]  ETA: 19.6m  Running total: 130,962
+  PLC          1987:   290 cases  |  [521/1280]  ETA: 19.5m  Running total: 131,252
+  PLC          1988:   308 cases  |  [522/1280]  ETA: 19.5m  Running total: 131,560
+  PLC          1989:   302 cases  |  [523/1280]  ETA: 19.4m  Running total: 131,862
+  PLC          1990:   247 cases  |  [524/1280]  ETA: 19.4m  Running total: 132,109
+  PLC          1991:   205 cases  |  [525/1280]  ETA: 19.4m  Running total: 132,314
+  PLC          1992:   201 cases  |  [526/1280]  ETA: 19.4m  Running total: 132,515
+  PLC          1993:   274 cases  |  [527/1280]  ETA: 19.3m  Running total: 132,789
+  PLC          1994:   222 cases  |  [528/1280]  ETA: 19.3m  Running total: 133,011
+  PLC          1995:   228 cases  |  [529/1280]  ETA: 19.3m  Running total: 133,239
+  PLC          1996:   210 cases  |  [530/1280]  ETA: 19.2m  Running total: 133,449
+  PLC          1997:   221 cases  |  [531/1280]  ETA: 19.2m  Running total: 133,670
+  PLC          1998:   140 cases  |  [532/1280]  ETA: 19.1m  Running total: 133,810
+  PLC          1999:   129 cases  |  [533/1280]  ETA: 19.1m  Running total: 133,939
+  PLC          2000:   171 cases  |  [534/1280]  ETA: 19.1m  Running total: 134,110
+  PLC          2001:   166 cases  |  [535/1280]  ETA: 19.0m  Running total: 134,276
+  PLC          2002:    68 cases  |  [536/1280]  ETA: 19.0m  Running total: 134,344
+  PLC          2003:    87 cases  |  [537/1280]  ETA: 18.9m  Running total: 134,431
+  PLC          2004:    75 cases  |  [538/1280]  ETA: 18.9m  Running total: 134,506
+  PLC          2005:    88 cases  |  [539/1280]  ETA: 18.8m  Running total: 134,594
+  PLC          2006:   118 cases  |  [540/1280]  ETA: 18.8m  Running total: 134,712
+  PLC          2007:   110 cases  |  [541/1280]  ETA: 18.8m  Running total: 134,822
+  PLC          2008:    72 cases  |  [542/1280]  ETA: 18.7m  Running total: 134,894
+  PLC          2009:    58 cases  |  [543/1280]  ETA: 18.7m  Running total: 134,952
+  PLC          2010:    77 cases  |  [544/1280]  ETA: 18.7m  Running total: 135,029
+  PLC          2011:    81 cases  |  [545/1280]  ETA: 18.6m  Running total: 135,110
+  PLC          2012:    93 cases  |  [546/1280]  ETA: 18.6m  Running total: 135,203
+  PLC          2013:    71 cases  |  [547/1280]  ETA: 18.5m  Running total: 135,274
+  PLC          2014:    70 cases  |  [548/1280]  ETA: 18.5m  Running total: 135,344
+  PLC          2015:    46 cases  |  [549/1280]  ETA: 18.4m  Running total: 135,390
+  PLC          2016:    83 cases  |  [550/1280]  ETA: 18.4m  Running total: 135,473
+  PLC          2017:    40 cases  |  [551/1280]  ETA: 18.3m  Running total: 135,513
+  PLC          2018:    46 cases  |  [552/1280]  ETA: 18.3m  Running total: 135,559
+  PLC          2019:    33 cases  |  [553/1280]  ETA: 18.3m  Running total: 135,592
+  PLC          2020:    44 cases  |  [554/1280]  ETA: 18.2m  Running total: 135,636
+  PLC          2021:    37 cases  |  [555/1280]  ETA: 18.2m  Running total: 135,673
+  PLC          2022:    27 cases  |  [556/1280]  ETA: 18.1m  Running total: 135,700
+  PLC          2023:    31 cases  |  [557/1280]  ETA: 18.1m  Running total: 135,731
+  PLC          2024:    41 cases  |  [558/1280]  ETA: 18.0m  Running total: 135,772
+  PLC          2025:    33 cases  |  [559/1280]  ETA: 18.0m  Running total: 135,805
+
+  PLC          TOTAL:      8,956 cases (56 years with data)
+
+  PLC(CS)      1962:    27 cases  |  [576/1280]  ETA: 17.3m  Running total: 135,832
+  PLC(CS)      1970:    20 cases  |  [584/1280]  ETA: 16.9m  Running total: 135,852
+  PLC(CS)      1971:   106 cases  |  [585/1280]  ETA: 16.9m  Running total: 135,958
+  PLC(CS)      1973:    37 cases  |  [587/1280]  ETA: 16.8m  Running total: 135,995
+  PLC(CS)      1976:   132 cases  |  [590/1280]  ETA: 16.7m  Running total: 136,127
+  PLC(CS)      1977:    61 cases  |  [591/1280]  ETA: 16.7m  Running total: 136,188
+  PLC(CS)      1978:    45 cases  |  [592/1280]  ETA: 16.6m  Running total: 136,233
+  PLC(CS)      1979:    32 cases  |  [593/1280]  ETA: 16.6m  Running total: 136,265
+  PLC(CS)      1980:   281 cases  |  [594/1280]  ETA: 16.6m  Running total: 136,546
+  PLC(CS)      1981:   414 cases  |  [595/1280]  ETA: 16.5m  Running total: 136,960
+  PLC(CS)      1982:   311 cases  |  [596/1280]  ETA: 16.5m  Running total: 137,271
+  PLC(CS)      1983:   523 cases  |  [597/1280]  ETA: 16.5m  Running total: 137,794
+  PLC(CS)      1984:   845 cases  |  [598/1280]  ETA: 16.5m  Running total: 138,639
+  PLC(CS)      1985:   561 cases  |  [599/1280]  ETA: 16.5m  Running total: 139,200
+  PLC(CS)      1986:   443 cases  |  [600/1280]  ETA: 16.5m  Running total: 139,643
+  PLC(CS)      1987:   275 cases  |  [601/1280]  ETA: 16.4m  Running total: 139,918
+  PLC(CS)      1988:   371 cases  |  [602/1280]  ETA: 16.4m  Running total: 140,289
+  PLC(CS)      1989:   359 cases  |  [603/1280]  ETA: 16.4m  Running total: 140,648
+  PLC(CS)      1990:   154 cases  |  [604/1280]  ETA: 16.3m  Running total: 140,802
+  PLC(CS)      1991:   344 cases  |  [605/1280]  ETA: 16.3m  Running total: 141,146
+  PLC(CS)      1992:   458 cases  |  [606/1280]  ETA: 16.3m  Running total: 141,604
+  PLC(CS)      1993:   405 cases  |  [607/1280]  ETA: 16.3m  Running total: 142,009
+  PLC(CS)      1994:   455 cases  |  [608/1280]  ETA: 16.3m  Running total: 142,464
+  PLC(CS)      1995:   370 cases  |  [609/1280]  ETA: 16.2m  Running total: 142,834
+  PLC(CS)      1996:   355 cases  |  [610/1280]  ETA: 16.2m  Running total: 143,189
+  PLC(CS)      1997:   292 cases  |  [611/1280]  ETA: 16.2m  Running total: 143,481
+  PLC(CS)      1998:   322 cases  |  [612/1280]  ETA: 16.2m  Running total: 143,803
+  PLC(CS)      1999:   280 cases  |  [613/1280]  ETA: 16.1m  Running total: 144,083
+  PLC(CS)      2000:   258 cases  |  [614/1280]  ETA: 16.1m  Running total: 144,341
+  PLC(CS)      2001:   258 cases  |  [615/1280]  ETA: 16.1m  Running total: 144,599
+  PLC(CS)      2002:   327 cases  |  [616/1280]  ETA: 16.1m  Running total: 144,926
+  PLC(CS)      2003:   306 cases  |  [617/1280]  ETA: 16.0m  Running total: 145,232
+  PLC(CS)      2004:   306 cases  |  [618/1280]  ETA: 16.0m  Running total: 145,538
+  PLC(CS)      2005:   293 cases  |  [619/1280]  ETA: 16.0m  Running total: 145,831
+  PLC(CS)      2006:   271 cases  |  [620/1280]  ETA: 16.0m  Running total: 146,102
+  PLC(CS)      2007:   305 cases  |  [621/1280]  ETA: 15.9m  Running total: 146,407
+  PLC(CS)      2008:   279 cases  |  [622/1280]  ETA: 15.9m  Running total: 146,686
+  PLC(CS)      2009:   198 cases  |  [623/1280]  ETA: 15.9m  Running total: 146,884
+  PLC(CS)      2010:   261 cases  |  [624/1280]  ETA: 15.9m  Running total: 147,145
+  PLC(CS)      2011:   298 cases  |  [625/1280]  ETA: 15.9m  Running total: 147,443
+  PLC(CS)      2012:   266 cases  |  [626/1280]  ETA: 15.8m  Running total: 147,709
+  PLC(CS)      2013:   197 cases  |  [627/1280]  ETA: 15.8m  Running total: 147,906
+  PLC(CS)      2014:   192 cases  |  [628/1280]  ETA: 15.8m  Running total: 148,098
+  PLC(CS)      2015:   204 cases  |  [629/1280]  ETA: 15.8m  Running total: 148,302
+  PLC(CS)      2016:   175 cases  |  [630/1280]  ETA: 15.7m  Running total: 148,477
+  PLC(CS)      2017:   173 cases  |  [631/1280]  ETA: 15.7m  Running total: 148,650
+  PLC(CS)      2018:   145 cases  |  [632/1280]  ETA: 15.7m  Running total: 148,795
+  PLC(CS)      2019:   196 cases  |  [633/1280]  ETA: 15.7m  Running total: 148,991
+  PLC(CS)      2020:   235 cases  |  [634/1280]  ETA: 15.6m  Running total: 149,226
+  PLC(CS)      2021:   197 cases  |  [635/1280]  ETA: 15.6m  Running total: 149,423
+  PLC(CS)      2022:   197 cases  |  [636/1280]  ETA: 15.6m  Running total: 149,620
+  PLC(CS)      2023:   213 cases  |  [637/1280]  ETA: 15.6m  Running total: 149,833
+  PLC(CS)      2024:   231 cases  |  [638/1280]  ETA: 15.5m  Running total: 150,064
+  PLC(CS)      2025:   223 cases  |  [639/1280]  ETA: 15.5m  Running total: 150,287
+
+  PLC(CS)      TOTAL:     14,482 cases (54 years with data)
+
+  PTD          1960:   186 cases  |  [654/1280]  ETA: 15.0m  Running total: 150,473
+  PTD          1961:   144 cases  |  [655/1280]  ETA: 14.9m  Running total: 150,617
+  PTD          1963:   143 cases  |  [657/1280]  ETA: 14.9m  Running total: 150,760
+  PTD          1964:   114 cases  |  [658/1280]  ETA: 14.8m  Running total: 150,874
+  PTD          1965:   112 cases  |  [659/1280]  ETA: 14.8m  Running total: 150,986
+  PTD          1966:    96 cases  |  [660/1280]  ETA: 14.8m  Running total: 151,082
+  PTD          1968:   119 cases  |  [662/1280]  ETA: 14.7m  Running total: 151,201
+  PTD          1969:   117 cases  |  [663/1280]  ETA: 14.7m  Running total: 151,318
+  PTD          1971:   154 cases  |  [665/1280]  ETA: 14.6m  Running total: 151,472
+  PTD          1972:    89 cases  |  [666/1280]  ETA: 14.6m  Running total: 151,561
+  PTD          1973:    85 cases  |  [667/1280]  ETA: 14.5m  Running total: 151,646
+  PTD          1980:   114 cases  |  [674/1280]  ETA: 14.3m  Running total: 151,760
+  PTD          1981:   111 cases  |  [675/1280]  ETA: 14.3m  Running total: 151,871
+  PTD          1982:   105 cases  |  [676/1280]  ETA: 14.2m  Running total: 151,976
+  PTD          1983:    96 cases  |  [677/1280]  ETA: 14.2m  Running total: 152,072
+  PTD          1984:   111 cases  |  [678/1280]  ETA: 14.2m  Running total: 152,183
+  PTD          1985:   167 cases  |  [679/1280]  ETA: 14.1m  Running total: 152,350
+  PTD          1986:   156 cases  |  [680/1280]  ETA: 14.1m  Running total: 152,506
+  PTD          1987:   126 cases  |  [681/1280]  ETA: 14.1m  Running total: 152,632
+  PTD          1988:   157 cases  |  [682/1280]  ETA: 14.0m  Running total: 152,789
+  PTD          1989:   254 cases  |  [683/1280]  ETA: 14.0m  Running total: 153,043
+  PTD          1990:   178 cases  |  [684/1280]  ETA: 14.0m  Running total: 153,221
+  PTD          1991:   234 cases  |  [685/1280]  ETA: 13.9m  Running total: 153,455
+  PTD          1992:   295 cases  |  [686/1280]  ETA: 13.9m  Running total: 153,750
+  PTD          1993:   277 cases  |  [687/1280]  ETA: 13.9m  Running total: 154,027
+  PTD          1994:   251 cases  |  [688/1280]  ETA: 13.9m  Running total: 154,278
+  PTD          1995:   196 cases  |  [689/1280]  ETA: 13.8m  Running total: 154,474
+  PTD          1996:   167 cases  |  [690/1280]  ETA: 13.8m  Running total: 154,641
+  PTD          1997:   390 cases  |  [691/1280]  ETA: 13.8m  Running total: 155,031
+  PTD          1998:   613 cases  |  [692/1280]  ETA: 13.8m  Running total: 155,644
+  PTD          1999:   711 cases  |  [693/1280]  ETA: 13.7m  Running total: 156,355
+  PTD          2000:   638 cases  |  [694/1280]  ETA: 13.7m  Running total: 156,993
+  PTD          2001:   829 cases  |  [695/1280]  ETA: 13.7m  Running total: 157,822
+  PTD          2002:   635 cases  |  [696/1280]  ETA: 13.7m  Running total: 158,457
+  PTD          2003:   552 cases  |  [697/1280]  ETA: 13.7m  Running total: 159,009
+  PTD          2004:   381 cases  |  [698/1280]  ETA: 13.7m  Running total: 159,390
+  PTD          2005:   478 cases  |  [699/1280]  ETA: 13.7m  Running total: 159,868
+  PTD          2006:   511 cases  |  [700/1280]  ETA: 13.8m  Running total: 160,379
+  PTD          2007:   448 cases  |  [701/1280]  ETA: 13.8m  Running total: 160,827
+  PTD          2008:   409 cases  |  [702/1280]  ETA: 13.8m  Running total: 161,236
+  PTD          2009:   276 cases  |  [703/1280]  ETA: 13.8m  Running total: 161,512
+  PTD          2010:   332 cases  |  [704/1280]  ETA: 13.8m  Running total: 161,844
+  PTD          2011:   361 cases  |  [705/1280]  ETA: 13.8m  Running total: 162,205
+  PTD          2012:   270 cases  |  [706/1280]  ETA: 13.8m  Running total: 162,475
+  PTD          2013:   284 cases  |  [707/1280]  ETA: 13.8m  Running total: 162,759
+  PTD          2014:   213 cases  |  [708/1280]  ETA: 13.8m  Running total: 162,972
+  PTD          2015:   294 cases  |  [709/1280]  ETA: 13.8m  Running total: 163,266
+  PTD          2016:   275 cases  |  [710/1280]  ETA: 13.7m  Running total: 163,541
+  PTD          2017:   267 cases  |  [711/1280]  ETA: 13.7m  Running total: 163,808
+  PTD          2018:   233 cases  |  [712/1280]  ETA: 13.7m  Running total: 164,041
+  PTD          2019:   238 cases  |  [713/1280]  ETA: 13.7m  Running total: 164,279
+  PTD          2020:   279 cases  |  [714/1280]  ETA: 13.7m  Running total: 164,558
+  PTD          2021:   237 cases  |  [715/1280]  ETA: 13.7m  Running total: 164,795
+  PTD          2022:   248 cases  |  [716/1280]  ETA: 13.7m  Running total: 165,043
+  PTD          2023:   172 cases  |  [717/1280]  ETA: 13.6m  Running total: 165,215
+  PTD          2024:   152 cases  |  [718/1280]  ETA: 13.6m  Running total: 165,367
+  PTD          2025:   222 cases  |  [719/1280]  ETA: 13.6m  Running total: 165,589
+
+  PTD          TOTAL:     15,302 cases (57 years with data)
+
+  MLD          1984:   517 cases  |  [758/1280]  ETA: 12.3m  Running total: 166,106
+  MLD          1985:   639 cases  |  [759/1280]  ETA: 12.2m  Running total: 166,745
+  MLD          1986:   976 cases  |  [760/1280]  ETA: 12.2m  Running total: 167,721
+  MLD          1987:  1236 cases  |  [761/1280]  ETA: 12.2m  Running total: 168,957
+  MLD          1988:   668 cases  |  [762/1280]  ETA: 12.2m  Running total: 169,625
+  MLD          1989:  1737 cases  |  [763/1280]  ETA: 12.2m  Running total: 171,362
+  MLD          1990:   446 cases  |  [764/1280]  ETA: 12.2m  Running total: 171,808
+  MLD          1991:   634 cases  |  [765/1280]  ETA: 12.2m  Running total: 172,442
+  MLD          1992:   589 cases  |  [766/1280]  ETA: 12.2m  Running total: 173,031
+  MLD          1993:   614 cases  |  [767/1280]  ETA: 12.2m  Running total: 173,645
+  MLD          1994:   646 cases  |  [768/1280]  ETA: 12.1m  Running total: 174,291
+  MLD          1995:   463 cases  |  [769/1280]  ETA: 12.1m  Running total: 174,754
+  MLD          1996:   435 cases  |  [770/1280]  ETA: 12.1m  Running total: 175,189
+  MLD          1997:   793 cases  |  [771/1280]  ETA: 12.1m  Running total: 175,982
+  MLD          1998:   404 cases  |  [772/1280]  ETA: 12.1m  Running total: 176,386
+  MLD          1999:   750 cases  |  [773/1280]  ETA: 12.0m  Running total: 177,136
+  MLD          2000:   435 cases  |  [774/1280]  ETA: 12.0m  Running total: 177,571
+  MLD          2001:   495 cases  |  [775/1280]  ETA: 12.0m  Running total: 178,066
+  MLD          2002:   478 cases  |  [776/1280]  ETA: 12.0m  Running total: 178,544
+  MLD          2003:   490 cases  |  [777/1280]  ETA: 12.0m  Running total: 179,034
+  MLD          2004:   485 cases  |  [778/1280]  ETA: 11.9m  Running total: 179,519
+  MLD          2005:   501 cases  |  [779/1280]  ETA: 11.9m  Running total: 180,020
+  MLD          2006:   510 cases  |  [780/1280]  ETA: 11.9m  Running total: 180,530
+  MLD          2007:   541 cases  |  [781/1280]  ETA: 11.9m  Running total: 181,071
+  MLD          2008:   452 cases  |  [782/1280]  ETA: 11.9m  Running total: 181,523
+  MLD          2009:   376 cases  |  [783/1280]  ETA: 11.9m  Running total: 181,899
+  MLD          2010:   482 cases  |  [784/1280]  ETA: 11.9m  Running total: 182,381
+  MLD          2011:   429 cases  |  [785/1280]  ETA: 11.8m  Running total: 182,810
+  MLD          2012:   456 cases  |  [786/1280]  ETA: 11.8m  Running total: 183,266
+  MLD          2013:   396 cases  |  [787/1280]  ETA: 11.8m  Running total: 183,662
+  MLD          2014:   415 cases  |  [788/1280]  ETA: 11.8m  Running total: 184,077
+  MLD          2015:   345 cases  |  [789/1280]  ETA: 11.8m  Running total: 184,422
+  MLD          2016:   433 cases  |  [790/1280]  ETA: 11.7m  Running total: 184,855
+  MLD          2017:   414 cases  |  [791/1280]  ETA: 11.7m  Running total: 185,269
+  MLD          2018:   397 cases  |  [792/1280]  ETA: 11.7m  Running total: 185,666
+  MLD          2019:   347 cases  |  [793/1280]  ETA: 11.7m  Running total: 186,013
+  MLD          2020:   344 cases  |  [794/1280]  ETA: 11.7m  Running total: 186,357
+  MLD          2021:   362 cases  |  [795/1280]  ETA: 11.7m  Running total: 186,719
+  MLD          2022:   359 cases  |  [796/1280]  ETA: 11.6m  Running total: 187,078
+  MLD          2023:   300 cases  |  [797/1280]  ETA: 11.6m  Running total: 187,378
+  MLD          2024:   278 cases  |  [798/1280]  ETA: 11.6m  Running total: 187,656
+  MLD          2025:   269 cases  |  [799/1280]  ETA: 11.6m  Running total: 187,925
+  MLD          2026:    31 cases  |  [800/1280]  ETA: 11.5m  Running total: 187,956
+
+  MLD          TOTAL:     22,367 cases (43 years with data)
+
+  GBLR         2010:   128 cases  |  [864/1280]  ETA: 9.6m  Running total: 188,084
+  GBLR         2014:    47 cases  |  [868/1280]  ETA: 9.4m  Running total: 188,131
+  GBLR         2015:    80 cases  |  [869/1280]  ETA: 9.4m  Running total: 188,211
+  GBLR         2016:    86 cases  |  [870/1280]  ETA: 9.4m  Running total: 188,297
+
+  GBLR         TOTAL:        341 cases (4 years with data)
+
+  CLCN         2016:   155 cases  |  [950/1280]  ETA: 7.2m  Running total: 188,452
+  CLCN         2017:   235 cases  |  [951/1280]  ETA: 7.2m  Running total: 188,687
+  CLCN         2018:   133 cases  |  [952/1280]  ETA: 7.2m  Running total: 188,820
+  CLCN         2019:    68 cases  |  [953/1280]  ETA: 7.1m  Running total: 188,888
+  CLCN         2020:    52 cases  |  [954/1280]  ETA: 7.1m  Running total: 188,940
+
+  CLCN         TOTAL:        643 cases (5 years with data)
+
+  YLRN         2016:   175 cases  |  [1030/1280]  ETA: 5.2m  Running total: 189,115
+  YLRN         2017:   443 cases  |  [1031/1280]  ETA: 5.2m  Running total: 189,558
+  YLRN         2018:   293 cases  |  [1032/1280]  ETA: 5.2m  Running total: 189,851
+  YLRN         2019:   113 cases  |  [1033/1280]  ETA: 5.2m  Running total: 189,964
+  YLRN         2020:   159 cases  |  [1034/1280]  ETA: 5.2m  Running total: 190,123
+  YLRN         2021:   161 cases  |  [1035/1280]  ETA: 5.1m  Running total: 190,284
+  YLRN         2022:   211 cases  |  [1036/1280]  ETA: 5.1m  Running total: 190,495
+  YLRN         2023:    84 cases  |  [1037/1280]  ETA: 5.1m  Running total: 190,579
+
+  YLRN         TOTAL:      1,639 cases (8 years with data)
+
+  PCRLJN       2016:   131 cases  |  [1110/1280]  ETA: 3.5m  Running total: 190,710
+  PCRLJN       2017:   253 cases  |  [1111/1280]  ETA: 3.4m  Running total: 190,963
+  PCRLJN       2018:   228 cases  |  [1112/1280]  ETA: 3.4m  Running total: 191,191
+  PCRLJN       2019:   164 cases  |  [1113/1280]  ETA: 3.4m  Running total: 191,355
+  PCRLJN       2020:   203 cases  |  [1114/1280]  ETA: 3.4m  Running total: 191,558
+  PCRLJN       2021:    89 cases  |  [1115/1280]  ETA: 3.4m  Running total: 191,647
+  PCRLJN       2022:   130 cases  |  [1116/1280]  ETA: 3.3m  Running total: 191,777
+  PCRLJN       2023:   110 cases  |  [1117/1280]  ETA: 3.3m  Running total: 191,887
+
+  PCRLJN       TOTAL:      1,308 cases (8 years with data)
+
+  PLCN         2017:    14 cases  |  [1191/1280]  ETA: 1.8m  Running total: 191,901
+  PLCN         2018:    32 cases  |  [1192/1280]  ETA: 1.7m  Running total: 191,933
+
+  PLCN         TOTAL:         46 cases (2 years with data)
+
+  PLC(CS)N     2017:   118 cases  |  [1271/1280]  ETA: 0.2m  Running total: 192,051
+  PLC(CS)N     2018:   203 cases  |  [1272/1280]  ETA: 0.2m  Running total: 192,254
+  PLC(CS)N     2019:    77 cases  |  [1273/1280]  ETA: 0.1m  Running total: 192,331
+  PLC(CS)N     2020:    39 cases  |  [1274/1280]  ETA: 0.1m  Running total: 192,370
+  PLC(CS)N     2021:    34 cases  |  [1275/1280]  ETA: 0.1m  Running total: 192,404
+  PLC(CS)N     2023:    58 cases  |  [1277/1280]  ETA: 0.1m  Running total: 192,462
+
+  PLC(CS)N     TOTAL:        529 cases (6 years with data)
+
+=================================================================
+  FINAL RESULTS
+=================================================================
+  JOURNAL             CASES  YEARS
+  -----------------------------------
+  PLD                29,292     80 years
+  SCMR               26,463     59 years
+  CLC                20,424     48 years
+  CLD                 5,298     25 years
+  YLR                18,727     28 years
+  PCrLJ              26,645     59 years
+  PLC                 8,956     56 years
+  PLC(CS)            14,482     54 years
+  PTD                15,302     57 years
+  MLD                22,367     43 years
+  GBLR                  341      4 years
+  CLCN                  643      5 years
+  YLRN                1,639      8 years
+  PCRLJN              1,308      8 years
+  PLCN                   46      2 years
+  PLC(CS)N              529      6 years
+  -----------------------------------
+  GRAND TOTAL       192,462
+
+  Errors/timeouts: 0 combos
+  Total time: 24.4 minutes
+  Results saved to: count_results.json
+=================================================================

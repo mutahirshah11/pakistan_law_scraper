@@ -89,7 +89,11 @@ class PakistanLawScraper:
     }
     INDEX_JOURNALS = list(JOURNAL_POST_VALUES.keys())
     YEAR_RANGE_START = 1947
-    YEAR_RANGE_END = 2026
+    YEAR_RANGE_END = 2030
+    # Server caps IndexSearch results at this many rows per query.
+    # When exactly this many rows are returned, truncation is likely —
+    # we re-query by individual court to retrieve all cases.
+    TRUNCATION_THRESHOLD = 1000
 
     # Year options from the website dropdown
     YEAR_OPTIONS = {
@@ -788,6 +792,74 @@ class PakistanLawScraper:
         except requests.exceptions.RequestException as e:
             raise RuntimeError(f"Index search network error for {book} {year}: {e}")
 
+    def index_search_full(self, year: int, book: str) -> list:
+        """
+        Like index_search() but transparently handles server-side truncation.
+
+        The IndexSearch endpoint caps results at TRUNCATION_THRESHOLD (1000) rows
+        per query. When exactly that many rows are returned, results are probably
+        truncated. To recover the missing cases, we re-query the same year+journal
+        once per distinct court found in the initial results and merge everything
+        by case_id.
+
+        If a per-court sub-query also hits the threshold (very rare) a warning is
+        logged but we still return what we have — there is no deeper split.
+
+        Returns:
+            De-duplicated list of all case dicts for this journal+year.
+        """
+        cases = self.index_search(year, book)
+
+        if len(cases) < self.TRUNCATION_THRESHOLD:
+            return cases  # No truncation — fast path
+
+        logger.warning(
+            f"{book} {year}: received exactly {self.TRUNCATION_THRESHOLD} cases — "
+            f"possible server-side truncation. Splitting by court to recover all cases..."
+        )
+
+        # Collect unique court values from the truncated first batch.
+        courts = sorted({c.get('court', '').strip() for c in cases if c.get('court', '').strip()})
+        if not courts:
+            logger.error(
+                f"{book} {year}: no court values in truncated results — "
+                f"cannot split further. Returning truncated {len(cases)} cases."
+            )
+            return cases
+
+        logger.info(f"{book} {year}: querying {len(courts)} courts individually: {courts}")
+
+        # Seed the merged dict with the initial batch so we never lose anything.
+        all_cases = {}
+        for c in cases:
+            cid = c.get('case_id')
+            if cid:
+                all_cases[cid] = c
+
+        for court in courts:
+            try:
+                court_cases = self.index_search(year, book, court=court)
+                if len(court_cases) >= self.TRUNCATION_THRESHOLD:
+                    logger.warning(
+                        f"{book} {year} [{court}]: per-court query ALSO returned "
+                        f"{len(court_cases)} (threshold={self.TRUNCATION_THRESHOLD}). "
+                        f"Some cases for this court+year may still be missing."
+                    )
+                for c in court_cases:
+                    cid = c.get('case_id')
+                    if cid and cid not in all_cases:
+                        all_cases[cid] = c
+                logger.info(f"{book} {year} [{court}]: {len(court_cases)} cases retrieved")
+            except Exception as e:
+                logger.error(f"{book} {year} [{court}]: court sub-query failed: {e}")
+
+        merged = list(all_cases.values())
+        logger.info(
+            f"{book} {year}: court-split complete — {len(cases)} (truncated) -> "
+            f"{len(merged)} total unique cases"
+        )
+        return merged
+
     def _clean_html_content(self, html: str) -> str:
         """
         Clean HTML content from Microsoft Word format to readable plain text
@@ -1263,8 +1335,8 @@ class PakistanLawScraper:
             return 0
 
         journals = journals or self.INDEX_JOURNALS
-        year_start = year_start or self.YEAR_RANGE_START
-        year_end = year_end or self.YEAR_RANGE_END
+        year_start = year_start if year_start is not None else self.YEAR_RANGE_START
+        year_end = year_end if year_end is not None else self.YEAR_RANGE_END
 
         # Concurrent mode: multiple workers with DB
         if num_workers > 1 and db:
@@ -1353,12 +1425,14 @@ class PakistanLawScraper:
                                 self._save_progress(progress_file, progress)
                             continue
 
-                # Fetch all cases for this journal+year (IndexSearch returns all at once)
+                # Fetch all cases for this journal+year.
+                # index_search_full() automatically handles server-side truncation
+                # by splitting into per-court sub-queries when needed.
                 cases = None
                 last_error = None
                 for attempt in range(3):
                     try:
-                        cases = self.index_search(year, journal)
+                        cases = self.index_search_full(year, journal)
                         last_request_time = time.time()
                         break
                     except SessionExpiredError:
@@ -1601,12 +1675,13 @@ class PakistanLawScraper:
                                              error_message='Session expired, re-auth failed')
                             continue
 
-                # Fetch all cases for this journal+year (IndexSearch returns all at once)
+                # Fetch all cases for this journal+year.
+                # index_search_full() automatically handles server-side truncation.
                 cases = None
                 last_error = None
                 for attempt in range(3):
                     try:
-                        cases = scraper.index_search(year, journal)
+                        cases = scraper.index_search_full(year, journal)
                         last_request_time = time.time()
                         break
                     except SessionExpiredError:
